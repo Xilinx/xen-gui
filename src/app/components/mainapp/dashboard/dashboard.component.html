@@ -1,0 +1,59 @@
+<!-- <app-content-header [title]="'Dashboard'"></app-content-header> -->
+
+<section class="content">
+  <div class="row">
+    <div class="col-md-4 col-sm-4 col-xs-12">
+      <app-infobox
+        title="Hello"
+        color="bg-aqua"
+        icon="fa fa-bullhorn"
+      ></app-infobox>
+    </div>
+
+    <div class="col-md-4 col-sm-4 col-xs-12">
+      <app-infobox
+        title="Likes"
+        color="bg-red"
+        icon="fa fa-google-plus"
+        value="41,410"
+      ></app-infobox>
+    </div>
+    <!-- /.col -->
+
+    <div class="col-md-4 col-sm-4 col-xs-12">
+      <app-infobox
+        title="Sales"
+        color="bg-green"
+        icon=""
+        value="760"
+      ></app-infobox>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- MAP & BOX PANE -->
+      <div id="myBox" class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Visitors Report</h3>
+
+          <div class="box-tools pull-right">
+            <button
+              type="button"
+              class="btn btn-box-tool"
+              data-widget="collapse"
+            >
+              <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body no-padding" id="scrollingBox"></div>
+        <!-- /.box-body -->
+      </div>
+    </div>
+  </div>
+</section>

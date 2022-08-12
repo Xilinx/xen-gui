@@ -1,0 +1,64 @@
+<app-titlebar
+  class="main-header"
+  [title]="appTitle"
+  [appwindow]="ourApp"
+></app-titlebar>
+
+<app-sidebar>
+  <section class="sidebar">
+    <div class="user-panel">
+      <div class="pull-left image">
+        <img
+          src="./assets/images/dp.png"
+          class="img-circle"
+          alt="Precious Keyz Image"
+        />
+      </div>
+      <div class="pull-left info">
+        <p>The Administrator</p>
+        <a><i class="fa fa-circle text-success"></i> Online</a>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu" data-widget="tree">
+      <li class="header">MAIN NAVIGATION</li>
+
+      <li
+        title="Dashboard"
+        class="treeview"
+        routerLinkActive
+        #das="routerLinkActive"
+        [routerLink]="['/mainapp/dashboard']"
+        [class.active]="das.isActive"
+      >
+        <a [routerLink]="['/mainapp/dashboard']">
+          <i class="fa fa-dashboard"></i> <span> Dashboard</span>
+        </a>
+      </li>
+
+      <li
+        title="announcements"
+        class="treeview"
+        routerLinkActive
+        #ann="routerLinkActive"
+        [routerLink]="['/mainapp/notification']"
+        [class.active]="ann.isActive"
+      >
+        <a [routerLink]="['/mainapp/notification']">
+          <i class="fa fa-bell-o"></i> <span> Announcements</span>
+        </a>
+      </li>
+
+      <li title="Sign Out" class="treeview" (click)="logout()">
+        <a>
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <span> Sign Out</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+</app-sidebar>
+
+<div class="content-wrapper">
+  <router-outlet></router-outlet>
+</div>

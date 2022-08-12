@@ -1,0 +1,70 @@
+@import 'dist/css/AdminLTE.css';
+@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../../node_modules/font-awesome/css/font-awesome.min.css';
+@import '../assets/dist/css/AdminLTE.css';
+@import '../assets/dist/css/skins/skin-green.css';
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+//
+// Reset HTML, body, and more
+//
+
+// We never want the window to be scrollable, everything has to fit
+// or be placed into a scrollable container.
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  line-height: 1.5;
+  padding: 0;
+  overflow: hidden;
+}
+
+html {
+  // NB This seems to be necessary on macOS (and possibly others)
+  // for the absolutely positioned foldout to fill the window
+  // when it's being resized.
+  // position: relative;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+//
+// Typography
+//
+
+// Remove top margins from headings
+//
+// By default, `<h1>`-`<h6>` all receive top and bottom margins. We nuke the top
+// margin for easier control within type scales as it avoids margin collapsing.
+//
+// From: https://github.com/twbs/bootstrap/blob/a0f10e6dcb9aef2d8e36e57f3c8b1b06034a8877/scss/_reboot.scss
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+// Regardless of platform behavior we never want buttons to be
+// app drag targets unless explicitly specified.
+button {
+  -webkit-app-region: no-drag;
+}
