@@ -7,8 +7,8 @@ const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
 function createWindow() {
-  const minWidth = 820;
-  const minHeight = 570;
+  const minWidth = 1280;
+  const minHeight = 720;
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -45,7 +45,7 @@ function createWindow() {
     );
   }
 
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
 
   // Emitted when the window is closed.
   win.on('closed', () => {

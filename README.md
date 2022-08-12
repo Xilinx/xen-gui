@@ -40,6 +40,12 @@ Please follow [Angular-cli documentation](https://github.com/angular/angular-cli
 npm install -g @angular/cli
 ```
 
+For example, if you need to add a new component:
+
+```bash
+ng generate component components/mainapp/boot-configuration
+```
+
 ## To build for development
 
 - **in a terminal window** -> npm start

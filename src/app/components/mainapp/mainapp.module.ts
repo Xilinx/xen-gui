@@ -5,6 +5,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { MainappComponent } from './mainapp.component';
 import { Routes, RouterModule } from '@angular/router';
 import { WidgetsModule } from '../widgets/widgets.module';
+import { BootConfigurationComponent } from './boot-configuration/boot-configuration.component';
 
 const route: Routes = [
   {
@@ -19,13 +20,17 @@ const route: Routes = [
       {
         path: 'notification',
         component: NotificationComponent
+      },
+      {
+        path: 'boot-configuration',
+        component: BootConfigurationComponent
       }
     ]
   }
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, NotificationComponent, MainappComponent],
+  declarations: [DashboardComponent, NotificationComponent, MainappComponent, BootConfigurationComponent],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule],
   exports: [RouterModule, WidgetsModule]
 })

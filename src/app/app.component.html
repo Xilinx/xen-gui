@@ -2,7 +2,8 @@
   class="main-header"
   [title]="appTitle"
   [appwindow]="ourApp"
-></app-titlebar>
+>
+</app-titlebar>
 
 <app-sidebar>
   <section class="sidebar">
@@ -16,23 +17,32 @@
       </div>
       <div class="pull-left info">
         <p>The Administrator</p>
-        <a><i class="fa fa-circle text-success"></i> Online</a>
       </div>
     </div>
 
+    <form action="#" method="get" class="sidebar-form">
+      <div class="input-group">
+      <input type="text" name="q" class="form-control" placeholder="Search...">
+      <span class="input-group-btn">
+      <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+      <i class="fa fa-search"></i>
+      </button>
+      </span>
+      </div>
+      </form>
+
     <ul class="sidebar-menu" data-widget="tree">
-      <li class="header">MAIN NAVIGATION</li>
 
       <li
         title="Dashboard"
         class="treeview"
         routerLinkActive
         #das="routerLinkActive"
-        [routerLink]="['/mainapp/dashboard']"
+        [routerLink]="['/mainapp/boot-configuration']"
         [class.active]="das.isActive"
       >
-        <a [routerLink]="['/mainapp/dashboard']">
-          <i class="fa fa-dashboard"></i> <span> Dashboard</span>
+        <a [routerLink]="['/mainapp/boot-configuration']">
+          <i class="fa fa-dashboard"></i> <span> Boot configuration</span>
         </a>
       </li>
 

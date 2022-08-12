@@ -6,8 +6,8 @@
   display: flex;
   flex-direction: row;
   height: 30px;
-  background: #388e3c;
-  border-bottom: 1px solid rgb(48, 121, 51);
+  background: #222d32;
+  border-bottom: 1px solid #222d32;
 
   .app-icon {
     fill: #fff;
@@ -23,7 +23,8 @@
     user-select: none;
     align-self: center;
     color: #fff;
-    font-size: 13px;
+    font-size: 16px;
+    font-weight: bold;
     margin: 0 5px;
     display: flex;
   }

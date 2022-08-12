@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.appTitle = 'Electron - Angular - AdminLTE Starter';
+    this.appTitle = 'Configurator';
     this.setupResizer();
   }
 

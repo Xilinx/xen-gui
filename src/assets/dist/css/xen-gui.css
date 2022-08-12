@@ -1,0 +1,19 @@
+.skin-green .sidebar-menu > li.active > a {
+    border-left-color: initial;
+}
+
+.sidebar-menu > li {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+}
+
+.skin-green .sidebar-menu > li:hover > a, .skin-green .sidebar-menu > li.active > a, .skin-green .sidebar-menu > li.menu-open > a {
+    color: #1e282c;
+    background: white;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+}
