@@ -63,13 +63,16 @@ export class ReadDeviceTreeComponent implements OnInit {
     tmp = tmp.replace(/=/g, ":");
     tmp = tmp.replace(/</g, "[");
     tmp = tmp.replace(/>/g, "]");
-    tmp = tmp.replace(/\/\*.*\*\//g, "");
-    var check = tmp.split(/\r?\n/);
+    tmp = tmp.replace(/\/\*(.*)\*\//gs, "");
+    tmp = tmp.replace(/\r/g, '\n');
+    //tmp = tmp.replace(/code( )*=( )*\"(\r?\n)*(.)*\";/gs, ""); 
+
+    var check = tmp.split(/\n/);
 
     for(var i = 0; i < check.length; i++){
 
       // if is a comment
-      if(check[i].indexOf("//") >= 0){
+      if(check[i].indexOf("//") >= 0 || check[i].indexOf("#") >= 0){
         check[i] = "";
       }
 
@@ -78,12 +81,12 @@ export class ReadDeviceTreeComponent implements OnInit {
         check[i] = check[i].replace(/;/g, "");
         // if there is a terminator character BUT the attribute is empty
         if(check[i].indexOf(":") < 0){
-          check[i] = check[i].substring(0,check[i].length-1) + ": \"\"";
+          check[i] = check[i].substring(0,check[i].length) + ": \"\"";
         }
       }
 
       // if there is an array but is not group by square parenthesis
-      if(check[i].indexOf(":") >= 0 && check[i].indexOf(",") >= 0 && check[i].match(/\"/g).length > 2 && (check[i].indexOf("[") < 0 || check[i].indexOf("]") < 0)){
+      if(check[i].indexOf(":") >= 0 && check[i].indexOf(",") >= 0 && check[i].match(/\"/g) && check[i].match(/\"/g).length > 2 && (check[i].indexOf("[") < 0 || check[i].indexOf("]") < 0)){
         var index = check[i].indexOf(":");
         check[i] = check[i].substring(0,index+1) + " [" + check[i].substring(index+2,check[i].length) + " ]";
 
@@ -98,9 +101,17 @@ export class ReadDeviceTreeComponent implements OnInit {
         check[i] = check[i].substring(0, index_s+1) + _s;
       }
 
-    check[i] = check[i].replace("\r\n", "");
+      // "code" tag not supported
+      if(check[i].match(/code( )*:( )*\"/g)){
+        while(!check[i].match(/\";/gs)){
+          check[i] = "";
+          i++;
+        }
+        check[i] = "";
+      }
 
     }
+
     var tmp2 = check.join("\n");
     console.log(tmp2);
 
