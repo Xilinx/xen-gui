@@ -6,6 +6,7 @@ import { MainappComponent } from './mainapp.component';
 import { Routes, RouterModule } from '@angular/router';
 import { WidgetsModule } from '../widgets/widgets.module';
 import { BootConfigurationComponent } from './boot-configuration/boot-configuration.component';
+import { ReadDeviceTreeComponent } from './read-device-tree/read-device-tree.component';
 
 const route: Routes = [
   {
@@ -24,13 +25,18 @@ const route: Routes = [
       {
         path: 'boot-configuration',
         component: BootConfigurationComponent
+      },
+      {
+        path: 'read-device-tree',
+        component: ReadDeviceTreeComponent
       }
+
     ]
   }
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, NotificationComponent, MainappComponent, BootConfigurationComponent],
+  declarations: [DashboardComponent, NotificationComponent, MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule],
   exports: [RouterModule, WidgetsModule]
 })

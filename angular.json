@@ -24,11 +24,15 @@
               "src/favicon.256x256.png",
               "src/favicon.512x512.png"
             ],
-            "styles": ["src/assets/styles.scss"],
+            "styles": [
+              "src/assets/styles.scss",
+              "src/assets/dist/css/jquery.json-viewer.css"
+            ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
               "node_modules/jquery-slimscroll/jquery.slimscroll.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/dist/js/jquery.json-viewer.js"
             ]
           },
           "configurations": {

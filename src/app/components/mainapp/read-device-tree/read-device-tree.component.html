@@ -1,0 +1,17 @@
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Read Device Tree</h1>
+
+      <div class="form-group">
+        <label for="file">Choose File</label>
+        <input type="file"
+               id="file"
+               (change)="handleFileInput($event.target.files)">
+      </div>
+
+      <pre id="json-viewer"></pre>
+
+    </div>
+  </div>
+</section>

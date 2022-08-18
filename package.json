@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron-adminlte-desktop",
-  "version": "1.0.0",
-  "description": "Angular 7 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://code_keyz@bitbucket.org/hover-devs/yea-desktop.git",
+  "name": "xen-gui-configurator",
+  "version": "0.0.1",
+  "description": "Xen GUI for ImageBuilder file generation",
+  "homepage": "https://xenproject.org/",
   "author": {
-    "name": "Hover Software Solutions",
-    "email": "hoss.codekeyz@gmail.com"
+    "name": "MakarenaLabs srl",
+    "email": "staff@makarenalabs.com"
   },
   "keywords": [
     "angular",
@@ -43,7 +43,8 @@
     "electron-settings": "^3.2.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
-    "jquery-slimscroll": "^1.3.8"
+    "jquery-slimscroll": "^1.3.8",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",

@@ -34,6 +34,19 @@
     <ul class="sidebar-menu" data-widget="tree">
 
       <li
+        title="Read dts"
+        class="treeview"
+        routerLinkActive
+        #das="routerLinkActive"
+        [routerLink]="['/mainapp/read-device-tree']"
+        [class.active]="das.isActive"
+      >
+        <a [routerLink]="['/mainapp/read-device-tree']">
+          <i class="fa fa-folder"></i> <span> Read dts</span>
+        </a>
+      </li>
+
+      <li
         title="Dashboard"
         class="treeview"
         routerLinkActive
