@@ -1,3 +1,27 @@
-<p>
-  boot-configuration works!
-</p>
+<section class="content">
+<div class="row">
+  <div class="col-sm-12">
+    <h1>Boot Configuration</h1>
+  </div>
+</div>
+  
+<hr class="mt-2 mb-3"/>
+
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="box box-widget">
+      <div class="box-header with-border">
+        <h2 class="box-title">Memory</h2>
+      </div>
+      <div class="box-body">
+        <p>Description of memory allocation</p>
+        <div class="custom-slider">
+          <ngx-slider [(value)]="memory_value" [(highValue)]="memory_high_value" [options]="memory_options"></ngx-slider>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+</section>

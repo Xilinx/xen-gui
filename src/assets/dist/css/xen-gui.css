@@ -25,3 +25,48 @@ body > div > app-root > div > app-mainapp > div {
 app-mainapp {
     overflow-y: auto !important;
 }
+
+.custom-slider .ngx-slider .ngx-slider-bar {
+    background: gainsboro;
+    height: 10px;
+  }
+  .custom-slider .ngx-slider .ngx-slider-selection {
+    background: #85C440;
+    height: 10px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer {
+    width: 4px;
+    height: 14px;
+    background-color: #85C440;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    top: -2px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer:after {
+    display: none;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    bottom: 14px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-limit {
+    font-weight: bold;
+    color: #85C440;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    width: 4px;
+    height: 14px;
+    margin-left: 4px;
+    border-radius: 0;
+    background: #85C440;
+    top: -2px;
+  }
+  
+
+  .custom-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+    background: #85C440;
+  }

@@ -59,18 +59,6 @@
         </a>
       </li>
 
-      <li
-        title="announcements"
-        class="treeview"
-        routerLinkActive
-        #ann="routerLinkActive"
-        [routerLink]="['/mainapp/notification']"
-        [class.active]="ann.isActive"
-      >
-        <a [routerLink]="['/mainapp/notification']">
-          <i class="fa fa-bell-o"></i> <span> Announcements</span>
-        </a>
-      </li>
 
       <li title="Sign Out" class="treeview" (click)="logout()">
         <a>

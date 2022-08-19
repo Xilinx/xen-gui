@@ -7,37 +7,29 @@ import { Routes, RouterModule } from '@angular/router';
 import { WidgetsModule } from '../widgets/widgets.module';
 import { BootConfigurationComponent } from './boot-configuration/boot-configuration.component';
 import { ReadDeviceTreeComponent } from './read-device-tree/read-device-tree.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 const route: Routes = [
   {
     path: '',
     component: MainappComponent,
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'prefix' },
+      { path: '', redirectTo: 'read-device-tree', pathMatch: 'prefix' },
       {
-        path: 'dashboard',
-        component: DashboardComponent
-      },
-      {
-        path: 'notification',
-        component: NotificationComponent
+        path: 'read-device-tree',
+        component: ReadDeviceTreeComponent
       },
       {
         path: 'boot-configuration',
         component: BootConfigurationComponent
       },
-      {
-        path: 'read-device-tree',
-        component: ReadDeviceTreeComponent
-      }
-
     ]
   }
 ];
 
 @NgModule({
   declarations: [DashboardComponent, NotificationComponent, MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent],
-  imports: [CommonModule, RouterModule.forChild(route), WidgetsModule],
+  imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule],
   exports: [RouterModule, WidgetsModule]
 })
 export class MainappModule {}

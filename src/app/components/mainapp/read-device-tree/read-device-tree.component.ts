@@ -65,6 +65,7 @@ export class ReadDeviceTreeComponent implements OnInit {
     tmp = tmp.replace(/</g, "[");
     tmp = tmp.replace(/>/g, "]");
     tmp = tmp.replace(/\/\*(.*)\*\//gs, "");
+    tmp = tmp.replace(/\t/g, "    ");
     tmp = tmp.replace(/\r/g, '\n');
     //tmp = tmp.replace(/code( )*=( )*\"(\r?\n)*(.)*\";/gs, ""); 
 
