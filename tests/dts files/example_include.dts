@@ -1,0 +1,15 @@
+/include/ "system-conf.dtsi"
+/include/ "xen.dtsi"
+/ {
+     cpus {
+         cpu@1 {
+             device_type = "none";
+         };
+         cpu@2 {
+             device_type = "none";
+         };
+         cpu@3 {
+             device_type = "none";
+         };
+     };
+ };

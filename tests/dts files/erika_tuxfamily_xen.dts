@@ -1,0 +1,14 @@
+chosen {
+  bootargs = "$xen_cmdline";
+  modules {
+    module@0 { /* dom0 kernel */
+      bootargs = "$dom0_cmdline";
+      compatible = "xen,linuxzimage", "xen,multibootmodule";
+      reg = <$kernel_addr $kernel_size>
+    };
+    module@1 { /* initramfs */
+      compatible = "xen,linuxinitrd", "xen,multibootmodule";
+      reg = <$initramfs_addr $initramfs_size>;
+    };
+  };
+};
