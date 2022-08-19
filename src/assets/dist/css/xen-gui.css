@@ -17,3 +17,11 @@
     margin-right: auto;
     border-radius: 8px;
 }
+
+body > div > app-root > div > app-mainapp > div {
+    width: 100% !important;
+}
+
+app-mainapp {
+    overflow-y: auto !important;
+}

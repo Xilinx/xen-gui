@@ -58,6 +58,7 @@ export class ReadDeviceTreeComponent implements OnInit {
   private readDtsString(s: string){
     var tmp = s;
     tmp = tmp.replace(/\/dts.*\/;/g, "");
+    tmp = tmp.replace(/\/include.*/g, "");
     tmp = tmp.replace(/};/g, "");
     tmp = tmp.replace(/{/g, ":");
     tmp = tmp.replace(/=/g, ":");
