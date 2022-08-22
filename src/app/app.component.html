@@ -59,6 +59,20 @@
         </a>
       </li>
 
+      <li
+        title="Domains"
+        class="treeview"
+        routerLinkActive
+        #das_domains="routerLinkActive"
+        [routerLink]="['/mainapp/domains']"
+        [class.active]="das_domains.isActive"
+      >
+        <a [routerLink]="['/mainapp/domains']">
+          <i class="fa fa-building"></i> <span> Domains</span>
+        </a>
+      </li>
+
+
 
       <li title="Sign Out" class="treeview" (click)="logout()">
         <a>

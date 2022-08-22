@@ -1,0 +1,78 @@
+<section class="content">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Domains</h1>
+    </div>
+    <div class="col-sm-6">
+      <button type="button" class="btn btn-xen pull-right" (click)="addDomain()">ADD DOMAIN +</button>
+    </div>
+  </div>
+
+  <hr class="mt-2 mb-3" />
+
+  <div class="row">
+    <div class="col-md-4" *ngFor="let domain of domains">
+      <div class="box box-widget domu-box">
+        <div class="box-header with-border">
+          <h2 class="box-title"> DOMU-{{domain.name}} </h2>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool domain-actions">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool domain-actions">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="box-body">
+          <p>Info</p>
+          <table class="table table-borderless border-only-row">
+            <thead>
+              <tr>
+                <th>Info</th>
+                <th>Value</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>KERNEL</td>
+                <td>{{domain.kernel}}</td>
+                <td>22/08/2022</td>
+              </tr>
+              <tr>
+                <td>RAMDISK</td>
+                <td>{{domain.ramdisk}}</td>
+                <td>22/08/2022</td>
+              </tr>
+              <tr>
+                <td>MEM</td>
+                <td>{{domain.memory}} [Megabytes]</td>
+                <td>22/08/2022</td>
+              </tr>
+              <tr>
+                <td>VCPUS</td>
+                <td>{{domain.vcpus}} [Virtual CPUs]</td>
+                <td>22/08/2022</td>
+              </tr>
+              <tr>
+                <td>COLORS</td>
+                <td>
+                  <span *ngFor="let color of domain.colors" class="label cache-coloring-label"
+                    [ngStyle]="colorLabel(color)">{{color}}</span>
+                </td>
+                <td>22/08/2022</td>
+              </tr>
+              <tr>
+                <td>PASSTHROUGH_DTB</td>
+                <td>{{domain.passthrough_dtb}}</td>
+                <td>22/08/2022</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

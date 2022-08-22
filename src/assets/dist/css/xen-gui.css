@@ -127,3 +127,32 @@ app-mainapp {
   margin-top:10px;
   margin-bottom:10px;
 }
+
+.cache-coloring-label {
+  margin-right: 10px;
+}
+
+table.border-only-row tr{
+  border: solid 1px rgb(221, 211, 211);
+}
+
+tbody:before {
+  line-height:5px; 
+  content:"\200C"; 
+  display:block;
+}
+
+.domain-actions {
+  font-size: large;
+  border: solid 1px rgb(221, 211, 211);;
+  margin-left:15px;
+}
+
+.domu-box {
+  padding:10px;
+}
+
+button.btn.btn-xen {
+  background-color: #85C440;
+  color: white;
+}

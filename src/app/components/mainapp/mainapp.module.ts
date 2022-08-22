@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { NotificationComponent } from './notification/notification.component';
 import { MainappComponent } from './mainapp.component';
 import { Routes, RouterModule } from '@angular/router';
 import { WidgetsModule } from '../widgets/widgets.module';
@@ -9,6 +7,7 @@ import { BootConfigurationComponent } from './boot-configuration/boot-configurat
 import { ReadDeviceTreeComponent } from './read-device-tree/read-device-tree.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { FormsModule } from '@angular/forms';
+import { DomainsComponent } from './domains/domains.component';
 
 const route: Routes = [
   {
@@ -24,12 +23,16 @@ const route: Routes = [
         path: 'boot-configuration',
         component: BootConfigurationComponent
       },
+      {
+        path: 'domains',
+        component: DomainsComponent
+      },
     ]
   }
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, NotificationComponent, MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent],
+  declarations: [MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent, DomainsComponent],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule],
   exports: [RouterModule, WidgetsModule]
 })
