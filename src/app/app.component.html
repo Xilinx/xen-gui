@@ -37,9 +37,9 @@
         title="Read dts"
         class="treeview"
         routerLinkActive
-        #das="routerLinkActive"
+        #das_read_dts="routerLinkActive"
         [routerLink]="['/mainapp/read-device-tree']"
-        [class.active]="das.isActive"
+        [class.active]="das_read_dts.isActive"
       >
         <a [routerLink]="['/mainapp/read-device-tree']">
           <i class="fa fa-folder"></i> <span> Read dts</span>
@@ -47,12 +47,12 @@
       </li>
 
       <li
-        title="Dashboard"
+        title="Boot Configuration"
         class="treeview"
         routerLinkActive
-        #das="routerLinkActive"
+        #das_boot_configuration="routerLinkActive"
         [routerLink]="['/mainapp/boot-configuration']"
-        [class.active]="das.isActive"
+        [class.active]="das_boot_configuration.isActive"
       >
         <a [routerLink]="['/mainapp/boot-configuration']">
           <i class="fa fa-dashboard"></i> <span> Boot configuration</span>

@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {parse} from 'yamljs';
 import {map} from 'rxjs/operators';
+import { debug } from 'console';
 
 declare var $: any;
 
@@ -12,42 +13,17 @@ declare var $: any;
 
 export class ReadDeviceTreeComponent implements OnInit {
 
-  deviceTreeJson = {
-    "a": 10,
-    "b": 20,
-    "c": {
-      "d": "blabla"
-    }
+  deviceTreeJson: any = null;
+  deviceTreeData = {
+    numberOfCPUs: 0,
+    memoryStartAddress: 0,
+    memoryEndAddress: 0,
+    numberOfAvailableDevices: 0,
+    availableDevices: [],
+    disabledDevices: []
   };
-
   dtsFile: File | null = null;
-
-
-  dts = `
-  /dts-v1/;
-
-  / {
-      node1 {
-          a-string-property = "A string";
-          a-string-list-property = "first string", "second string";
-          // hex is implied in byte arrays. no '0x' prefix is required
-          a-byte-data-property = [01 23 34 56];
-          child-node1 {
-              first-child-property;
-              second-child-property = <1>;
-              a-string-property = "Hello, world";
-          };
-          child-node2 {
-          };
-      };
-      node2 {
-          an-empty-property;
-          a-cell-property = <1 2 3 4>; /* each number (cell) is a uint32 */
-          child-node1 {
-          };
-      };
-  };
-  `;
+  error: boolean = false;
   
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -115,12 +91,53 @@ export class ReadDeviceTreeComponent implements OnInit {
     }
 
     var tmp2 = check.join("\n");
-    console.log(tmp2);
+    //console.log(tmp2);
 
     // convert YAML to JSON
     this.deviceTreeJson = parse(tmp2);
 
-    $('#json-viewer').jsonViewer(this.deviceTreeJson);
+    $('#json-viewer').jsonViewer(this.deviceTreeJson, {collapsed: true});
+
+    // count the number of cpus (how many cpu entry in devicetree)
+    this.deviceTreeData.numberOfCPUs = 0;
+    for (const [key, value] of Object.entries(this.deviceTreeJson["/"].cpus)) {
+      if (key.indexOf("cpu") >= 0){
+        this.deviceTreeData.numberOfCPUs++;
+      }
+    }
+
+    // extract memory data
+    // TODO
+    ///////
+
+    // count number of devices and save device name
+    this.deviceTreeData.numberOfAvailableDevices = 0;
+    if(this.deviceTreeJson["/"].hasOwnProperty("amba")){
+      for (const [key, value] of Object.entries(this.deviceTreeJson["/"].amba)) {
+        if (this.deviceTreeJson["/"].amba[key].hasOwnProperty("status")){
+          if(this.deviceTreeJson["/"].amba[key].status != "disabled"){
+            this.deviceTreeData.numberOfAvailableDevices++;
+            this.deviceTreeData.availableDevices.push(key);
+          } else {
+            this.deviceTreeData.disabledDevices.push(key);
+          }
+        }
+      }
+    }
+    if(this.deviceTreeJson["/"].hasOwnProperty("axi")){
+      for (const [key, value] of Object.entries(this.deviceTreeJson["/"].axi)) {
+        if (this.deviceTreeJson["/"].amba[key].hasOwnProperty("status")){
+          if(this.deviceTreeJson["/"].amba[key].status != "disabled"){
+            this.deviceTreeData.numberOfAvailableDevices++;
+            this.deviceTreeData.availableDevices.push(key);
+          } else {
+            this.deviceTreeData.disabledDevices.push(key);
+          }
+        }
+      }
+    }
+    this.deviceTreeData.availableDevices.sort();
+    this.deviceTreeData.disabledDevices.sort();
 
     this.ref.detectChanges();
   }
@@ -129,7 +146,12 @@ export class ReadDeviceTreeComponent implements OnInit {
     this.dtsFile = files.item(0);
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
-      this.readDtsString(<string>fileReader.result);
+      try{
+        this.readDtsString(<string>fileReader.result);
+        this.error = false;
+      } catch(e){
+        this.error = true;
+      }
     }
     fileReader.readAsText(this.dtsFile);
 }

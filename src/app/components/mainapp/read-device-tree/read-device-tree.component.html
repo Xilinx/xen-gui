@@ -3,6 +3,8 @@
     <div class="col-sm-12">
       <h1>Read Device Tree</h1>
 
+      <hr class="mt-2 mb-3"/>
+
       <div class="form-group">
         <label for="file">Choose File</label>
         <input type="file" id="file" (change)="handleFileInput($event.target.files)" accept=".dts, .DTS">
@@ -10,6 +12,32 @@
 
       <pre id="json-viewer"></pre>
 
+      <div *ngIf="deviceTreeJson != null">
+        <ul>
+          <li>Number of CPUs: {{deviceTreeData.numberOfCPUs}}</li>
+          <li>Memory start address: {{deviceTreeData.memoryStartAddress}}</li>
+          <li>Memory end address: {{deviceTreeData.memoryEndAddress}}</li>
+          <li>Number of available devices: {{deviceTreeData.numberOfAvailableDevices}}</li>
+          <li>Available devices:</li>
+          <ul *ngFor="let device of deviceTreeData.availableDevices">
+              <li>{{device}}</li>
+          </ul>
+          <li>Disabled devices:</li>
+          <ul *ngFor="let device of deviceTreeData.disabledDevices">
+              <li>{{device}}</li>
+          </ul>
+        </ul>
+      </div>
+      <div *ngIf="error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> Error!</h4>
+        Unable to load file!
+      </div>
+
+      <hr class="mt-2 mb-3"/>
+      <hr class="mt-2 mb-3"/>
+      <hr class="mt-2 mb-3"/>
+      
     </div>
   </div>
 </section>

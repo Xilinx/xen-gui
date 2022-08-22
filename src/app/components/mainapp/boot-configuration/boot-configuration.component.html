@@ -1,27 +1,132 @@
 <section class="content">
-<div class="row">
-  <div class="col-sm-12">
-    <h1>Boot Configuration</h1>
-  </div>
-</div>
-  
-<hr class="mt-2 mb-3"/>
-
-
-<div class="row">
-  <div class="col-md-4">
-    <div class="box box-widget">
-      <div class="box-header with-border">
-        <h2 class="box-title">Memory</h2>
-      </div>
-      <div class="box-body">
-        <p>Description of memory allocation</p>
-        <div class="custom-slider">
-          <ngx-slider [(value)]="memory_value" [(highValue)]="memory_high_value" [options]="memory_options"></ngx-slider>
-        </div>
-        
-      </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Boot Configuration</h1>
     </div>
   </div>
-</div>
+
+  <hr class="mt-2 mb-3" />
+
+
+  <div class="row">
+    <!-- Memory selection -->
+    <div class="col-md-4">
+      <div class="box box-widget">
+        <div class="box-header with-border">
+          <h2 class="box-title">Memory</h2>
+        </div>
+        <div class="box-body">
+          <p>Description of memory allocation</p>
+          <div class="custom-slider">
+            <ngx-slider [(value)]="bootConfig.memory_low_value" [(highValue)]="bootConfig.memory_high_value"
+              [options]="memory_options">
+            </ngx-slider>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- U-Boot configuration -->
+    <div class="col-md-4">
+      <div class="box box-widget">
+        <div class="box-header with-border">
+          <h2 class="box-title">U-Boot Configuration</h2>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <p><b>Load command</b></p>
+
+              <input type="radio" id="load_command1" name="load_command" [(ngModel)]="bootConfig.load_command"
+                value="tftpd">
+              <label for="load_command1">tftpd</label>
+              <br>
+              <input type="radio" id="load_command2" name="load_command" [(ngModel)]="bootConfig.load_command"
+                value="scsi">
+              <label for="load_command2">scsi</label>
+              <br>
+              <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command" 
+                value="mmc">
+              <label for="load_command3">mmc</label>
+              <br>
+
+            </div>
+
+            <!-- Boot configuration -->
+            <div class="col-sm-6">
+              <p><b>Boot Configuration</b></p>
+
+              <input type="radio" id="boot_command1" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+                value="bottm">
+              <label for="boot_command1">bottm</label>
+              <br>
+              <input type="radio" id="boot_command2" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+                value="booti">
+              <label for="boot_command2">booti</label>
+              <br>
+              <input type="radio" id="boot_command3" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+                value="bootefi">
+              <label for="boot_command3">bootefi</label>
+              <br>
+              <input type="radio" id="boot_command4" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+                value="none">
+              <label for="boot_command4">none</label>
+              <br>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Xen Configuration -->
+    <div class="col-md-4">
+      <div class="box box-widget">
+        <div class="box-header with-border">
+          <h2 class="box-title">Xen Configuration</h2>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p><b>Xen Hypervisor binary</b></p>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <input type="radio" id="xen_binary1" name="xen_binary" [(ngModel)]="bootConfig.xen_binary" 
+                    value="xen">
+                  <label for="xen_binary1">Xen</label>
+                </div>
+                <div class="col-sm-3">
+                  <input type="radio" id="xen_binary2" name="xen_binary" [(ngModel)]="bootConfig.xen_binary"
+                    value="linux">
+                  <label for="xen_binary2">Linux</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row divider-20"></div>
+
+            <div class="col-sm-12">
+              <p><b>Xen Commands:</b></p>
+              <input type="text" class="form-control" name="xen_command" [(ngModel)]="bootConfig.xen_command"
+                placeholder="insert full command here...">
+            </div>
+
+          </div>
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="row divider-20"></div>
+
+    <div class="col-sm-12">
+      <button type="button" class="btn btn-success" (click)="save()">Save <i class="fa fa-fw fa-save"></i></button>
+    </div>
+
+  </div>
+
 </section>

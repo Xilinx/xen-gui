@@ -48,5 +48,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  logout() {}
+  logout() {
+    <any>(window).location.reload();
+  }
 }

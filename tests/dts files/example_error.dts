@@ -1,0 +1,30 @@
+ethernet@ff0e0000 {
+compatible = "cdns,zynqmp-gem";
+            status = "enabled";
+            interrupt-parent = <0x2>;
+            interrupts = <0x0 0x3f 0x4 0x0 0x3f 0x4>;
+            reg = <0x0 0xff0e0000 0x0 0x1000>;
+            clock-names = "pclk", "hclk", "tx_clk";
+            #address-cells = <0x1>;
+            #size-cells = <0x0>;
+            #stream-id-cells = <0x1>;
+            iommus = <0x6 0x77>;
+            power-domains = <0x10>;
+            clocks = <0xd 0xd 0xd>;
+            phy-mode = "rgmii-id";
+            xlnx,ptp-enet-clock = <0x0>;
+            local-mac-address = [00 0a 35 00 02 90];
+            phy-handle = <0x11>;
+            linux,phandle = <0x22>;
+            phandle = <0x22>;
+            xen,passthrough;
+ 
+            phy@c {
+                reg = <0xc>;
+                ti,rx-internal-delay = <0x8>;
+                ti,tx-internal-delay = <0xa>;
+                ti,fifo-depth = <0x1>;
+                linux,phandle = <0x11>;
+                phandle = <0x11>;
+            };
+        };

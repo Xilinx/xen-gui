@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Options } from '@angular-slider/ngx-slider';
+import { Options, LabelType } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-boot-configuration',
@@ -8,16 +8,38 @@ import { Options } from '@angular-slider/ngx-slider';
 })
 export class BootConfigurationComponent implements OnInit {
 
-  memory_high_value: number = 5000;
-  memory_value: number = 2000;
+  
   memory_options: Options = {
     floor: 0,
-    ceil: 9999
+    ceil: 4000000000,
+    translate: (value: number, label: LabelType): string => {
+      switch (label) {
+        case LabelType.Low:
+          return '0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
+        case LabelType.High:
+          return '0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
+        default:
+          return '0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
+      }
+    }
   };
+  bootConfig = {
+    memory_high_value: 2000000000,
+    memory_low_value: 0,
+    load_command: "",
+    boot_command: "",
+    xen_binary: "",
+    xen_command: ""
+
+  }
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  save() {
+    console.log(this.bootConfig);
   }
 
 }
