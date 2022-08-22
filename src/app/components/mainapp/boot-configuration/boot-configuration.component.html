@@ -22,6 +22,18 @@
               [options]="memory_options">
             </ngx-slider>
           </div>
+          <div class="row">
+            <div class="col-sm-4">
+              Start
+              <input type="text" class="form-control" name="memory_low_value" [(ngModel)]="bootConfig.memory_low_value">
+            </div>
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
+              End
+              <input type="text" class="form-control" name="memory_high_value" [(ngModel)]="bootConfig.memory_high_value">
+            </div>
+          </div>
 
         </div>
       </div>
@@ -45,7 +57,7 @@
                 value="scsi">
               <label for="load_command2">scsi</label>
               <br>
-              <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command" 
+              <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command"
                 value="mmc">
               <label for="load_command3">mmc</label>
               <br>
@@ -95,7 +107,7 @@
 
               <div class="row">
                 <div class="col-sm-3">
-                  <input type="radio" id="xen_binary1" name="xen_binary" [(ngModel)]="bootConfig.xen_binary" 
+                  <input type="radio" id="xen_binary1" name="xen_binary" [(ngModel)]="bootConfig.xen_binary"
                     value="xen">
                   <label for="xen_binary1">Xen</label>
                 </div>
@@ -116,7 +128,7 @@
             </div>
 
           </div>
-        
+
         </div>
       </div>
     </div>
