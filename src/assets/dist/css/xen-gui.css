@@ -156,3 +156,16 @@ button.btn.btn-xen {
   background-color: #85C440;
   color: white;
 }
+
+.modal.fade.show {
+  opacity: 0;
+  transition: opacity .15s linear;
+}
+
+.modal.fade.show.blink {
+  opacity: 1;
+}
+
+.modal.fade .modal-dialog {
+  transform: translate(0,15%);
+}

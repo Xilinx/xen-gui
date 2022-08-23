@@ -8,6 +8,8 @@ import { ReadDeviceTreeComponent } from './read-device-tree/read-device-tree.com
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { FormsModule } from '@angular/forms';
 import { DomainsComponent } from './domains/domains.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { DomainsModalComponent } from './modals/domains-modal/domains-modal.component';
 
 const route: Routes = [
   {
@@ -32,8 +34,9 @@ const route: Routes = [
 ];
 
 @NgModule({
-  declarations: [MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent, DomainsComponent],
-  imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule],
-  exports: [RouterModule, WidgetsModule]
+  declarations: [MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent, DomainsComponent, DomainsModalComponent],
+  imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule, NgbModule],
+  exports: [RouterModule, WidgetsModule],
+  entryComponents: [DomainsModalComponent]
 })
 export class MainappModule {}

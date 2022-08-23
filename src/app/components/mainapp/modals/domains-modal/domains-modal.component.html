@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title" *ngIf="domain.name">Domu update</h4>
+  <h4 class="modal-title" id="modal-basic-title" *ngIf="!domain.name">Domu create</h4>
+</div>
+<form #domainForm="ngForm" (ngSubmit)="onSubmit(domainForm)">
+  <div class="modal-body">
+    <div class="mb-3">
+      <input type="text" name="name" ngModel required #name="ngModel">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-success">Save</button>
+    <button type="button" class="btn btn-outline-warning" (click)="close()">Close</button>
+  </div>
+</form>

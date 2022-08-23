@@ -11,12 +11,12 @@
   <hr class="mt-2 mb-3" />
 
   <div class="row">
-    <div class="col-md-4" *ngFor="let domain of domains">
+    <div class="col-md-4" *ngFor="let domain of domains; let i = index">
       <div class="box box-widget domu-box">
         <div class="box-header with-border">
           <h2 class="box-title"> DOMU-{{domain.name}} </h2>
           <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool domain-actions">
+            <button type="button" class="btn btn-box-tool domain-actions" (click)="open_modal(i)">
               <i class="fa fa-pencil"></i>
             </button>
             <button type="button" class="btn btn-box-tool domain-actions">
