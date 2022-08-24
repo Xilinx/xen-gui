@@ -23,6 +23,29 @@
     </div>
 
     <script type="text/javascript">
+      var AdminLTEOptions = {
+        //Box Widget Plugin. Enable this plugin
+        //to allow boxes to be collapsed and/or removed
+        enableBoxWidget: true,
+        //Box Widget plugin options
+        boxWidgetOptions: {
+          boxWidgetIcons: {
+            //Collapse icon
+            collapse: 'fa-minus',
+            //Open icon
+            open: 'fa-plus',
+            //Remove icon
+            remove: 'fa-times'
+          },
+          boxWidgetSelectors: {
+            //Remove button selector
+            remove: '[data-widget="remove"]',
+            //Collapse button selector
+            collapse: '[data-widget="collapse"]'
+          }
+        },
+      };
+
       //at bottom/footer of the page
       $(document).ready(function() {
         $(document).trigger('resize');

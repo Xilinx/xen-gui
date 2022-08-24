@@ -3,7 +3,7 @@
     <div class="col-sm-12">
       <h1>Read Device Tree</h1>
 
-      <hr class="mt-2 mb-3"/>
+      <hr class="mt-2 mb-3" />
 
       <div class="form-group">
         <label for="file">Choose File</label>
@@ -12,32 +12,87 @@
 
       <pre id="json-viewer"></pre>
 
-      <div *ngIf="deviceTreeJson != null">
-        <ul>
-          <li>Number of CPUs: {{deviceTreeData.numberOfCPUs}}</li>
-          <li>Memory start address: {{deviceTreeData.memoryStartAddress}}</li>
-          <li>Memory end address: {{deviceTreeData.memoryEndAddress}}</li>
-          <li>Number of available devices: {{deviceTreeData.numberOfAvailableDevices}}</li>
-          <li>Available devices:</li>
-          <ul *ngFor="let device of deviceTreeData.availableDevices">
-              <li>{{device}}</li>
-          </ul>
-          <li>Disabled devices:</li>
-          <ul *ngFor="let device of deviceTreeData.disabledDevices">
-              <li>{{device}}</li>
-          </ul>
-        </ul>
+      <div *ngIf="deviceTreeJson != null" class="row">
+
+        <div class="col-sm-3">
+          <div class="box box-default collapsed-box" data-widget="box-widget">
+            <div class="box-header with-border">
+              <h3 class="box-title">Hardware overview</h3>
+              <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <ul>
+                <li>Number of CPUs: {{deviceTreeData.numberOfCPUs}}</li>
+                <li>Number of Memories: {{deviceTreeData.numberOfMemories}}</li>
+                <li>Number of available devices: {{deviceTreeData.numberOfAvailableDevices}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3">
+          <div class="box box-default collapsed-box" data-widget="box-widget">
+            <div class="box-header with-border">
+              <h3 class="box-title">Memories</h3>
+              <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <ul *ngFor="let memory of deviceTreeData.memories">
+                <li>Memory start address: {{memory.startAddress}}</li>
+                <li>Memory size: {{memory.size}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3">
+          <div class="box box-default collapsed-box" data-widget="box-widget">
+            <div class="box-header with-border">
+              <h3 class="box-title">Available Devices</h3>
+              <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <ul *ngFor="let device of deviceTreeData.availableDevices">
+                <li>{{device.name}} : 0x{{device.address.toString(16) }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3">
+          <div class="box box-default collapsed-box" data-widget="box-widget">
+            <div class="box-header with-border">
+              <h3 class="box-title">Disabled Devices</h3>
+              <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <ul *ngFor="let device of deviceTreeData.disabledDevices">
+                <li>{{device.name}} : 0x{{device.address.toString(16) }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
+
       <div *ngIf="error" class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <h4><i class="icon fa fa-ban"></i> Error!</h4>
         Unable to load file!
       </div>
 
-      <hr class="mt-2 mb-3"/>
-      <hr class="mt-2 mb-3"/>
-      <hr class="mt-2 mb-3"/>
-      
+      <hr class="mt-2 mb-3" />
+      <hr class="mt-2 mb-3" />
+      <hr class="mt-2 mb-3" />
+
     </div>
   </div>
 </section>

@@ -32,7 +32,8 @@
               "node_modules/jquery/dist/jquery.js",
               "node_modules/jquery-slimscroll/jquery.slimscroll.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "src/assets/dist/js/jquery.json-viewer.js"
+              "src/assets/dist/js/jquery.json-viewer.js",
+              "src/assets/dist/js/adminlte.js"
             ]
           },
           "configurations": {

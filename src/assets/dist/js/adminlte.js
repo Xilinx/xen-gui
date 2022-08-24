@@ -27,7 +27,6 @@ if (typeof jQuery === 'undefined') {
  */
 +(function($) {
   'use strict';
-
   var DataKey = 'lte.boxrefresh';
 
   var Default = {
@@ -160,7 +159,7 @@ if (typeof jQuery === 'undefined') {
  *         This plugin auto activates on any element using the `.box` class
  *         Pass any option as data-option="value"
  */
-+(function($) {
+(function($) {
   'use strict';
 
   var DataKey = 'lte.boxwidget';
@@ -192,19 +191,16 @@ if (typeof jQuery === 'undefined') {
     expanded: 'expanded.boxwidget',
     removed: 'removed.boxwidget'
   };
-
   // BoxWidget Class Definition
   // =====================
   var BoxWidget = function(element, options) {
     this.element = element;
     this.options = options;
-
     this._setUpListeners();
   };
 
   BoxWidget.prototype.toggle = function() {
     var isOpen = !$(this.element).is(Selector.collapsed);
-
     if (isOpen) {
       this.collapse();
     } else {
