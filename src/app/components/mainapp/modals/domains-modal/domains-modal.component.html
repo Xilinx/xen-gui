@@ -5,11 +5,85 @@
 <form #domainForm="ngForm" (ngSubmit)="onSubmit(domainForm)">
   <div class="modal-body">
     <div class="mb-3">
-      <input type="text" name="name" ngModel required #name="ngModel">
+      <div class="row">
+        <div class="col-sm-2" style="padding-right: 0px;">
+          <p style="margin-top:5px">Domain name:</p>
+        </div>
+        <div class="col-sm-5" style="padding-left: 0px;">
+          <input type="text" class="form-control" name="name" ngModel required #name="ngModel"
+            placeholder="domain name">
+        </div>
+      </div>
+    </div>
+
+    <hr class="mt-2 mb-3" />
+
+    <div class="mb-3">
+      <table class="table table-borderless border-only-row">
+        <thead>
+          <tr>
+            <th>Info</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>KERNEL</td>
+            <td><input type="text" class="form-control" name="kernel" ngModel required #kernel="ngModel"
+                placeholder="insert kernel name"></td>
+          </tr>
+          <tr>
+            <td>RAMDISK</td>
+            <td><input type="text" class="form-control" name="ramdisk" ngModel required #kernel="ngModel"
+                placeholder="insert ramdisk name"></td>
+          </tr>
+          <tr>
+            <td>MEM</td>
+            <td>
+              <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-10">
+                  <div class="custom-slider-dom-mem">
+                    <ngx-slider #mem_slider [(value)]="domain.memory" [options]="memory_options"
+                      (userChange)="onChangeSliderMem($event)">
+                    </ngx-slider>
+                  </div>
+                </div>
+                <div class="col-sm-1">
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>VCPUS</td>
+            <td>
+              <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-10">
+                  <div class="custom-slider-dom-vcpu">
+                    <ngx-slider #vcpus_slider [(value)]="domain.vcpus" [options]="vcpus_options"
+                    (userChange)="onChangeSliderVcpus($event)">
+                    </ngx-slider>
+                  </div>
+                </div>
+                <div class="col-sm-1">
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>PASSTHROUGH_DTB</td>
+            <td><input type="text" class="form-control" name="passthrough_dtb" ngModel required
+                #passthrough_dtb="ngModel" placeholder="insert passthrough dtb"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-outline-success">Save</button>
-    <button type="button" class="btn btn-outline-warning" (click)="close()">Close</button>
+    <button type="submit" class="btn btn-success pull-right">Save</button>
+    <button type="button" class="btn btn-warning pull-left" (click)="close()">Discart</button>
   </div>
 </form>
