@@ -24,7 +24,7 @@ export class BootConfigurationComponent implements OnInit {
     }
   };
   bootConfig = {
-    memory_high_value: 2000000000,
+    memory_high_value: 4000000000,
     memory_low_value: 0,
     load_command: "",
     boot_command: "",

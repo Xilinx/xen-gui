@@ -13,10 +13,10 @@
     <div class="col-md-4">
       <div class="box box-widget">
         <div class="box-header with-border">
-          <h2 class="box-title">Memory</h2>
+          <h2 class="box-title">Memory Boot</h2>
         </div>
         <div class="box-body">
-          <p>Description of memory allocation</p>
+          <p>Boot memory allocation for boot binaries</p>
           <div class="custom-slider">
             <ngx-slider [(value)]="bootConfig.memory_low_value" [(highValue)]="bootConfig.memory_high_value"
               [options]="memory_options">
@@ -122,7 +122,7 @@
             <div class="row divider-20"></div>
 
             <div class="col-sm-12">
-              <p><b>Xen Commands:</b></p>
+              <p><b>Xen Boot Commands:</b></p>
               <input type="text" class="form-control" name="xen_command" [(ngModel)]="bootConfig.xen_command"
                 placeholder="insert full command here...">
             </div>

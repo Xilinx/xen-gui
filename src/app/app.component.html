@@ -60,6 +60,20 @@
       </li>
 
       <li
+        title="Domain Detail"
+        class="treeview"
+        routerLinkActive
+        #das_domain_det="routerLinkActive"
+        [routerLink]="['/mainapp/domain/DOM0']"
+        [class.active]="das_domain_det.isActive"
+      >
+        <a [routerLink]="['/mainapp/domain/DOM0']">
+          <i class="fa fa-user-secret"></i> <span> DOM0</span>
+        </a>
+      </li>
+
+
+      <li
         title="Domains"
         class="treeview"
         routerLinkActive

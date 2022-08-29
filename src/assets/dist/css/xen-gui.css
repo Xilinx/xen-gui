@@ -123,24 +123,26 @@ app-mainapp {
   color: white;
 }
 
-.custom-slider-dom-mem>ngx-slider span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min>div{
+.custom-slider-dom-mem>ngx-slider span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min>div {
   width: 100%;
   height: 100%;
   color: white;
   text-align: center;
   display: table;
 }
-.custom-slider-dom-mem>ngx-slider span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min>div>span{
+
+.custom-slider-dom-mem>ngx-slider span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min>div>span {
   display: table-cell;
   vertical-align: middle;
   line-height: normal;
 }
 
-.custom-slider-dom-mem> ngx-slider > span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-floor{
+.custom-slider-dom-mem>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-floor {
   left: -42px !important;
   top: -8px !important;
 }
-.custom-slider-dom-mem> ngx-slider > span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-ceil{
+
+.custom-slider-dom-mem>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-ceil {
   left: 396px !important;
   top: -8px !important;
   opacity: 1 !important;
@@ -190,24 +192,26 @@ app-mainapp {
   background: #85C440;
 }
 
-.custom-slider-dom-vcpu> ngx-slider > span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-floor{
+.custom-slider-dom-vcpu>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-floor {
   left: -42px !important;
   top: -8px !important;
 }
-.custom-slider-dom-vcpu> ngx-slider > span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-ceil{
+
+.custom-slider-dom-vcpu>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-ceil {
   left: 412px !important;
   top: -8px !important;
   opacity: 1 !important;
 }
 
-.custom-slider-dom-vcpu>ngx-slider span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min>div{
+.custom-slider-dom-vcpu>ngx-slider span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min>div {
   width: 100%;
   height: 100%;
   color: white;
   text-align: center;
   display: table;
 }
-.custom-slider-dom-vcpu>ngx-slider span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min>div>span{
+
+.custom-slider-dom-vcpu>ngx-slider span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min>div>span {
   display: table-cell;
   vertical-align: middle;
   line-height: normal;
@@ -328,3 +332,88 @@ td {
   vertical-align: inherit !important;
 }
 
+.dom-details-custom-device {
+  min-height: 700px;
+}
+
+.chip-image {
+  width: 560px;
+  height: 560px;
+  background-image: url('/assets/images/icons/big chip.png');
+  background-repeat: no-repeat;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.device-image-div {
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  border: solid 1px black;
+  border-radius: 5px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  margin-bottom: 10px;
+  vertical-align: middle;
+  position: relative;
+}
+
+.device-image-div>img {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 15%;
+}
+
+.margin-top-45 {
+  margin-top: 45px;
+}
+
+.margin-top-30 {
+  margin-top: 30px;
+}
+
+.device-btn,
+.device-btn.active,
+.device-btn:active,
+.open>.dropdown-toggle.device-btn,
+.device-btn.active.focus,
+.device-btn.active:focus,
+.device-btn.active:hover,
+.device-btn:active.focus,
+.device-btn:active:focus,
+.device-btn:active:hover,
+.open>.dropdown-toggle.device-btn.focus,
+.open>.dropdown-toggle.device-btn:focus,
+.open>.dropdown-toggle.device-btn:hover,
+.device-btn.focus, .device-btn:focus {
+  background-color: white;
+  color: #1e282c;
+  margin-bottom: 20px;
+  border: solid 1px #85C440;
+}
+
+.device-btn:hover {
+  background-color: #85C440;
+  color: white;
+}
+
+.selected-btn {
+  background-color: #84c4407e !important;
+}
+
+section.content {
+  padding-bottom:100px;
+}

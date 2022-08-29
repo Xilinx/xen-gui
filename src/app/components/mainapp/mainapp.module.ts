@@ -10,6 +10,9 @@ import { FormsModule } from '@angular/forms';
 import { DomainsComponent } from './domains/domains.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { DomainsModalComponent } from './modals/domains-modal/domains-modal.component';
+import { DomainDetailsComponent } from './domain-details/domain-details.component';
+import { DeviceTypeFilterPipe } from '../../filters/device-type-filter.pipe';
+import { DeviceNameFilterPipe } from '../../filters/device-name-filter.pipe';
 
 const route: Routes = [
   {
@@ -26,6 +29,10 @@ const route: Routes = [
         component: BootConfigurationComponent
       },
       {
+        path: 'domain/:name',
+        component: DomainDetailsComponent
+      },
+      {
         path: 'domains',
         component: DomainsComponent
       },
@@ -34,7 +41,7 @@ const route: Routes = [
 ];
 
 @NgModule({
-  declarations: [MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent, DomainsComponent, DomainsModalComponent],
+  declarations: [MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent, DomainsComponent, DomainsModalComponent, DomainDetailsComponent, DeviceTypeFilterPipe, DeviceNameFilterPipe],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule, NgbModule],
   exports: [RouterModule, WidgetsModule],
   entryComponents: [DomainsModalComponent]
