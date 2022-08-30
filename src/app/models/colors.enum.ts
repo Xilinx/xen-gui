@@ -16,4 +16,6 @@ export enum Colors {
     violet,
     brown,
     black,
+
+    END
 }

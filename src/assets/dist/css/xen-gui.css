@@ -286,7 +286,9 @@ app-mainapp {
 }
 
 .cache-coloring-label {
+  text-align: center;
   margin-right: 10px;
+  padding: 6px 11px;
 }
 
 table.border-only-row tr {

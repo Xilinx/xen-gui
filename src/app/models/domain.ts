@@ -1,4 +1,5 @@
 import { Colors } from "./colors.enum";
+import { Device } from "./device";
 
 export class Domain {
 
@@ -9,6 +10,7 @@ export class Domain {
     vcpus: number;
     colors: Colors[];
     passthrough_dtb: string;
+    devices: Device[];
 
     constructor(
         name: string = "",
@@ -17,7 +19,8 @@ export class Domain {
         memory: number = 0,
         vcpus: number = 0,
         colors: Colors[] = [],
-        passthrough_dtb: string = ""
+        passthrough_dtb: string = "",
+        devices: Device[] = []
     ){
         this.name = name;
         this.kernel = kernel;
@@ -26,6 +29,7 @@ export class Domain {
         this.vcpus = vcpus;
         this.colors = colors;
         this.passthrough_dtb = passthrough_dtb;
+        this.devices = devices;
     }
 
 }

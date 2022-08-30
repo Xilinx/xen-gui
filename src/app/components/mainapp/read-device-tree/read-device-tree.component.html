@@ -5,12 +5,23 @@
 
       <hr class="mt-2 mb-3" />
 
-      <div class="form-group">
-        <label for="file">Choose File</label>
-        <input type="file" id="file" (change)="handleFileInput($event.target.files)" accept=".dts, .DTS">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Upload DTS File</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="inputGroupFile01"
+                aria-describedby="inputGroupFileAddon01" (change)="handleFileInput($event.target.files)"
+                accept=".dts, .DTS">
+              <label class="custom-file-label" for="inputGroupFile01">{{dtsFile.name}}</label>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <pre id="json-viewer"></pre>
+      <pre id="json-viewer" style="background-color: white;"></pre>
 
       <div *ngIf="deviceTreeJson != null" class="row">
 

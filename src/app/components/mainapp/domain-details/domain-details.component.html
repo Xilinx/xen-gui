@@ -80,16 +80,28 @@
           <div class="row">
 
             <div class="col-sm-4">
-              <p>Import new device tree</p>
-              <input type="file">
 
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroupFileAddon01">Upload DTS File</span>
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="inputGroupFile01"
+                    aria-describedby="inputGroupFileAddon01"
+                    accept=".dts, .DTS">
+                  <label class="custom-file-label" for="inputGroupFile01">Import file</label>
+                </div>
+              </div>
+    
               <div class="row margin-top-45">
                 <div class="col-sm-5">
-                  <button type="button" class="btn btn-block btn-primary btn-success" (click)="selectAll()">Select all</button>
+                  <button type="button" class="btn btn-block btn-primary btn-success" (click)="selectAll()">Select
+                    all</button>
                 </div>
                 <div class="col-sm-2"></div>
-                  <div class="col-sm-5">
-                  <button type="button" class="btn btn-block btn-primary btn-warning" (click)="unselectAll()">Unselect all</button>
+                <div class="col-sm-5">
+                  <button type="button" class="btn btn-block btn-primary btn-warning" (click)="unselectAll()">Unselect
+                    all</button>
                 </div>
               </div>
               <hr class="mt-2 mb-3" />
@@ -99,9 +111,8 @@
                   <button type="button" class="btn btn-block btn-primary device-btn" data-toggle="tooltip"
                     data-placement="top"
                     title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
-                    (click)="device.selected = !device.selected"
-                    [ngClass]="device.selected ? 'selected-btn' : ''"
-                    >{{device.name.toUpperCase()}}</button>
+                    (click)="selectDevice(device)"
+                    [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">{{device.name.toUpperCase()}}</button>
                 </div>
               </div>
 
@@ -118,35 +129,40 @@
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'ethernet'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'spi'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'cci'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'gpio'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'gpu'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
@@ -158,61 +174,70 @@
                     <div class="col-sm-4"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'dma'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-4"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'nand'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-4"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'rtc'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-4"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'timer'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-4"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'watchdog'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-4"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'pcie'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-4"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'ahci'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-4"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'zynqmp_phy'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-4"
-                      *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'zynqmp_display'" [ngClass]="device.selected ? 'selected-btn' : ''">
+                      *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'zynqmp_display'"
+                      [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
                         title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}">
                         <img src="/assets/images/icons/{{device.name}}.png">
@@ -226,35 +251,40 @@
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'ams'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'can'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'usb'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'serial'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
                     <div class="col-sm-12"
                       *ngFor="let device of deviceTreeData.availableDevices | deviceNameFilter:'i2c'">
                       <div class="device-image-div" data-toggle="tooltip" data-placement="top"
-                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}" [ngClass]="device.selected ? 'selected-btn' : ''">
+                        title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
+                        [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">
                         <img src="/assets/images/icons/{{device.name}}.png">
                       </div>
                     </div>
@@ -279,8 +309,35 @@
         </div>
         <div class="box-body">
           <p>Select free colors</p>
+          <span *ngFor="let color of all_colors" class="label cache-coloring-label"
+            [ngStyle]="colorLabel(color)" (click)="AddColor(color)" style="cursor: copy;">{{color}}
+          </span>
+          <br>
+          <br>
+          <br>
+          <p>Color summary</p>
+          <span *ngFor="let color of domain.colors" class="label cache-coloring-label"
+            [ngStyle]="colorLabel(color)" (click)="RemoveColor(color)" style="cursor: alias;">{{color}}
+          </span>
+          <br>
+
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-2">
+      <button type="button" class="btn btn-block btn-success" (click)="saveDomain()" >Save</button>
+    </div>
+  </div>
+
+  <div class="toast mt-3">
+    <div class="toast-header">
+      Toast Header
+    </div>
+    <div class="toast-body">
+      File Saved!
     </div>
   </div>
 

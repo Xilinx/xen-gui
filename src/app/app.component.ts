@@ -3,6 +3,8 @@ import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { fadeAnimation } from '../app/app.animations';
+import { LocalstorageService } from './services/localstorage.service';
+import { Domain } from './models/domain';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +18,34 @@ export class AppComponent implements OnInit {
 
   constructor(
     public elSvc: ElectronService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private localStorage: LocalstorageService
   ) {
     this.translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
 
     if (elSvc.isElectron()) {
       this.ourApp = elSvc.getAppWindow();
+    }
+
+    //////////////////////////////////////////
+    // if localstorage is empty, create one!
+    //////////////////////////////////////////
+    /*
+
+    localstorage
+    |
+    |--domains
+    |     |--dom0: Domain obj ---> Domain
+    |     |-- ...
+    |     |--domN: Domain obj
+    |--dts_data ---> DeviceTree
+    |--dts_json ---> DeviceTree converted dts->yaml->json
+
+    */
+    if(localStorage.getData("domains") == null){
+      console.log("reconstructing Local Storage...");
+      localStorage.saveData("domains", JSON.stringify( {"DOM0": new Domain("DOM0")} ));
     }
   }
 
@@ -49,6 +72,7 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
+    this.localStorage.clearData();
     <any>(window).location.reload();
   }
 }

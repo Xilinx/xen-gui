@@ -7,6 +7,7 @@ import { Memory } from '../../../models/memory';
 import { UtilsService } from '../../../services/utils.service';
 import { XenDeviceTreeUtilsService } from '../../../services/xen-device-tree-utils.service';
 import { LocalstorageService } from '../../../services/localstorage.service';
+import { Domain } from '../../../models/domain';
 
 declare var $: any;
 
@@ -45,6 +46,16 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
     $('#json-viewer').jsonViewer(this.deviceTreeJson, { collapsed: true });
 
     this.ref.detectChanges();
+
+    var domains = (<Domain[]><unknown>JSON.parse(this.localStorage.getData("domains")));
+    // populate DOM0 with all devices
+    for(var i = 0; i < this.deviceTreeData.availableDevices.length; ++i){
+      this.deviceTreeData.availableDevices[i].selected = "DOM0";
+      domains["DOM0"].devices.push(this.deviceTreeData.availableDevices[i]);
+
+    }
+    // save on localstorage
+    this.localStorage.saveData("domains", JSON.stringify(domains));    
     this.localStorage.saveData("dts_data", JSON.stringify(this.deviceTreeData));
     this.localStorage.saveData("dts_json", JSON.stringify(this.deviceTreeJson));
 

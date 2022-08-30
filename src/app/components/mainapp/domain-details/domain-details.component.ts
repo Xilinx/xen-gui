@@ -3,8 +3,10 @@ import { ActivatedRoute } from '@angular/router'
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceTypeFilterPipe } from '../../../filters/device-type-filter.pipe';
 import { Colors } from '../../../models/colors.enum';
+import { Device } from '../../../models/device';
 import { DeviceTree } from '../../../models/device-tree';
 import { Domain } from '../../../models/domain';
+import { LocalstorageService } from '../../../services/localstorage.service';
 import { DomainsModalComponent } from '../modals/domains-modal/domains-modal.component';
 
 @Component({
@@ -18,43 +20,57 @@ export class DomainDetailsComponent implements OnInit {
   closeResult: string;
   tmp_color: Colors;
   deviceTreeData: DeviceTree;
+  all_colors: Colors[];
 
   constructor(
     private route: ActivatedRoute,
     private modalService: NgbModal,
-    ) { 
+    private localStorage: LocalstorageService
+  ) {
 
-    }
+  }
 
   ngOnInit() {
     var sub = this.route.params.subscribe(params => {
-     this.domain.name = params['name'];
-     });
-     console.log(this.domain.name);
-     this.deviceTreeData = JSON.parse(localStorage.getItem("dts_data"));
-     console.log(this.deviceTreeData);
-      // enable tooltips everywhere
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      });
-   }
+      var domains = (JSON.parse(localStorage.getItem("domains")));
+      this.domain = <Domain>domains[params['name']];
+    });
+    console.log(this.domain.name);
+    this.deviceTreeData = JSON.parse(localStorage.getItem("dts_data"));
+    console.log(this.deviceTreeData);
+    // enable tooltips everywhere
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    });
 
-   selectAll(){
-    for(var i = 0; i < this.deviceTreeData.availableDevices.length; ++i){
-      this.deviceTreeData.availableDevices[i].selected = true;
+    this.all_colors = <Colors[]>(Array(Colors.END).fill(0));
+    for (var i = 0; i < this.all_colors.length; ++i) {
+      // Colors[0] ---> "orange"
+      // Colors["orange"] ---> 0
+      this.all_colors[i] = Colors[Colors[i]];
     }
-   }
 
-   unselectAll(){
-    for(var i = 0; i < this.deviceTreeData.availableDevices.length; ++i){
-      this.deviceTreeData.availableDevices[i].selected = false;
+    // initialize toast
+    $('.toast').toast({autohide: true, delay: 2000});
+
+  }
+
+  selectAll() {
+    for (var i = 0; i < this.deviceTreeData.availableDevices.length; ++i) {
+      this.deviceTreeData.availableDevices[i].selected = this.domain.name;
     }
-   }
+  }
 
-   open_modal(domain_index: number = -1) {
+  unselectAll() {
+    for (var i = 0; i < this.deviceTreeData.availableDevices.length; ++i) {
+      this.deviceTreeData.availableDevices[i].selected = "";
+    }
+  }
+
+  open_modal(domain_index: number = -1) {
     return new Promise((resolve, reject) => {
       const modalRef = this.modalService.open(DomainsModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
-        modalRef.componentInstance.domain = this.domain;
+      modalRef.componentInstance.domain = this.domain;
       modalRef.result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
         resolve(result);
@@ -65,7 +81,7 @@ export class DomainDetailsComponent implements OnInit {
       // workaround for avoiding modal flickering
       setTimeout(() => {
         <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
-      },);
+      });
 
     });
 
@@ -118,7 +134,7 @@ export class DomainDetailsComponent implements OnInit {
     }
   }
 
-  async deleteDomain(i: number){
+  async deleteDomain(i: number) {
     // TODO
   }
 
@@ -133,5 +149,35 @@ export class DomainDetailsComponent implements OnInit {
     return style;
   }
 
+  AddColor(color: Colors) {
+    if (this.domain.colors.indexOf(color) == -1) {
+      this.domain.colors.push(color);
+      this.domain.colors = this.domain.colors.sort(function (a, b) { return a - b });
+    }
+  }
 
+  RemoveColor(color: Colors) {
+    this.domain.colors = this.domain.colors.filter(data => data != color);
+  }
+
+  saveDomain() {
+    var domains = (JSON.parse(localStorage.getItem("domains")));
+    domains[this.domain.name] = this.domain;
+    this.localStorage.saveData("domains", JSON.stringify(domains));
+    this.localStorage.saveData("dts_data", JSON.stringify(this.deviceTreeData));
+
+    $('.toast').toast('show');
+  }
+
+  selectDevice(device: Device){
+    if(device.selected != this.domain.name){
+      device.selected = this.domain.name;
+    } else {
+      device.selected = "";
+    }
+}
+
+  isDeviceSelected(device: Device){
+    return device.selected == this.domain.name;
+  }
 }

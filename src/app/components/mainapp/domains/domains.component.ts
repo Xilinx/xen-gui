@@ -36,7 +36,8 @@ export class DomainsComponent implements OnInit {
       memory: 1024,
       vcpus: 2,
       colors: colors,
-      passthrough_dtb: "elc22demo4/sram@7fe0000.dtb"
+      passthrough_dtb: "elc22demo4/sram@7fe0000.dtb",
+      devices: []
     });
 
   }
