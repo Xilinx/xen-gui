@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   constructor(
     public elSvc: ElectronService,
     private translate: TranslateService,
-    private localStorage: LocalstorageService
+    private localmemory: LocalstorageService
   ) {
     this.translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
@@ -43,9 +43,9 @@ export class AppComponent implements OnInit {
     |--dts_json ---> DeviceTree converted dts->yaml->json
 
     */
-    if(localStorage.getData("domains") == null){
+    if(this.localmemory.getData("domains") == null){
       console.log("reconstructing Local Storage...");
-      localStorage.saveData("domains", JSON.stringify( {"DOM0": new Domain("DOM0")} ));
+      this.localmemory.saveData("domains", {"DOM0": new Domain("DOM0")} );
     }
   }
 
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.localStorage.clearData();
+    this.localmemory.clearData();
     <any>(window).location.reload();
   }
 }

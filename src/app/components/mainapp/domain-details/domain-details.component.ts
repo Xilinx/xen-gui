@@ -25,18 +25,18 @@ export class DomainDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private modalService: NgbModal,
-    private localStorage: LocalstorageService
+    private localmemory: LocalstorageService
   ) {
 
   }
 
   ngOnInit() {
     var sub = this.route.params.subscribe(params => {
-      var domains = (JSON.parse(localStorage.getItem("domains")));
+      var domains = this.localmemory.getData("domains");
       this.domain = <Domain>domains[params['name']];
     });
     console.log(this.domain.name);
-    this.deviceTreeData = JSON.parse(localStorage.getItem("dts_data"));
+    this.deviceTreeData = this.localmemory.getData("dts_data");
     console.log(this.deviceTreeData);
     // enable tooltips everywhere
     $(function () {
@@ -163,8 +163,8 @@ export class DomainDetailsComponent implements OnInit {
   saveDomain() {
     var domains = (JSON.parse(localStorage.getItem("domains")));
     domains[this.domain.name] = this.domain;
-    this.localStorage.saveData("domains", JSON.stringify(domains));
-    this.localStorage.saveData("dts_data", JSON.stringify(this.deviceTreeData));
+    this.localmemory.saveData("domains", domains);
+    this.localmemory.saveData("dts_data", this.deviceTreeData);
 
     $('.toast').toast('show');
   }

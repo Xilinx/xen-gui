@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Options, LabelType } from '@angular-slider/ngx-slider';
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-boot-configuration',
@@ -15,11 +16,11 @@ export class BootConfigurationComponent implements OnInit {
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return '0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
+          return  this.utils.formatBytes(value);//'0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
         case LabelType.High:
-          return '0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
+          return this.utils.formatBytes(value); //'0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
         default:
-          return '0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
+          return this.utils.formatBytes(value);//'0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
       }
     }
   };
@@ -33,7 +34,9 @@ export class BootConfigurationComponent implements OnInit {
 
   }
 
-  constructor() { }
+  constructor(
+    private utils: UtilsService
+  ) { }
 
   ngOnInit() {
   }

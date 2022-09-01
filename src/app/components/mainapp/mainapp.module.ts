@@ -14,6 +14,7 @@ import { DomainDetailsComponent } from './domain-details/domain-details.componen
 import { DeviceTypeFilterPipe } from '../../filters/device-type-filter.pipe';
 import { DeviceNameFilterPipe } from '../../filters/device-name-filter.pipe';
 import { OrderColorPipe } from '../../filters/order-color.pipe';
+import { NumberToBytesPipe } from '../../filters/number-to-bytes.pipe';
 
 const route: Routes = [
   {
@@ -42,7 +43,18 @@ const route: Routes = [
 ];
 
 @NgModule({
-  declarations: [MainappComponent, BootConfigurationComponent, ReadDeviceTreeComponent, DomainsComponent, DomainsModalComponent, DomainDetailsComponent, DeviceTypeFilterPipe, DeviceNameFilterPipe, OrderColorPipe],
+  declarations: [
+    MainappComponent, 
+    BootConfigurationComponent, 
+    ReadDeviceTreeComponent, 
+    DomainsComponent, 
+    DomainsModalComponent, 
+    DomainDetailsComponent, 
+    DeviceTypeFilterPipe, 
+    DeviceNameFilterPipe, 
+    OrderColorPipe,
+    NumberToBytesPipe
+  ],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule, NgbModule],
   exports: [RouterModule, WidgetsModule],
   entryComponents: [DomainsModalComponent]

@@ -11,6 +11,9 @@
   <hr class="mt-2 mb-3" />
 
   <div class="row">
+    <div class="col-sm-12" *ngIf="domains.length == 0">
+      <h5>No domains defined. Click "Add domain" for add a new domain.</h5>
+    </div>
     <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let domain of domains; let i = index">
       <div class="box box-widget domu-box">
         <div class="box-header with-border">
@@ -44,11 +47,11 @@
               </tr>
               <tr>
                 <td>MEM</td>
-                <td>{{domain.memory}} [Megabytes]</td>
+                <td>{{domain.memory | numberToBytes}}</td>
               </tr>
               <tr>
                 <td>VCPUS</td>
-                <td>{{domain.vcpus}} [Virtual CPUs]</td>
+                <td>{{domain.vcpus}} Virtual CPUs</td>
               </tr>
               <tr>
                 <td>COLORS</td>

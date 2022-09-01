@@ -28,7 +28,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
     private ref: ChangeDetectorRef,
     private utils: UtilsService,
     private xendtsutils: XenDeviceTreeUtilsService,
-    private localStorage: LocalstorageService
+    private localmemory: LocalstorageService
     ) { }
 
   ngAfterViewInit(): void {
@@ -36,6 +36,12 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     //this.readDtsString(this.dts);
+    if((<DeviceTree><unknown>this.localmemory.getData("dts_data"))){
+      this.deviceTreeData = this.localmemory.getData("dts_data");
+      this.deviceTreeJson = this.localmemory.getData("dts_json");
+      $('#json-viewer').jsonViewer(this.deviceTreeJson, { collapsed: true });
+      this.ref.detectChanges();
+    }
   }
 
   private async readDtsString(s: string) {
@@ -47,7 +53,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
     this.ref.detectChanges();
 
-    var domains = (<Domain[]><unknown>JSON.parse(this.localStorage.getData("domains")));
+    var domains = (<Domain[]><unknown>JSON.parse(this.localmemory.getData("domains")));
     // populate DOM0 with all devices
     for(var i = 0; i < this.deviceTreeData.availableDevices.length; ++i){
       this.deviceTreeData.availableDevices[i].selected = "DOM0";
@@ -55,9 +61,9 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
     }
     // save on localstorage
-    this.localStorage.saveData("domains", JSON.stringify(domains));    
-    this.localStorage.saveData("dts_data", JSON.stringify(this.deviceTreeData));
-    this.localStorage.saveData("dts_json", JSON.stringify(this.deviceTreeJson));
+    this.localmemory.saveData("domains", domains);    
+    this.localmemory.saveData("dts_data", this.deviceTreeData);
+    this.localmemory.saveData("dts_json", this.deviceTreeJson);
 
     // https://github.com/ColorlibHQ/AdminLTE/issues/1822#issuecomment-404761829
     // workaround for activating collapse boxwidget

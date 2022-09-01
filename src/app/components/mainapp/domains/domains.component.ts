@@ -4,6 +4,7 @@ import { Domain } from '../../../models/domain';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, NgForm } from '@angular/forms';
 import { DomainsModalComponent } from '../modals/domains-modal/domains-modal.component';
+import { LocalstorageService } from '../../../services/localstorage.service';
 
 @Component({
   selector: 'app-domains',
@@ -13,16 +14,19 @@ import { DomainsModalComponent } from '../modals/domains-modal/domains-modal.com
 export class DomainsComponent implements OnInit {
 
   domains: Domain[] = [];
+  localmemory_domains: any;
   closeResult: string = '';
   tmp_color: Colors = 0;
   current_domain_index: number = -1;
 
 
   constructor(
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private localmemory: LocalstorageService
   ) { }
 
   ngOnInit() {
+    /* for debug purposes
     var colors: Colors[] = [];
     for (var i = 0; i < 4; i++) {
       colors.push(this.tmp_color);
@@ -39,7 +43,15 @@ export class DomainsComponent implements OnInit {
       passthrough_dtb: "elc22demo4/sram@7fe0000.dtb",
       devices: []
     });
-
+    */
+    this.localmemory_domains = this.localmemory.getData("domains");
+    // transform object of objects into array of object
+    for(var key in this.localmemory_domains){
+      if(key != "DOM0"){
+        this.domains.push(this.localmemory_domains[key]);
+      }
+    }
+    console.log(this.domains);
   }
 
   open_modal(domain_index: number = -1) {
@@ -93,11 +105,14 @@ export class DomainsComponent implements OnInit {
       dn.colors = colors;
 
       this.domains.push(dn);
+      this.localmemory_domains[dn.name] = dn;
+      this.localmemory.saveData("domains", this.localmemory_domains);
     }
   }
 
   async modifyDomain(i: number) {
 
+    var old_dn = this.domains[i];
     var dn: Domain = <Domain>(await this.open_modal(i));
     console.log(dn);
 
@@ -113,11 +128,19 @@ export class DomainsComponent implements OnInit {
       this.domains[this.current_domain_index] = dn;
 
       this.current_domain_index = -1;
+
+      delete this.localmemory_domains[old_dn.name];
+      this.localmemory_domains[dn.name] = dn;
+      this.localmemory.saveData("domains", this.localmemory_domains);
     }
   }
 
   async deleteDomain(i: number){
+    var domain_name = this.domains[i].name;
     this.domains.splice(i, 1);
+    delete this.localmemory_domains[domain_name];
+    this.localmemory.saveData("domains", this.localmemory_domains);
+
   }
 
   colorLabel(c: Colors): object {

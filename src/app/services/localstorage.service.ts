@@ -7,12 +7,19 @@ export class LocalstorageService {
 
   constructor() { }
 
-  public saveData(key: string, value: string) {
+  private _getData(key: string){
+    return localStorage.getItem(key)
+  }
+  private _saveData(key: string, value: string){
     localStorage.setItem(key, value);
   }
 
+  public saveData(key: string, value: object) {
+    this._saveData(key, JSON.stringify(value));
+  }
+
   public getData(key: string) {
-    return localStorage.getItem(key)
+    return JSON.parse(this._getData(key));
   }
   public removeData(key: string) {
     localStorage.removeItem(key);

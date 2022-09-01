@@ -15,7 +15,7 @@
               <input type="file" class="custom-file-input" id="inputGroupFile01"
                 aria-describedby="inputGroupFileAddon01" (change)="handleFileInput($event.target.files)"
                 accept=".dts, .DTS">
-              <label class="custom-file-label" for="inputGroupFile01">{{dtsFile.name}}</label>
+              <label class="custom-file-label" for="inputGroupFile01">{{dtsFile ? dtsFile.name : (deviceTreeJson ? "preloaded from last session" : "no dts selected") }}</label>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
             <div class="box-body">
               <ul *ngFor="let memory of deviceTreeData.memories">
                 <li>Memory start address: {{memory.startAddress}}</li>
-                <li>Memory size: {{memory.size}}</li>
+                <li>Memory size: {{memory.size | numberToBytes}}</li>
               </ul>
             </div>
           </div>
