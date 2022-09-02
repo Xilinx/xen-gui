@@ -8,6 +8,7 @@ import { LocalstorageService } from '../../../services/localstorage.service';
 import { DeviceTree } from '../../../models/device-tree';
 import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error/modal-device-tree-error.component';
 import { Router } from '@angular/router';
+import { ColorsManagementService } from '../../../services/colors-management.service';
 
 @Component({
   selector: 'app-domains',
@@ -27,8 +28,21 @@ export class DomainsComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private localmemory: LocalstorageService,
-    private route: Router
+    private route: Router,
+    private colorsManager: ColorsManagementService
   ) { }
+
+
+  private loadDomains(){
+    this.localmemory_domains = this.localmemory.getData("domains");
+    this.domains = [];
+    // transform object of objects into array of object
+    for(var key in this.localmemory_domains){
+      if(key != "DOM0"){
+        this.domains.push(this.localmemory_domains[key]);
+      }
+    }
+  }
 
   ngOnInit() {
     /* for debug purposes
@@ -49,13 +63,7 @@ export class DomainsComponent implements OnInit {
       devices: []
     });
     */
-    this.localmemory_domains = this.localmemory.getData("domains");
-    // transform object of objects into array of object
-    for(var key in this.localmemory_domains){
-      if(key != "DOM0"){
-        this.domains.push(this.localmemory_domains[key]);
-      }
-    }
+    this.loadDomains();
     console.log(this.domains);
 
     // Notify Error to user if device tree is not loaded!
@@ -119,6 +127,12 @@ export class DomainsComponent implements OnInit {
       this.domains.push(dn);
       this.localmemory_domains[dn.name] = dn;
       this.localmemory.saveData("domains", this.localmemory_domains);
+
+      // assign colors      
+      var mem = dn.memory;
+      this.colorsManager.AutoAssignColor(dn.name, mem);
+
+      this.loadDomains();
     }
   }
 
@@ -129,26 +143,28 @@ export class DomainsComponent implements OnInit {
     console.log(dn);
 
     if (dn) {
-      var colors: Colors[] = [];
-      for (var i = 0; i < 4; i++) {
-        colors.push(this.tmp_color);
-        this.tmp_color = (this.tmp_color + 1) % 16;
-      }
-
-      dn.colors = colors;
-
       this.domains[this.current_domain_index] = dn;
-
-      this.current_domain_index = -1;
 
       delete this.localmemory_domains[old_dn.name];
       this.localmemory_domains[dn.name] = dn;
       this.localmemory.saveData("domains", this.localmemory_domains);
+
+      //reassign colors
+      this.colorsManager.AutoRemoveColors(this.domains[this.current_domain_index].name);
+      this.colorsManager.AutoAssignColor(this.domains[this.current_domain_index].name, this.domains[this.current_domain_index].memory);
+
+      this.loadDomains();
+      this.current_domain_index = -1;
     }
   }
 
   async deleteDomain(i: number){
+
     var domain_name = this.domains[i].name;
+
+    // free colors
+    this.colorsManager.AutoRemoveColors(domain_name);
+
     this.domains.splice(i, 1);
     delete this.localmemory_domains[domain_name];
     this.localmemory.saveData("domains", this.localmemory_domains);

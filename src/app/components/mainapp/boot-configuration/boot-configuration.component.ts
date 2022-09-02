@@ -40,7 +40,6 @@ export class BootConfigurationComponent implements OnInit {
 
   ngOnInit() {
 
-    debugger;
     // Notify Error to user if device tree is not loaded!
     this.deviceTreeData = this.localmemory.getData("dts_data");
     if(this.deviceTreeData.availableDevices.length == 0){

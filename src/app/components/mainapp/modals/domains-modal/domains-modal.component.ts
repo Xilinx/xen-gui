@@ -89,21 +89,6 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
     if(domainForm.valid){
       this.domain = <Domain>(this.utils.patchValues(this.domain, domainForm.value));
 
-      // auto assign colors
-      var mem = this.domain.memory / 1024 / 1024;
-      var num_colors = Math.ceil(mem / 256);
-
-      // TODO: use global colors
-      // assign colors
-      for(var i = 0; i < num_colors; ++i){
-        // anomaly!!!
-        if(i > 15){
-          break;
-        }
-        this.domain.colors.push(i);
-      }
-
-      console.log(this.domain);
       this.modalService.dismissAll(this.domain);
     }
   }
