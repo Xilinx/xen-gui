@@ -14,7 +14,7 @@ export class LocalstorageService {
     localStorage.setItem(key, value);
   }
 
-  public saveData(key: string, value: object) {
+  public saveData(key: string, value: any) {
     this._saveData(key, JSON.stringify(value));
   }
 

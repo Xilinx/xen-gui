@@ -16,23 +16,11 @@
           <h2 class="box-title">Memory Boot</h2>
         </div>
         <div class="box-body">
-          <p>Boot memory allocation for boot binaries</p>
+          <p>Memory available for loading boot binaries (Xen, Dom0, ...)</p>
           <div class="custom-slider">
             <ngx-slider [(value)]="bootConfig.memory_low_value" [(highValue)]="bootConfig.memory_high_value"
               [options]="memory_options">
             </ngx-slider>
-          </div>
-          <div class="row">
-            <div class="col-sm-4">
-              Start (Bytes)
-              <input type="text" class="form-control" name="memory_low_value" [ngModel]="bootConfig.memory_low_value">
-            </div>
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">
-              End (Bytes)
-              <input type="text" class="form-control" name="memory_high_value" [(ngModel)]="bootConfig.memory_high_value">
-            </div>
           </div>
 
         </div>
@@ -59,7 +47,7 @@
               <br>
               <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command"
                 value="mmc">
-              <label for="load_command3">mmc</label>
+              <label for="load_command3">sd card</label>
               <br>
 
             </div>
@@ -69,8 +57,8 @@
               <p><b>Boot Configuration</b></p>
 
               <input type="radio" id="boot_command1" name="boot_command" [(ngModel)]="bootConfig.boot_command"
-                value="bottm">
-              <label for="boot_command1">bottm</label>
+                value="bootm">
+              <label for="boot_command1">bootm</label>
               <br>
               <input type="radio" id="boot_command2" name="boot_command" [(ngModel)]="bootConfig.boot_command"
                 value="booti">
@@ -95,7 +83,7 @@
     </div>
 
     <!-- Xen Configuration -->
-    <div class="col-md-4">
+    <div class="col-md-8">
       <div class="box box-widget">
         <div class="box-header with-border">
           <h2 class="box-title">Xen Configuration</h2>

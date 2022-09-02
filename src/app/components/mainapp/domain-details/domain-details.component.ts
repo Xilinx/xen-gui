@@ -6,7 +6,9 @@ import { Colors } from '../../../models/colors.enum';
 import { Device } from '../../../models/device';
 import { DeviceTree } from '../../../models/device-tree';
 import { Domain } from '../../../models/domain';
+import { ColorsManagementService } from '../../../services/colors-management.service';
 import { LocalstorageService } from '../../../services/localstorage.service';
+import { VcpusManagementService } from '../../../services/vcpus-management.service';
 import { DomainsModalComponent } from '../modals/domains-modal/domains-modal.component';
 import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error/modal-device-tree-error.component';
 
@@ -26,7 +28,9 @@ export class DomainDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private modalService: NgbModal,
-    private localmemory: LocalstorageService
+    private localmemory: LocalstorageService,
+    private colorsManager: ColorsManagementService,
+    private vcpusManager: VcpusManagementService
   ) {
 
   }
@@ -122,11 +126,29 @@ export class DomainDetailsComponent implements OnInit {
 
   async modifyDomain(i: number) {
 
+    var old_dn = this.domain;
+
     var dn: Domain = <Domain>(await this.open_modal(i));
     console.log(dn);
 
     if (dn) {
       this.domain = dn;
+
+      //reassign vpcus
+      this.vcpusManager.removeCpus(old_dn.name);
+
+      var domains = this.localmemory.getData("domains");
+      delete domains[old_dn.name];
+      this.localmemory.saveData("domains", domains);
+
+      //reassign vpcus
+      this.vcpusManager.assignVcpus(dn.name, dn.vcpus);
+      
+      //reassign colors
+      this.colorsManager.autoRemoveColors(this.domain.name);
+      this.colorsManager.autoAssignColor(this.domain.name, this.domain.memory);
+
+      this.reload();
     }
   }
 
@@ -157,10 +179,14 @@ export class DomainDetailsComponent implements OnInit {
   }
 
   saveDomain() {
-    var domains = (JSON.parse(localStorage.getItem("domains")));
+    var domains = this.localmemory.getData("domains");
     domains[this.domain.name] = this.domain;
     this.localmemory.saveData("domains", domains);
     this.localmemory.saveData("dts_data", this.deviceTreeData);
+
+    //reassign colors
+    this.colorsManager.autoRemoveColors(this.domain.name);
+    this.colorsManager.autoAssignColor(this.domain.name, this.domain.memory);
 
     $('.toast').toast('show');
   }

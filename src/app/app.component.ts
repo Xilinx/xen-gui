@@ -9,6 +9,7 @@ import { Route, Router } from '@angular/router';
 import { DeviceTree } from './models/device-tree';
 import { Colors } from './models/colors.enum';
 import { ColorsManagementService } from './services/colors-management.service';
+import { VcpusManagementService } from './services/vcpus-management.service';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit {
     private translate: TranslateService,
     private localmemory: LocalstorageService,
     private route: Router,
-    private colorManager: ColorsManagementService
+    private colorManager: ColorsManagementService,
+    private vcpusManager: VcpusManagementService
   ) {
     this.translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
@@ -42,6 +44,8 @@ export class AppComponent implements OnInit {
  
     localstorage
     |
+    |--colors ---> available colors
+    |--vcpus ---> available vcpus
     |--domains
     |     |--dom0: Domain obj ---> Domain
     |     |-- ...
@@ -59,13 +63,14 @@ export class AppComponent implements OnInit {
       }
       */
 
-     this.colorManager.Reset();      
+     this.colorManager.reset();
+     this.vcpusManager.reset();
 
      //TODO: autocpus
       var dom0_default_memory = 1024 * 1024 * 1024; // 1G
       var dom0 : Domain = new Domain(
         "DOM0",
-        "xen",
+        "Image-linux",
         "dom0-ramdisk.cpio",
         dom0_default_memory,
         0,
@@ -80,7 +85,11 @@ export class AppComponent implements OnInit {
       });
 
       // autoassign colors for dom0
-      this.colorManager.AutoAssignColor("DOM0", dom0_default_memory);      
+      this.colorManager.autoAssignColor("DOM0", dom0_default_memory);
+      // assign one extra color
+      this.colorManager.autoAssignColor("DOM0");
+
+      this.vcpusManager.assignVcpus("DOM0", 1);      
 
       this.localmemory.saveData("dts_data", new DeviceTree());
       this.localmemory.saveData("dts_json", {});

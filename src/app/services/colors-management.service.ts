@@ -13,7 +13,7 @@ export class ColorsManagementService {
   ) { }
 
   // free all colors
-  public Reset() {
+  public reset() {
     var colors: Colors[] = [];
     for (var i = 0; i < Colors.END; ++i) {
       colors.push(i);
@@ -26,7 +26,7 @@ export class ColorsManagementService {
     this.localmemory.saveData("domains", domains);
   }
 
-  public AutoAssignColor(domain_name: string, memory: number = -1) {
+  public autoAssignColor(domain_name: string, memory: number = -1) {
     var domains = this.localmemory.getData("domains");
     var available_colors: Colors[] = this.localmemory.getData("colors");
 
@@ -49,7 +49,7 @@ export class ColorsManagementService {
     this.localmemory.saveData("colors", available_colors);
   }
 
-  public AutoRemoveColors(domain_name: string) {
+  public autoRemoveColors(domain_name: string) {
     var domains = this.localmemory.getData("domains");
     var available_colors: Colors[] = this.localmemory.getData("colors");
 

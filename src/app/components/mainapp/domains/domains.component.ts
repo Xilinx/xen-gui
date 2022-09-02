@@ -9,6 +9,7 @@ import { DeviceTree } from '../../../models/device-tree';
 import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error/modal-device-tree-error.component';
 import { Router } from '@angular/router';
 import { ColorsManagementService } from '../../../services/colors-management.service';
+import { VcpusManagementService } from '../../../services/vcpus-management.service';
 
 @Component({
   selector: 'app-domains',
@@ -29,7 +30,8 @@ export class DomainsComponent implements OnInit {
     private modalService: NgbModal,
     private localmemory: LocalstorageService,
     private route: Router,
-    private colorsManager: ColorsManagementService
+    private colorsManager: ColorsManagementService,
+    private vcpusManager: VcpusManagementService
   ) { }
 
 
@@ -130,7 +132,8 @@ export class DomainsComponent implements OnInit {
 
       // assign colors      
       var mem = dn.memory;
-      this.colorsManager.AutoAssignColor(dn.name, mem);
+      this.colorsManager.autoAssignColor(dn.name, mem);
+      this.vcpusManager.assignVcpus(dn.name, dn.vcpus);
 
       this.loadDomains();
     }
@@ -145,13 +148,19 @@ export class DomainsComponent implements OnInit {
     if (dn) {
       this.domains[this.current_domain_index] = dn;
 
+      //reassign vpcus
+      this.vcpusManager.removeCpus(this.localmemory_domains[old_dn.name].name);
+
       delete this.localmemory_domains[old_dn.name];
       this.localmemory_domains[dn.name] = dn;
       this.localmemory.saveData("domains", this.localmemory_domains);
 
       //reassign colors
-      this.colorsManager.AutoRemoveColors(this.domains[this.current_domain_index].name);
-      this.colorsManager.AutoAssignColor(this.domains[this.current_domain_index].name, this.domains[this.current_domain_index].memory);
+      this.colorsManager.autoRemoveColors(this.domains[this.current_domain_index].name);
+      this.colorsManager.autoAssignColor(this.domains[this.current_domain_index].name, this.domains[this.current_domain_index].memory);
+
+      //reassign vpcus
+      this.vcpusManager.assignVcpus(dn.name, dn.vcpus);
 
       this.loadDomains();
       this.current_domain_index = -1;
@@ -163,7 +172,9 @@ export class DomainsComponent implements OnInit {
     var domain_name = this.domains[i].name;
 
     // free colors
-    this.colorsManager.AutoRemoveColors(domain_name);
+    this.colorsManager.autoRemoveColors(domain_name);
+    // free vcpus
+    this.vcpusManager.removeCpus(domain_name);
 
     this.domains.splice(i, 1);
     delete this.localmemory_domains[domain_name];
