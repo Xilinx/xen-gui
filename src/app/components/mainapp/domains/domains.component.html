@@ -19,6 +19,9 @@
         <div class="box-header with-border">
           <h2 class="box-title"> DOMU-{{domain.name}} </h2>
           <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool domain-actions" (click)="gotoDetails(i)">
+              Advanced
+            </button>
             <button type="button" class="btn btn-box-tool domain-actions" (click)="modifyDomain(i)">
               <i class="fa fa-pencil"></i>
             </button>
@@ -52,6 +55,10 @@
               <tr>
                 <td>VCPUS</td>
                 <td>{{domain.vcpus}} Virtual CPUs</td>
+              </tr>
+              <tr>
+                <td>START COMMAND</td>
+                <td>{{domain.start_command}}</td>
               </tr>
               <tr>
                 <td>COLORS</td>

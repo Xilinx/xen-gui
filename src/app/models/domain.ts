@@ -11,6 +11,7 @@ export class Domain {
     colors: Colors[];
     passthrough_dtb: string;
     devices: Device[];
+    start_command: string;
 
     constructor(
         name: string = "",
@@ -20,7 +21,8 @@ export class Domain {
         vcpus: number = 0,
         colors: Colors[] = [],
         passthrough_dtb: string = "",
-        devices: Device[] = []
+        devices: Device[] = [],
+        start_command: string = ""
     ){
         this.name = name;
         this.kernel = kernel;
@@ -30,6 +32,7 @@ export class Domain {
         this.colors = colors;
         this.passthrough_dtb = passthrough_dtb;
         this.devices = devices;
+        this.start_command = start_command;
     }
 
 }

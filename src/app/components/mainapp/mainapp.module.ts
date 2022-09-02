@@ -15,6 +15,7 @@ import { DeviceTypeFilterPipe } from '../../filters/device-type-filter.pipe';
 import { DeviceNameFilterPipe } from '../../filters/device-name-filter.pipe';
 import { OrderColorPipe } from '../../filters/order-color.pipe';
 import { NumberToBytesPipe } from '../../filters/number-to-bytes.pipe';
+import { ModalDeviceTreeErrorComponent } from './modals/modal-device-tree-error/modal-device-tree-error.component';
 
 const route: Routes = [
   {
@@ -53,10 +54,11 @@ const route: Routes = [
     DeviceTypeFilterPipe, 
     DeviceNameFilterPipe, 
     OrderColorPipe,
-    NumberToBytesPipe
+    NumberToBytesPipe,
+    ModalDeviceTreeErrorComponent
   ],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule, NgbModule],
   exports: [RouterModule, WidgetsModule],
-  entryComponents: [DomainsModalComponent]
+  entryComponents: [DomainsModalComponent, ModalDeviceTreeErrorComponent]
 })
 export class MainappModule {}

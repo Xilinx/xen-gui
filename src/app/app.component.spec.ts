@@ -1,6 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import { AppComponent } from "./AppComponent";
 import { TranslateModule } from '@ngx-translate/core';
 import { ElectronService } from './providers/electron.service';
 

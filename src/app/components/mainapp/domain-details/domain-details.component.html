@@ -14,6 +14,9 @@
         <div class="box-header with-border">
           <h2 class="box-title"> {{domain.name}} </h2>
           <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool domain-actions" (click)="reload()">
+              <i class="fa fa-refresh"></i>
+            </button>
             <button type="button" class="btn btn-box-tool domain-actions" (click)="modifyDomain()">
               <i class="fa fa-pencil"></i>
             </button>
@@ -49,6 +52,10 @@
                 <td>{{domain.vcpus}} Virtual CPUs</td>
               </tr>
               <tr>
+                <td>START COMMAND</td>
+                <td>{{domain.start_command}}</td>
+              </tr>
+              <tr>
                 <td>COLORS</td>
                 <td>
                   <span *ngFor="let color of domain.colors" class="label cache-coloring-label"
@@ -71,8 +78,8 @@
 
   <div class="row dom-details-custom-device">
 
-    <div class="col-sm-12" style="height:100%">
-      <div class="box box-widget domu-box" style="height:100%">
+    <div class="col-sm-12" style="height:100%;min-height: 700px;">
+      <div class="box box-widget domu-box" style="height:100%;min-height: 700px;">
         <div class="box-header with-border">
           <h2 class="box-title"> Custom PLC Devices </h2>
         </div>

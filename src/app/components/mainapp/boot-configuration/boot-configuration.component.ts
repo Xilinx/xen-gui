@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Options, LabelType } from '@angular-slider/ngx-slider';
 import { UtilsService } from '../../../services/utils.service';
+import { DeviceTree } from '../../../models/device-tree';
+import { LocalstorageService } from '../../../services/localstorage.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error/modal-device-tree-error.component';
+import { BootConfiguration } from '../../../models/boot-configuration';
 
 @Component({
   selector: 'app-boot-configuration',
@@ -9,6 +14,7 @@ import { UtilsService } from '../../../services/utils.service';
 })
 export class BootConfigurationComponent implements OnInit {
 
+  deviceTreeData: DeviceTree;
   
   memory_options: Options = {
     floor: 0,
@@ -24,25 +30,47 @@ export class BootConfigurationComponent implements OnInit {
       }
     }
   };
-  bootConfig = {
-    memory_high_value: 4000000000,
-    memory_low_value: 0,
-    load_command: "",
-    boot_command: "",
-    xen_binary: "",
-    xen_command: ""
-
-  }
+  bootConfig: BootConfiguration;
 
   constructor(
-    private utils: UtilsService
+    private utils: UtilsService,
+    private localmemory: LocalstorageService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
+
+    debugger;
+    // Notify Error to user if device tree is not loaded!
+    this.deviceTreeData = this.localmemory.getData("dts_data");
+    if(this.deviceTreeData.availableDevices.length == 0){
+      var modalRef = this.modalService.open(ModalDeviceTreeErrorComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+      // workaround for avoiding modal flickering
+      setTimeout(() => {
+        <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
+      },);
+      this.bootConfig = new BootConfiguration();
+      this.bootConfig.memory_high_value = this.memory_options.ceil;
+    }
+    else {
+      this.bootConfig = this.localmemory.getData("boot_config");
+      var memsize = 0;
+      for(var i = 0; i < this.deviceTreeData.memories.length; ++i){
+        memsize += this.deviceTreeData.memories[i].size;
+      }
+      this.memory_options.ceil = memsize;
+      if(!this.bootConfig){
+        this.bootConfig = new BootConfiguration();
+        this.bootConfig.memory_high_value = memsize;
+      }
+      
+    }
+
   }
 
   save() {
     console.log(this.bootConfig);
+    this.localmemory.saveData("boot_config", this.bootConfig);
   }
 
 }

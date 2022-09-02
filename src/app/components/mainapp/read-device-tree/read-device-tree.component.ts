@@ -48,12 +48,13 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
     var _tmp_ = this.xendtsutils.readDTSString(s);
     this.deviceTreeData = _tmp_.data;
+    this.deviceTreeData.filename = this.dtsFile.name;
     this.deviceTreeJson = _tmp_.json;
     $('#json-viewer').jsonViewer(this.deviceTreeJson, { collapsed: true });
 
     this.ref.detectChanges();
 
-    var domains = (<Domain[]><unknown>JSON.parse(this.localmemory.getData("domains")));
+    var domains = this.localmemory.getData("domains");
     // populate DOM0 with all devices
     for(var i = 0; i < this.deviceTreeData.availableDevices.length; ++i){
       this.deviceTreeData.availableDevices[i].selected = "DOM0";
@@ -77,6 +78,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
   handleFileInput(files: FileList) {
     this.dtsFile = files.item(0);
+    this.deviceTreeData.filename = this.dtsFile.name;
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       try {

@@ -9,6 +9,7 @@ export class DeviceTree {
     numberOfAvailableDevices: number
     availableDevices: Device[]
     disabledDevices: Device[]
+    filename: string
 
     constructor(
         numberOfCPUs: number = 0,
@@ -16,7 +17,8 @@ export class DeviceTree {
         memories: Memory[] = [],
         numberOfAvailableDevices: number = 0,
         availableDevices: Device[] = [],
-        disabledDevices: Device[] = []
+        disabledDevices: Device[] = [],
+        filename: string = ""
     
     ){
         this.numberOfCPUs = numberOfCPUs;
@@ -25,6 +27,7 @@ export class DeviceTree {
         this.numberOfAvailableDevices = numberOfAvailableDevices;
         this.availableDevices = availableDevices;
         this.disabledDevices = disabledDevices;
+        this.filename = filename;
     }
 
 }

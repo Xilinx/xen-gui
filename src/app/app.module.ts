@@ -16,7 +16,7 @@ import { ElectronService } from './providers/electron.service';
 
 import { WebviewDirective } from './directives/webview.directive';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from "./app.component";
 import * as bootstrap from 'bootstrap';
 import * as slimScroll from 'jquery-slimscroll';
 import { CoreModule } from './components/core/core.module';

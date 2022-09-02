@@ -8,6 +8,7 @@ import { DeviceTree } from '../../../models/device-tree';
 import { Domain } from '../../../models/domain';
 import { LocalstorageService } from '../../../services/localstorage.service';
 import { DomainsModalComponent } from '../modals/domains-modal/domains-modal.component';
+import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error/modal-device-tree-error.component';
 
 @Component({
   selector: 'app-domain-details',
@@ -53,6 +54,14 @@ export class DomainDetailsComponent implements OnInit {
     // initialize toast
     $('.toast').toast({autohide: true, delay: 2000});
 
+    // Notify Error to user if device tree is not loaded!
+    if(this.deviceTreeData.availableDevices.length == 0){
+      var modalRef = this.modalService.open(ModalDeviceTreeErrorComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+      // workaround for avoiding modal flickering
+      setTimeout(() => {
+        <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
+      },);
+    }
   }
 
   selectAll() {
@@ -98,20 +107,15 @@ export class DomainDetailsComponent implements OnInit {
     }
   }
 
+  reload() {
+    (<any>window).location.reload();
+  }
+
   async addDomain() {
 
     var dn: Domain = <Domain>(await this.open_modal());
     console.log(dn);
     if (dn) {
-
-      var colors: Colors[] = [];
-      for (var i = 0; i < 4; i++) {
-        colors.push(this.tmp_color);
-        this.tmp_color = (this.tmp_color + 1) % 16;
-      }
-
-      dn.colors = colors;
-
       this.domain = dn;
     }
   }
@@ -122,15 +126,7 @@ export class DomainDetailsComponent implements OnInit {
     console.log(dn);
 
     if (dn) {
-      var colors: Colors[] = [];
-      for (var i = 0; i < 4; i++) {
-        colors.push(this.tmp_color);
-        this.tmp_color = (this.tmp_color + 1) % 16;
-      }
-
-      dn.colors = colors;
       this.domain = dn;
-
     }
   }
 

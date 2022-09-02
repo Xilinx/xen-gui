@@ -5,6 +5,9 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, NgForm } from '@angular/forms';
 import { DomainsModalComponent } from '../modals/domains-modal/domains-modal.component';
 import { LocalstorageService } from '../../../services/localstorage.service';
+import { DeviceTree } from '../../../models/device-tree';
+import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error/modal-device-tree-error.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-domains',
@@ -18,11 +21,13 @@ export class DomainsComponent implements OnInit {
   closeResult: string = '';
   tmp_color: Colors = 0;
   current_domain_index: number = -1;
+  deviceTreeData: DeviceTree;
 
 
   constructor(
     private modalService: NgbModal,
-    private localmemory: LocalstorageService
+    private localmemory: LocalstorageService,
+    private route: Router
   ) { }
 
   ngOnInit() {
@@ -52,6 +57,17 @@ export class DomainsComponent implements OnInit {
       }
     }
     console.log(this.domains);
+
+    // Notify Error to user if device tree is not loaded!
+    this.deviceTreeData = this.localmemory.getData("dts_data");
+    if(this.deviceTreeData.availableDevices.length == 0){
+      var modalRef = this.modalService.open(ModalDeviceTreeErrorComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+      // workaround for avoiding modal flickering
+      setTimeout(() => {
+        <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
+      },);
+    }
+
   }
 
   open_modal(domain_index: number = -1) {
@@ -61,7 +77,12 @@ export class DomainsComponent implements OnInit {
         modalRef.componentInstance.domain = this.domains[domain_index];
         this.current_domain_index = domain_index;
       } else {
-        modalRef.componentInstance.domain = new Domain();
+        var _domain = new Domain();
+        // default values
+        _domain.memory = 512 * 1024 * 1024;
+        _domain.vcpus = 1;
+        _domain.start_command = "console=ttyAMA0";
+        modalRef.componentInstance.domain = _domain;
       }
       modalRef.result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
@@ -152,6 +173,10 @@ export class DomainsComponent implements OnInit {
       style["color"] = "black";
 
     return style;
+  }
+
+  gotoDetails(i: number){
+    this.route.navigate(["domain/"+this.domains[i].name]);
   }
 
 

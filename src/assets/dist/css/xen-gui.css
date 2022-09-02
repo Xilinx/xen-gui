@@ -86,7 +86,7 @@ app-mainapp {
 }
 
 .custom-slider-dom-mem .ngx-slider .ngx-slider-pointer {
-  width: 50px;
+  width: 70px;
   height: 30px;
   background-color: #85C440;
   top: -10px;
@@ -139,12 +139,13 @@ app-mainapp {
 
 .custom-slider-dom-mem>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-floor {
   left: -42px !important;
-  top: -8px !important;
+  top: -10px !important;
+  opacity: 1 !important;
 }
 
 .custom-slider-dom-mem>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-ceil {
-  left: 396px !important;
-  top: -8px !important;
+  left: 340px !important;
+  top: -10px !important;
   opacity: 1 !important;
 }
 
@@ -194,12 +195,13 @@ app-mainapp {
 
 .custom-slider-dom-vcpu>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-floor {
   left: -42px !important;
-  top: -8px !important;
+  top: -10px !important;
+  opacity: 1 !important;
 }
 
 .custom-slider-dom-vcpu>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-ceil {
-  left: 412px !important;
-  top: -8px !important;
+  left: 362px !important;
+  top: -10px !important;
   opacity: 1 !important;
 }
 
@@ -215,6 +217,7 @@ app-mainapp {
   display: table-cell;
   vertical-align: middle;
   line-height: normal;
+  font-size:12px;
 }
 
 .custom-slider-dom-vcpu>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-model-value {
