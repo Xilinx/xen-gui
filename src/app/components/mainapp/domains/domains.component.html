@@ -63,8 +63,12 @@
               <tr>
                 <td>COLORS</td>
                 <td>
-                  <span *ngFor="let color of domain.colors" class="label cache-coloring-label"
-                    [ngStyle]="colorLabel(color)">{{color}}</span>
+                  <div class="row">
+                    <div class="col-sm-3" *ngFor="let color of domain.colors" style="margin:10px">
+                      <div class="label cache-coloring-label" [ngStyle]="colorLabel(color)" style="width:100%">{{color}}
+                      </div>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>

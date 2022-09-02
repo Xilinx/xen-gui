@@ -116,15 +116,6 @@ export class DomainsComponent implements OnInit {
     var dn: Domain = <Domain>(await this.open_modal());
     console.log(dn);
     if (dn) {
-
-      var colors: Colors[] = [];
-      for (var i = 0; i < 4; i++) {
-        colors.push(this.tmp_color);
-        this.tmp_color = (this.tmp_color + 1) % 16;
-      }
-
-      dn.colors = colors;
-
       this.domains.push(dn);
       this.localmemory_domains[dn.name] = dn;
       this.localmemory.saveData("domains", this.localmemory_domains);

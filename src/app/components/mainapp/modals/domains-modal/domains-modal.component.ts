@@ -6,6 +6,7 @@ import { Options, LabelType,  } from '@angular-slider/ngx-slider';
 import { UtilsService } from '../../../../services/utils.service';
 import { DeviceTree } from '../../../../models/device-tree';
 import { LocalstorageService } from '../../../../services/localstorage.service';
+import { Colors } from '../../../../models/colors.enum';
 
 @Component({
   selector: 'app-domains-modal',
@@ -87,6 +88,21 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
   onSubmit(domainForm: NgForm){
     if(domainForm.valid){
       this.domain = <Domain>(this.utils.patchValues(this.domain, domainForm.value));
+
+      // auto assign colors
+      var mem = this.domain.memory / 1024 / 1024;
+      var num_colors = Math.ceil(mem / 256);
+
+      // TODO: use global colors
+      // assign colors
+      for(var i = 0; i < num_colors; ++i){
+        // anomaly!!!
+        if(i > 15){
+          break;
+        }
+        this.domain.colors.push(i);
+      }
+
       console.log(this.domain);
       this.modalService.dismissAll(this.domain);
     }

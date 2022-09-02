@@ -7,6 +7,7 @@ import { LocalstorageService } from './services/localstorage.service';
 import { Domain } from './models/domain';
 import { Route, Router } from '@angular/router';
 import { DeviceTree } from './models/device-tree';
+import { Colors } from './models/colors.enum';
 
 
 @Component({
@@ -49,6 +50,10 @@ export class AppComponent implements OnInit {
     */
     if (this.localmemory.getData("domains") == null) {
       console.log("reconstructing Local Storage...");
+      var _colors: Colors[] = [];
+      for(var i = 0; i < Colors.END; ++i){
+        _colors.push(i);
+      }
       this.localmemory.saveData("domains", {
         "DOM0": new Domain(
           "DOM0",
@@ -56,7 +61,7 @@ export class AppComponent implements OnInit {
           "dom0-ramdisk.cpio",
           1024 * 1024 * 1024,
           1,
-          [0],
+          _colors,
           "",
           [],
           "console=hvc0 earlycon=xen earlyprintk=xen clk_ignore_unused root=/dev/ram0"
