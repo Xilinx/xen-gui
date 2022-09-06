@@ -20,6 +20,9 @@ import { AppComponent } from "./app.component";
 import * as bootstrap from 'bootstrap';
 import * as slimScroll from 'jquery-slimscroll';
 import { CoreModule } from './components/core/core.module';
+import { ModalWarningResetSessionComponent } from './components/mainapp/modals/modal-warning-reset-session/modal-warning-reset-session.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -27,12 +30,17 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, WebviewDirective],
+  declarations: [AppComponent, WebviewDirective, ModalWarningResetSessionComponent],
+  entryComponents: [
+    ModalWarningResetSessionComponent    
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
     AppRoutingModule,
+    NgxSliderModule,
+    NgbModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
@@ -44,6 +52,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [ElectronService],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

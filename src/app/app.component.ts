@@ -10,6 +10,8 @@ import { DeviceTree } from './models/device-tree';
 import { Colors } from './models/colors.enum';
 import { ColorsManagementService } from './services/colors-management.service';
 import { VcpusManagementService } from './services/vcpus-management.service';
+import { ModalWarningResetSessionComponent } from './components/mainapp/modals/modal-warning-reset-session/modal-warning-reset-session.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const os = require ('os');
 var path = require('path'),
@@ -53,6 +55,7 @@ export class AppComponent implements OnInit {
     private translate: TranslateService,
     private localmemory: LocalstorageService,
     private route: Router,
+    private modalService: NgbModal
   ) {
     this.username = os.userInfo().username;
 
@@ -107,8 +110,29 @@ export class AppComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.localmemory.clearData();
-    <any>(window).location.reload();
+  open_modal(modalComponent: any = ModalWarningResetSessionComponent) {
+    return new Promise((resolve, reject) => {
+      const modalRef = this.modalService.open(modalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+      modalRef.result.then((result) => {
+        resolve(result);
+      }, (reason) => {
+        resolve(reason);
+      });
+      // workaround for avoiding modal flickering
+      setTimeout(() => {
+        <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
+      });
+
+    });
+
+  }
+
+
+  async logout() {
+    var confirm = await this.open_modal();
+    if(confirm){
+      this.localmemory.clearData();
+      <any>(window).location.reload();
+    }
   }
 }

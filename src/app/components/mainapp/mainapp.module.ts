@@ -59,10 +59,16 @@ const route: Routes = [
     NumberToBytesPipe,
     ModalDeviceTreeErrorComponent,
     ModalDeleteDomainComponent,
-    ModalEnableManualCacheColoringComponent
+    ModalEnableManualCacheColoringComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule, NgbModule],
   exports: [RouterModule, WidgetsModule],
-  entryComponents: [DomainsModalComponent, ModalDeviceTreeErrorComponent, ModalDeleteDomainComponent, ModalEnableManualCacheColoringComponent]
+  entryComponents: [
+    DomainsModalComponent,
+    ModalDeviceTreeErrorComponent, 
+    ModalDeleteDomainComponent, 
+    ModalEnableManualCacheColoringComponent,
+      
+  ]
 })
 export class MainappModule {}
