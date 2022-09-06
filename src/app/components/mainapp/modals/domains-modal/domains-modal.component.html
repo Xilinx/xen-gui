@@ -34,11 +34,16 @@
           </tr>
           <tr>
             <td>RAMDISK</td>
-            <td><input type="text" class="form-control" name="ramdisk" ngModel required #kernel="ngModel"
+            <td><input type="text" class="form-control" name="ramdisk" ngModel required #ramdisk="ngModel"
                 placeholder="insert ramdisk name"></td>
           </tr>
           <tr>
-            <td>MEM</td>
+            <td>
+              MEM
+              <span class="invalid-feedback" [ngStyle]="{'display':domain.memory > 0 ? 'none' : 'block' }" style="max-width:200px">
+                Please assign more than 1 Byte.
+              </span>  
+            </td>
             <td>
               <div class="row">
                 <div class="col-sm-1">
@@ -56,7 +61,13 @@
             </td>
           </tr>
           <tr>
-            <td>VCPUS</td>
+            <td>
+              <p>VCPUS
+                <span class="invalid-feedback" [ngStyle]="{'display':domain.vcpus > 0 ? 'none' : 'block' }" style="max-width:200px">
+                  Please assign at least 1 vcpu.
+                </span>  
+              </p>
+            </td>
             <td>
               <div class="row">
                 <div class="col-sm-1">

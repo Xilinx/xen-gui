@@ -21,10 +21,12 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
   @ViewChild("vcpus_slider") vcpus_slider: ElementRef;
 
   deviceTreeData: DeviceTree;
+  available_vcpus: number;
 
   memory_options: Options = {
     floor: 0,
     ceil: 4096,
+    step: 256 * 1024 * 1024,
     showSelectionBar: true,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
@@ -58,12 +60,14 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
 
   ngOnInit(){
     this.deviceTreeData = this.localmemory.getData("dts_data");
+    this.available_vcpus = this.localmemory.getData("vcpus");
+
     var memsize = 0;
     for(var i = 0; i < this.deviceTreeData.memories.length; ++i){
       memsize += this.deviceTreeData.memories[i].size;
     }
     this.memory_options.ceil = memsize;
-    this.vcpus_options.ceil = this.deviceTreeData.numberOfCPUs;
+    this.vcpus_options.ceil = this.available_vcpus;
   }
 
   ngAfterViewInit() {
@@ -86,7 +90,7 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(domainForm: NgForm){
-    if(domainForm.valid){
+    if(domainForm.valid && this.domain.vcpus > 0){
       this.domain = <Domain>(this.utils.patchValues(this.domain, domainForm.value));
 
       this.modalService.dismissAll(this.domain);

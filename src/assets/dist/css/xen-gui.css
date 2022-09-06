@@ -144,7 +144,7 @@ app-mainapp {
 }
 
 .custom-slider-dom-mem>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-ceil {
-  left: 340px !important;
+  left: 296px !important;
   top: -10px !important;
   opacity: 1 !important;
 }
@@ -200,7 +200,7 @@ app-mainapp {
 }
 
 .custom-slider-dom-vcpu>ngx-slider>span.ngx-slider-span.ngx-slider-bubble.ngx-slider-limit.ngx-slider-ceil {
-  left: 362px !important;
+  left: 310px !important;
   top: -10px !important;
   opacity: 1 !important;
 }
@@ -425,3 +425,12 @@ section.content {
 
 .xen-submenu {
 } 
+
+table {
+  table-layout: fixed;
+}
+
+th,
+td {
+  overflow: hidden;
+}

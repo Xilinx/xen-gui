@@ -93,7 +93,7 @@ export class AppComponent implements OnInit {
   }
 
   isActive(instruction: any[]): boolean {
-    console.log(this.route.url + " [" + instruction +"]"  +" "+ (this.route.url.indexOf(instruction[0]) != -1 && this.route.url.indexOf(instruction[1]) != -1));
+    //console.log(this.route.url + " [" + instruction +"]"  +" "+ (this.route.url.indexOf(instruction[0]) != -1 && this.route.url.indexOf(instruction[1]) != -1));
     // Set the second parameter to true if you want to require an exact match.
     return this.route.url.indexOf(instruction[0]) != -1 && this.route.url.indexOf(instruction[1]) != -1;
   }
