@@ -45,9 +45,11 @@ function fromDir(startPath, filter) {
   animations: [fadeAnimation]
 })
 export class AppComponent implements OnInit {
+  
   ourApp: Electron.BrowserWindow;
   appTitle: string;
   username: string;
+  domains: Domain[] = [];
 
 
   constructor(
@@ -55,7 +57,7 @@ export class AppComponent implements OnInit {
     private translate: TranslateService,
     private localmemory: LocalstorageService,
     private route: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
   ) {
     this.username = os.userInfo().username;
 
@@ -85,12 +87,36 @@ export class AppComponent implements OnInit {
     if (this.localmemory.getData("domains") == null) {
       console.log("need to reconstruct Local Storage");
       this.route.navigate(["read-device-tree"]);
+    } else {
+      this.loadDomains();      
     }
   }
+
+  isActive(instruction: any[]): boolean {
+    console.log(this.route.url + " [" + instruction +"]"  +" "+ (this.route.url.indexOf(instruction[0]) != -1 && this.route.url.indexOf(instruction[1]) != -1));
+    // Set the second parameter to true if you want to require an exact match.
+    return this.route.url.indexOf(instruction[0]) != -1 && this.route.url.indexOf(instruction[1]) != -1;
+  }
+
+  private loadDomains() {
+    var lc_domains = this.localmemory.getData("domains");
+    this.domains = [];
+    // transform object of objects into array of object
+    for (var key in lc_domains) {
+      if (key != "DOM0" && key != "Xen") {
+        this.domains.push(lc_domains[key]);
+      }
+    }
+  }
+
 
   ngOnInit(): void {
     this.appTitle = 'Configurator';
     this.setupResizer();
+  }
+
+  updateDomainsMenu(domains: Domain[]){
+    this.domains = domains;
   }
 
   setupResizer() {

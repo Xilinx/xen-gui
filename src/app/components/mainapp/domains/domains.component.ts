@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ColorsManagementService } from '../../../services/colors-management.service';
 import { VcpusManagementService } from '../../../services/vcpus-management.service';
 import { ModalDeleteDomainComponent } from '../modals/modal-delete-domain/modal-delete-domain.component';
+import { AppComponent } from '../../../app.component';
 
 @Component({
   selector: 'app-domains',
@@ -32,7 +33,8 @@ export class DomainsComponent implements OnInit {
     private localmemory: LocalstorageService,
     private route: Router,
     private colorsManager: ColorsManagementService,
-    private vcpusManager: VcpusManagementService
+    private vcpusManager: VcpusManagementService,
+    private appComponent: AppComponent
   ) { }
 
 
@@ -137,6 +139,8 @@ export class DomainsComponent implements OnInit {
       this.vcpusManager.assignVcpus(dn.name, dn.vcpus);
 
       this.loadDomains();
+
+      this.appComponent.updateDomainsMenu(this.domains);
     }
   }
 
@@ -165,6 +169,9 @@ export class DomainsComponent implements OnInit {
 
       this.loadDomains();
       this.current_domain_index = -1;
+
+      this.appComponent.updateDomainsMenu(this.domains);
+      
     }
   }
 
@@ -183,6 +190,9 @@ export class DomainsComponent implements OnInit {
       this.domains.splice(i, 1);
       delete this.localmemory_domains[domain_name];
       this.localmemory.saveData("domains", this.localmemory_domains);
+
+      this.appComponent.updateDomainsMenu(this.domains);
+
     }
   }
 

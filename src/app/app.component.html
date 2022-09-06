@@ -1,19 +1,11 @@
-<app-titlebar
-  class="main-header"
-  [title]="appTitle"
-  [appwindow]="ourApp"
->
+<app-titlebar class="main-header" [title]="appTitle" [appwindow]="ourApp">
 </app-titlebar>
 
 <app-sidebar>
   <section class="sidebar">
     <div class="user-panel">
       <div class="pull-left image">
-        <img
-          src="./assets/images/dp.png"
-          class="img-circle"
-          alt="Precious Keyz Image"
-        />
+        <img src="./assets/images/dp.png" class="img-circle" alt="Precious Keyz Image" />
       </div>
       <div class="pull-left info">
         <p>{{username}}</p>
@@ -22,73 +14,55 @@
 
     <form action="#" method="get" class="sidebar-form">
       <div class="input-group">
-      <input type="text" name="q" class="form-control" placeholder="Search...">
-      <span class="input-group-btn">
-      <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-      <i class="fa fa-search"></i>
-      </button>
-      </span>
+        <input type="text" name="q" class="form-control" placeholder="Search...">
+        <span class="input-group-btn">
+          <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+            <i class="fa fa-search"></i>
+          </button>
+        </span>
       </div>
-      </form>
+    </form>
 
     <ul class="sidebar-menu" data-widget="tree">
 
-      <li
-        title="Read dts"
-        class="treeview"
-        routerLinkActive
-        #das_read_dts="routerLinkActive"
-        [routerLink]="['/mainapp/read-device-tree']"
-        [class.active]="das_read_dts.isActive"
-      >
+      <li title="Read dts" [ngClass]="isActive(['read', 'device']) ? 'active' : '' "
+        [routerLink]="['/mainapp/read-device-tree']">
         <a [routerLink]="['/mainapp/read-device-tree']">
           <i class="fa fa-folder"></i> <span> Read dts</span>
         </a>
       </li>
 
-      <li
-        title="Boot Configuration"
-        class="treeview"
-        routerLinkActive
-        #das_boot_configuration="routerLinkActive"
-        [routerLink]="['/mainapp/boot-configuration']"
-        [class.active]="das_boot_configuration.isActive"
-      >
+      <li title="Boot Configuration" [ngClass]="isActive(['boot', 'configuration']) ? 'active' : '' "
+        [routerLink]="['/mainapp/boot-configuration']" >
         <a [routerLink]="['/mainapp/boot-configuration']">
           <i class="fa fa-dashboard"></i> <span> Boot configuration</span>
         </a>
       </li>
 
-      <li
-        title="Domain Detail"
-        class="treeview"
-        routerLinkActive
-        #das_domain_det="routerLinkActive"
-        [routerLink]="['/mainapp/domain/DOM0']"
-        [class.active]="das_domain_det.isActive"
-      >
+      <li title="Domain Detail" [ngClass]="isActive(['domain', 'DOM0']) ? 'active' : '' "
+        [routerLink]="['/mainapp/domain/DOM0']">
         <a [routerLink]="['/mainapp/domain/DOM0']">
           <i class="fa fa-user-secret"></i> <span> DOM0</span>
         </a>
       </li>
 
 
-      <li
-        title="Domains"
-        class="treeview"
-        routerLinkActive
-        #das_domains="routerLinkActive"
-        [routerLink]="['/mainapp/domains']"
-        [class.active]="das_domains.isActive"
-      >
+      <li title="Domains" [ngClass]="isActive(['domains', 'domains']) ? 'active' : '' "
+        [routerLink]="['/mainapp/domains']">
         <a [routerLink]="['/mainapp/domains']">
           <i class="fa fa-building"></i> <span> Domains</span>
         </a>
       </li>
 
+          <li *ngFor="let domain of domains" [routerLink]="['/mainapp/domain/'+domain.name]" class="xen-submenu" [ngClass]="isActive(['domain', domain.name]) ? 'active' : '' ">
+            <a [routerLink]="['/mainapp/domain/'+domain.name]">
+              <i class="fa fa-user"></i> {{domain.name}}
+            </a>
+          </li>
 
 
-      <li title="Sign Out" class="treeview" (click)="logout()">
+
+      <li title="Sign Out" (click)="logout()">
         <a>
           <i class="fa fa-sign-out" aria-hidden="true"></i>
           <span> Start new session</span>
