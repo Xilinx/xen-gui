@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router'
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DeviceTypeFilterPipe } from '../../../filters/device-type-filter.pipe';
 import { Colors } from '../../../models/colors.enum';
 import { Device } from '../../../models/device';
 import { DeviceTree } from '../../../models/device-tree';
@@ -10,7 +9,9 @@ import { ColorsManagementService } from '../../../services/colors-management.ser
 import { LocalstorageService } from '../../../services/localstorage.service';
 import { VcpusManagementService } from '../../../services/vcpus-management.service';
 import { DomainsModalComponent } from '../modals/domains-modal/domains-modal.component';
+import { ModalDeleteDomainComponent } from '../modals/modal-delete-domain/modal-delete-domain.component';
 import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error/modal-device-tree-error.component';
+import { ModalEnableManualCacheColoringComponent } from '../modals/modal-enable-manual-cache-coloring/modal-enable-manual-cache-coloring.component';
 
 @Component({
   selector: 'app-domain-details',
@@ -24,15 +25,24 @@ export class DomainDetailsComponent implements OnInit {
   tmp_color: Colors;
   deviceTreeData: DeviceTree;
   all_colors: Colors[];
+  manual_cache_coloring_enabled: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private modalService: NgbModal,
     private localmemory: LocalstorageService,
     private colorsManager: ColorsManagementService,
-    private vcpusManager: VcpusManagementService
+    private vcpusManager: VcpusManagementService,
+    private ref: ChangeDetectorRef,
   ) {
 
+  }
+
+  reloadDomain(){
+    var name = this.domain.name;
+    var domains = this.localmemory.getData("domains");
+    this.domain = <Domain>domains[name];
   }
 
   ngOnInit() {
@@ -80,9 +90,9 @@ export class DomainDetailsComponent implements OnInit {
     }
   }
 
-  open_modal(domain_index: number = -1) {
+  open_modal(modalComponent: any = DomainsModalComponent) {
     return new Promise((resolve, reject) => {
-      const modalRef = this.modalService.open(DomainsModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+      const modalRef = this.modalService.open(modalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       modalRef.componentInstance.domain = this.domain;
       modalRef.result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
@@ -128,7 +138,7 @@ export class DomainDetailsComponent implements OnInit {
 
     var old_dn = this.domain;
 
-    var dn: Domain = <Domain>(await this.open_modal(i));
+    var dn: Domain = <Domain>(await this.open_modal());
     console.log(dn);
 
     if (dn) {
@@ -148,15 +158,38 @@ export class DomainDetailsComponent implements OnInit {
       this.colorsManager.autoRemoveColors(this.domain.name);
       this.colorsManager.autoAssignColor(this.domain.name, this.domain.memory);
 
-      this.reload();
+      // autosave
+      this.saveDomain();
+
+      //this.reload();
+      this.reloadDomain();
     }
   }
 
   async deleteDomain(i: number) {
-    // TODO
+    var confirm = <Domain>(await this.open_modal(ModalDeleteDomainComponent));
+
+    if (confirm) {
+      var domain_name = this.domain.name;
+
+      // free colors
+      this.colorsManager.autoRemoveColors(domain_name);
+      // free vcpus
+      this.vcpusManager.removeCpus(domain_name);
+
+      var domains = this.localmemory.getData("domains");
+      delete domains[domain_name];
+
+      this.localmemory.saveData("domains", domains);
+
+      // return to domains
+      this.router.navigate(["domains"]);
+
+    }
+
   }
 
-  colorLabel(c: Colors): object {
+  colorLabel(c: Colors, check_if_free: boolean = false, cursor: string = ""): object {
     var style: any;
     style = { "background-color": "" + Colors[c] };
     if (c > Colors.lightblue)
@@ -164,18 +197,48 @@ export class DomainDetailsComponent implements OnInit {
     else
       style["color"] = "black";
 
+      if(check_if_free){
+        if(this.colorsManager.getFreeColors().indexOf(c) == -1){
+          style["opacity"] = 0.5;
+        }
+      }
+      if(cursor){
+        if(check_if_free){
+          if(this.colorsManager.getFreeColors().indexOf(c) == -1){
+            style["cursor"] = "not-allowed";
+          } else {
+            style["cursor"] = cursor;
+          }
+        } else {
+          style["cursor"] = cursor;
+        }
+      }
+
     return style;
   }
 
   AddColor(color: Colors) {
     if (this.domain.colors.indexOf(color) == -1) {
+      /*
       this.domain.colors.push(color);
       this.domain.colors = this.domain.colors.sort(function (a, b) { return a - b });
+      */
+     this.colorsManager.autoAssignColor(this.domain.name, -1, color);
     }
+
+    // autosave
+    //this.saveDomain();
+
+    this.reloadDomain();
   }
 
   RemoveColor(color: Colors) {
-    this.domain.colors = this.domain.colors.filter(data => data != color);
+    //this.domain.colors = this.domain.colors.filter(data => data != color);
+    this.colorsManager.autoRemoveColors(this.domain.name, color);
+    // autosave
+    //this.saveDomain();
+
+    this.reloadDomain();
   }
 
   saveDomain() {
@@ -197,9 +260,24 @@ export class DomainDetailsComponent implements OnInit {
     } else {
       device.selected = "";
     }
+
+    // autosave
+    this.saveDomain();
+    
 }
 
   isDeviceSelected(device: Device){
     return device.selected == this.domain.name;
+  }
+
+  returnToDomains(){
+    this.router.navigate(["domains"]);
+  }
+
+  async enable_manual_cache_coloring(isChecked){
+    if(isChecked){
+      this.manual_cache_coloring_enabled = false;
+      this.manual_cache_coloring_enabled = <boolean>await this.open_modal(ModalEnableManualCacheColoringComponent);
+    }
   }
 }

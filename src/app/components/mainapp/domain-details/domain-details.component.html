@@ -3,6 +3,10 @@
     <div class="col-sm-6">
       <h1>Domain Details</h1>
     </div>
+    <div class="col-sm-6">
+      <button class="btn btn-xen pull-right" style="margin-top:10px" (click)="returnToDomains()">
+        << Return to Domains</button>
+    </div>
   </div>
 
   <hr class="mt-2 mb-3" />
@@ -87,7 +91,7 @@
           <div class="row">
 
             <div class="col-sm-4">
-   
+
               <div class="row margin-top-45">
                 <div class="col-sm-5">
                   <button type="button" class="btn btn-block btn-primary btn-success" (click)="selectAll()">Select
@@ -300,19 +304,33 @@
     <div class="col-sm-12">
       <div class="box box-widget domu-box">
         <div class="box-header with-border">
-          <h2 class="box-title"> Cache coloring </h2>
+          <div class="row">
+            <div class="col-sm-6">
+              <h2 class="box-title"> Manual Cache coloring </h2>
+            </div>
+            <div class="col-sm-6">
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="manual_cache_coloring_enabled" id="defaultCheck1" (change)="enable_manual_cache_coloring(manual_cache_coloring_enabled)">
+                <label class="form-check-label" for="defaultCheck1">
+                  Enable feature
+                </label>
+              </div>
+
+            </div>
+          </div>
         </div>
-        <div class="box-body">
+        <div class="box-body" *ngIf="manual_cache_coloring_enabled">
           <p>Select free colors</p>
-          <span *ngFor="let color of all_colors" class="label cache-coloring-label"
-            [ngStyle]="colorLabel(color)" (click)="AddColor(color)" style="cursor: copy;">{{color}}
+          <span *ngFor="let color of all_colors" class="label cache-coloring-label" [ngStyle]="colorLabel(color, true, 'copy')"
+            (click)="AddColor(color)">{{color}}
           </span>
           <br>
           <br>
           <br>
           <p>Color summary</p>
-          <span *ngFor="let color of domain.colors" class="label cache-coloring-label"
-            [ngStyle]="colorLabel(color)" (click)="RemoveColor(color)" style="cursor: alias;">{{color}}
+          <span *ngFor="let color of domain.colors" class="label cache-coloring-label" [ngStyle]="colorLabel(color, false, 'alias')"
+            (click)="RemoveColor(color)">{{color}}
           </span>
           <br>
 
@@ -321,6 +339,7 @@
     </div>
   </div>
 
+  <!-- autosave 
   <div class="row">
     <div class="col-sm-2">
       <button type="button" class="btn btn-block btn-success" (click)="saveDomain()" >Save</button>
@@ -335,6 +354,7 @@
       File Saved!
     </div>
   </div>
+-->
 
 
 </section>

@@ -35,7 +35,7 @@ export class BootConfigurationComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private localmemory: LocalstorageService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {

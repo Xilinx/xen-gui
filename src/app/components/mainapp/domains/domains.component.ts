@@ -10,6 +10,7 @@ import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error
 import { Router } from '@angular/router';
 import { ColorsManagementService } from '../../../services/colors-management.service';
 import { VcpusManagementService } from '../../../services/vcpus-management.service';
+import { ModalDeleteDomainComponent } from '../modals/modal-delete-domain/modal-delete-domain.component';
 
 @Component({
   selector: 'app-domains',
@@ -35,12 +36,12 @@ export class DomainsComponent implements OnInit {
   ) { }
 
 
-  private loadDomains(){
+  private loadDomains() {
     this.localmemory_domains = this.localmemory.getData("domains");
     this.domains = [];
     // transform object of objects into array of object
-    for(var key in this.localmemory_domains){
-      if(key != "DOM0"){
+    for (var key in this.localmemory_domains) {
+      if (key != "DOM0" && key != "Xen") {
         this.domains.push(this.localmemory_domains[key]);
       }
     }
@@ -70,7 +71,7 @@ export class DomainsComponent implements OnInit {
 
     // Notify Error to user if device tree is not loaded!
     this.deviceTreeData = this.localmemory.getData("dts_data");
-    if(this.deviceTreeData.availableDevices.length == 0){
+    if (this.deviceTreeData.availableDevices.length == 0) {
       var modalRef = this.modalService.open(ModalDeviceTreeErrorComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       // workaround for avoiding modal flickering
       setTimeout(() => {
@@ -80,9 +81,9 @@ export class DomainsComponent implements OnInit {
 
   }
 
-  open_modal(domain_index: number = -1) {
+  open_modal(domain_index: number = -1, modalComponent: any = DomainsModalComponent) {
     return new Promise((resolve, reject) => {
-      const modalRef = this.modalService.open(DomainsModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+      const modalRef = this.modalService.open(modalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       if (domain_index > -1) {
         modalRef.componentInstance.domain = this.domains[domain_index];
         this.current_domain_index = domain_index;
@@ -167,19 +168,22 @@ export class DomainsComponent implements OnInit {
     }
   }
 
-  async deleteDomain(i: number){
+  async deleteDomain(i: number) {
 
-    var domain_name = this.domains[i].name;
+    var confirm = <Domain>(await this.open_modal(i, ModalDeleteDomainComponent));
 
-    // free colors
-    this.colorsManager.autoRemoveColors(domain_name);
-    // free vcpus
-    this.vcpusManager.removeCpus(domain_name);
+    if (confirm) {
+      var domain_name = this.domains[i].name;
 
-    this.domains.splice(i, 1);
-    delete this.localmemory_domains[domain_name];
-    this.localmemory.saveData("domains", this.localmemory_domains);
+      // free colors
+      this.colorsManager.autoRemoveColors(domain_name);
+      // free vcpus
+      this.vcpusManager.removeCpus(domain_name);
 
+      this.domains.splice(i, 1);
+      delete this.localmemory_domains[domain_name];
+      this.localmemory.saveData("domains", this.localmemory_domains);
+    }
   }
 
   colorLabel(c: Colors): object {
@@ -193,8 +197,8 @@ export class DomainsComponent implements OnInit {
     return style;
   }
 
-  gotoDetails(i: number){
-    this.route.navigate(["domain/"+this.domains[i].name]);
+  gotoDetails(i: number) {
+    this.route.navigate(["domain/" + this.domains[i].name]);
   }
 
 

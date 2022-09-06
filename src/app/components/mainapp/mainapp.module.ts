@@ -16,6 +16,8 @@ import { DeviceNameFilterPipe } from '../../filters/device-name-filter.pipe';
 import { OrderColorPipe } from '../../filters/order-color.pipe';
 import { NumberToBytesPipe } from '../../filters/number-to-bytes.pipe';
 import { ModalDeviceTreeErrorComponent } from './modals/modal-device-tree-error/modal-device-tree-error.component';
+import { ModalDeleteDomainComponent } from './modals/modal-delete-domain/modal-delete-domain.component';
+import { ModalEnableManualCacheColoringComponent } from './modals/modal-enable-manual-cache-coloring/modal-enable-manual-cache-coloring.component';
 
 const route: Routes = [
   {
@@ -55,10 +57,12 @@ const route: Routes = [
     DeviceNameFilterPipe, 
     OrderColorPipe,
     NumberToBytesPipe,
-    ModalDeviceTreeErrorComponent
+    ModalDeviceTreeErrorComponent,
+    ModalDeleteDomainComponent,
+    ModalEnableManualCacheColoringComponent
   ],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule, NgbModule],
   exports: [RouterModule, WidgetsModule],
-  entryComponents: [DomainsModalComponent, ModalDeviceTreeErrorComponent]
+  entryComponents: [DomainsModalComponent, ModalDeviceTreeErrorComponent, ModalDeleteDomainComponent, ModalEnableManualCacheColoringComponent]
 })
 export class MainappModule {}

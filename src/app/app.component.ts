@@ -11,6 +11,30 @@ import { Colors } from './models/colors.enum';
 import { ColorsManagementService } from './services/colors-management.service';
 import { VcpusManagementService } from './services/vcpus-management.service';
 
+const os = require ('os');
+var path = require('path'),
+fs = require('fs');
+
+function fromDir(startPath, filter) {
+
+  //console.log('Starting from dir '+startPath+'/');
+
+  if (!fs.existsSync(startPath)) {
+      console.log("no dir ", startPath);
+      return;
+  }
+
+  var files = fs.readdirSync(startPath);
+  for (var i = 0; i < files.length; i++) {
+      var filename = path.join(startPath, files[i]);
+      var stat = fs.lstatSync(filename);
+      if (stat.isDirectory()) {
+          fromDir(filename, filter); //recurse
+      } else if (filename.endsWith(filter)) {
+          console.log('-- found: ', filename);
+      };
+  };
+};
 
 @Component({
   selector: 'app-root',
@@ -21,15 +45,17 @@ import { VcpusManagementService } from './services/vcpus-management.service';
 export class AppComponent implements OnInit {
   ourApp: Electron.BrowserWindow;
   appTitle: string;
+  username: string;
+
 
   constructor(
     public elSvc: ElectronService,
     private translate: TranslateService,
     private localmemory: LocalstorageService,
     private route: Router,
-    private colorManager: ColorsManagementService,
-    private vcpusManager: VcpusManagementService
   ) {
+    this.username = os.userInfo().username;
+
     this.translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
 
@@ -37,9 +63,9 @@ export class AppComponent implements OnInit {
       this.ourApp = elSvc.getAppWindow();
     }
 
-    //////////////////////////////////////////
-    // if localstorage is empty, create one!
-    //////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    // if localstorage is empty, create one in read device tree!
+    //////////////////////////////////////////////////////////////
     /*
  
     localstorage
@@ -52,47 +78,9 @@ export class AppComponent implements OnInit {
     |     |--domN: Domain obj
     |--dts_data ---> DeviceTree
     |--dts_json ---> DeviceTree converted dts->yaml->json
- 
     */
     if (this.localmemory.getData("domains") == null) {
-      console.log("reconstructing Local Storage...");
-      /*
-      var _colors: Colors[] = [];
-      for(var i = 0; i < Colors.END; ++i){
-        _colors.push(i);
-      }
-      */
-
-     this.colorManager.reset();
-     this.vcpusManager.reset();
-
-     //TODO: autocpus
-      var dom0_default_memory = 1024 * 1024 * 1024; // 1G
-      var dom0 : Domain = new Domain(
-        "DOM0",
-        "Image-linux",
-        "dom0-ramdisk.cpio",
-        dom0_default_memory,
-        0,
-        [],
-        "",
-        [],
-        "console=hvc0 earlycon=xen earlyprintk=xen clk_ignore_unused root=/dev/ram0"
-      );
-
-      this.localmemory.saveData("domains", {
-        "DOM0": dom0
-      });
-
-      // autoassign colors for dom0
-      this.colorManager.autoAssignColor("DOM0", dom0_default_memory);
-      // assign one extra color
-      this.colorManager.autoAssignColor("DOM0");
-
-      this.vcpusManager.assignVcpus("DOM0", 1);      
-
-      this.localmemory.saveData("dts_data", new DeviceTree());
-      this.localmemory.saveData("dts_json", {});
+      console.log("need to reconstruct Local Storage");
       this.route.navigate(["read-device-tree"]);
     }
   }

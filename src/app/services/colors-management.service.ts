@@ -26,22 +26,42 @@ export class ColorsManagementService {
     this.localmemory.saveData("domains", domains);
   }
 
-  public autoAssignColor(domain_name: string, memory: number = -1) {
+  // get memory size for every color (according to Xen, there are at least 16 colors)
+  public getColorMemorySize() {
+    var deviceTreeData = this.localmemory.getData("dts_data");
+    var memsize = 0;
+    for (var i = 0; i < deviceTreeData.memories.length; ++i) {
+      memsize += deviceTreeData.memories[i].size;
+    }
+
+    return Math.floor(memsize / 1024 / 1024 / 16) + 1;
+  }
+
+  public autoAssignColor(domain_name: string, memory: number = -1, color: Colors = Colors.END) {
     var domains = this.localmemory.getData("domains");
     var available_colors: Colors[] = this.localmemory.getData("colors");
 
-    if (memory == -1) {
-      domains[domain_name].colors.push(available_colors.shift());
-    }
-    else {
-      var mem = memory / 1024 / 1024;
-      var num_colors = Math.ceil(mem / 256);
-      for (var i = 0; i < num_colors && available_colors.length > 0; ++i) {
-        // anomaly!!!
-        if (i > 15) {
-          break;
-        }
+    if (color == Colors.END) {
+
+      if (memory == -1) {
         domains[domain_name].colors.push(available_colors.shift());
+      }
+      else {
+        var mem = memory / 1024 / 1024;
+        var num_colors = Math.ceil(mem / this.getColorMemorySize());
+        for (var i = 0; i < num_colors && available_colors.length > 0; ++i) {
+          // anomaly!!!
+          if (i > 15) {
+            break;
+          }
+          domains[domain_name].colors.push(available_colors.shift());
+        }
+      }
+    } else {
+      // if the color is available
+      if (available_colors.indexOf(color) != -1) {
+        var index = available_colors.indexOf(color);
+        domains[domain_name].colors.push(available_colors.splice(index, 1)[0]);
       }
     }
 
@@ -49,17 +69,31 @@ export class ColorsManagementService {
     this.localmemory.saveData("colors", available_colors);
   }
 
-  public autoRemoveColors(domain_name: string) {
+  public autoRemoveColors(domain_name: string, color: Colors = Colors.END) {
     var domains = this.localmemory.getData("domains");
     var available_colors: Colors[] = this.localmemory.getData("colors");
 
-    while(domains[domain_name].colors.length > 0) {
-      available_colors.push(domains[domain_name].colors.shift())
+    if (color == Colors.END) {
+      while (domains[domain_name].colors.length > 0) {
+        available_colors.push(domains[domain_name].colors.shift())
+      }
+      available_colors.sort(function (a, b) { return a - b; });
     }
-    available_colors.sort(function(a,b) {return a - b;});
+    else {
+      // if the color is available
+      if (domains[domain_name].colors.indexOf(color) != -1) {
+        var index = domains[domain_name].colors.indexOf(color);
+        available_colors.push(domains[domain_name].colors.splice(index, 1)[0]);
+      }
+
+    }
 
     this.localmemory.saveData("colors", available_colors);
     this.localmemory.saveData("domains", domains);
+  }
+
+  public getFreeColors() {
+    return this.localmemory.getData("colors");
   }
 
 }
