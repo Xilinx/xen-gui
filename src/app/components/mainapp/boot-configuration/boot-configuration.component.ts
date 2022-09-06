@@ -33,7 +33,7 @@ export class BootConfigurationComponent implements OnInit {
   bootConfig: BootConfiguration;
 
   constructor(
-    private utils: UtilsService,
+    public utils: UtilsService,
     private localmemory: LocalstorageService,
     private modalService: NgbModal,
   ) { }
