@@ -11,6 +11,7 @@ import { Domain } from '../../../models/domain';
 import { ColorsManagementService } from '../../../services/colors-management.service';
 import { VcpusManagementService } from '../../../services/vcpus-management.service';
 import { MemoryManagementService } from '../../../services/memory-management.service';
+import { BootConfiguration } from '../../../models/boot-configuration';
 
 declare var $: any;
 
@@ -97,8 +98,13 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
       domains["DOM0"].devices.push(this.deviceTreeData.availableDevices[i]);
     }
 
+    // save boot default config
+    var bootConfig = new BootConfiguration();
+    bootConfig.memory_high_value = this.memoryManager.getTotalMemory();
+
     // save on localstorage
     this.localmemory.saveData("domains", domains);    
+    this.localmemory.saveData("boot_config", bootConfig);
     this.localmemory.saveData("dts_data", this.deviceTreeData);
     this.localmemory.saveData("dts_json", this.deviceTreeJson);
   }

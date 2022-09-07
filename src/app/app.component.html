@@ -67,6 +67,22 @@
             </a>
           </li>
 
+          <li class="header">Xen Export</li>
+
+          <li title="Open project" (click)="saveImageBuilder()">
+            <a>
+              <i class="fa fa-file-code-o" aria-hidden="true"></i>
+              <span> Export ImageBuilder file</span>
+            </a>
+          </li>
+
+          <li title="Open project" (click)="saveProjectAs()">
+            <a>
+              <i class="fa fa-file-code-o" aria-hidden="true"></i>
+              <span> Export YAML file</span>
+            </a>
+          </li>
+
 
           <li class="header">Project Settings</li>
 
@@ -77,13 +93,13 @@
             </a>
           </li>
 
-          <li title="Save project" (click)="saveProject()" [ngStyle]="{'font-weight' : projectFileManager.hasToSave() ? 'bold' : 'initial'}">
+          <li title="Save project" (click)="saveProject()" [ngClass]="projectFileManager.hasToSave() ? 'save-remember-animation' : ''">
             <a>
               <i class="fa fa-save" aria-hidden="true"></i>
               <span> Save project</span>
             </a>
           </li>
-          <li title="Save project as" (click)="saveProjectAs()" [ngStyle]="{'font-weight' : projectFileManager.hasToSave() ? 'bold' : 'initial'}">
+          <li title="Save project as" (click)="saveProjectAs()" [ngClass]="projectFileManager.hasToSave() ? 'save-remember-animation' : ''">
             <a>
               <i class="fa fa-save" aria-hidden="true"></i>
               <span> Save project as...</span>

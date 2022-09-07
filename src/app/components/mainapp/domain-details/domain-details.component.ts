@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from '../../../app.component';
 import { Colors } from '../../../models/colors.enum';
 import { Device } from '../../../models/device';
 import { DeviceTree } from '../../../models/device-tree';
@@ -36,47 +37,51 @@ export class DomainDetailsComponent implements OnInit {
     private colorsManager: ColorsManagementService,
     private vcpusManager: VcpusManagementService,
     private ref: ChangeDetectorRef,
-    private memoryManager: MemoryManagementService
+    private memoryManager: MemoryManagementService,
+    private appComponent: AppComponent
   ) {
 
   }
 
-  reloadDomain(){
+  reloadDomain() {
     var name = this.domain.name;
     var domains = this.localmemory.getData("domains");
     this.domain = <Domain>domains[name];
   }
 
   ngOnInit() {
-    var sub = this.route.params.subscribe(params => {
-      var domains = this.localmemory.getData("domains");
-      this.domain = <Domain>domains[params['name']];
-    });
-    console.log(this.domain.name);
     this.deviceTreeData = this.localmemory.getData("dts_data");
-    console.log(this.deviceTreeData);
-    // enable tooltips everywhere
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    });
-
-    this.all_colors = <Colors[]>(Array(Colors.END).fill(0));
-    for (var i = 0; i < this.all_colors.length; ++i) {
-      // Colors[0] ---> "orange"
-      // Colors["orange"] ---> 0
-      this.all_colors[i] = Colors[Colors[i]];
-    }
-
-    // initialize toast
-    $('.toast').toast({autohide: true, delay: 2000});
-
-    // Notify Error to user if device tree is not loaded!
-    if(this.deviceTreeData.availableDevices.length == 0){
+    if (!this.deviceTreeData || this.deviceTreeData.availableDevices.length == 0) {
+      // Notify Error to user if device tree is not loaded!
+      // dummy device tree for avoiding frontend errors
+      this.deviceTreeData = new DeviceTree();
       var modalRef = this.modalService.open(ModalDeviceTreeErrorComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       // workaround for avoiding modal flickering
       setTimeout(() => {
         <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
       },);
+    } else {
+      var sub = this.route.params.subscribe(params => {
+        var domains = this.localmemory.getData("domains");
+        this.domain = <Domain>domains[params['name']];
+      });
+      console.log(this.domain.name);
+      console.log(this.deviceTreeData);
+      // enable tooltips everywhere
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      });
+
+      this.all_colors = <Colors[]>(Array(Colors.END).fill(0));
+      for (var i = 0; i < this.all_colors.length; ++i) {
+        // Colors[0] ---> "orange"
+        // Colors["orange"] ---> 0
+        this.all_colors[i] = Colors[Colors[i]];
+      }
+
+      // initialize toast
+      $('.toast').toast({ autohide: true, delay: 2000 });
+
     }
   }
 
@@ -144,13 +149,14 @@ export class DomainDetailsComponent implements OnInit {
 
       var domains = this.localmemory.getData("domains");
       delete domains[old_dn.name];
+      domains[this.domain.name] = this.domain;
       this.localmemory.saveData("domains", domains);
 
       //reassign vpcus (add)
       this.vcpusManager.assignVcpus(dn.name, dn.vcpus);
       //reassign memory (add)
       this.memoryManager.assignMemory(dn.name, dn.memory);
-      
+
       //reassign colors
       this.colorsManager.autoRemoveColors(this.domain.name);
       this.colorsManager.autoAssignColor(this.domain.name, this.domain.memory);
@@ -160,6 +166,18 @@ export class DomainDetailsComponent implements OnInit {
 
       //this.reload();
       this.reloadDomain();
+
+      var domains_array = [];
+      // transform object of objects into array of object
+      for (var key in domains) {
+        if (key != "DOM0" && key != "Xen") {
+          domains_array.push(domains[key]);
+        }
+      }
+  
+      this.appComponent.updateDomainsMenu(domains_array);
+
+      this.router.navigate(["domains/"+this.domain.name]);
     }
   }
 
@@ -196,22 +214,22 @@ export class DomainDetailsComponent implements OnInit {
     else
       style["color"] = "black";
 
-      if(check_if_free){
-        if(this.colorsManager.getFreeColors().indexOf(c) == -1){
-          style["opacity"] = 0.5;
-        }
+    if (check_if_free) {
+      if (this.colorsManager.getFreeColors().indexOf(c) == -1) {
+        style["opacity"] = 0.5;
       }
-      if(cursor){
-        if(check_if_free){
-          if(this.colorsManager.getFreeColors().indexOf(c) == -1){
-            style["cursor"] = "not-allowed";
-          } else {
-            style["cursor"] = cursor;
-          }
+    }
+    if (cursor) {
+      if (check_if_free) {
+        if (this.colorsManager.getFreeColors().indexOf(c) == -1) {
+          style["cursor"] = "not-allowed";
         } else {
           style["cursor"] = cursor;
         }
+      } else {
+        style["cursor"] = cursor;
       }
+    }
 
     return style;
   }
@@ -222,7 +240,7 @@ export class DomainDetailsComponent implements OnInit {
       this.domain.colors.push(color);
       this.domain.colors = this.domain.colors.sort(function (a, b) { return a - b });
       */
-     this.colorsManager.autoAssignColor(this.domain.name, -1, color);
+      this.colorsManager.autoAssignColor(this.domain.name, -1, color);
     }
 
     // autosave
@@ -253,8 +271,8 @@ export class DomainDetailsComponent implements OnInit {
     $('.toast').toast('show');
   }
 
-  selectDevice(device: Device){
-    if(device.selected != this.domain.name){
+  selectDevice(device: Device) {
+    if (device.selected != this.domain.name) {
       device.selected = this.domain.name;
     } else {
       device.selected = "";
@@ -262,19 +280,19 @@ export class DomainDetailsComponent implements OnInit {
 
     // autosave
     this.saveDomain();
-    
-}
 
-  isDeviceSelected(device: Device){
+  }
+
+  isDeviceSelected(device: Device) {
     return device.selected == this.domain.name;
   }
 
-  returnToDomains(){
+  returnToDomains() {
     this.router.navigate(["domains"]);
   }
 
-  async enable_manual_cache_coloring(isChecked){
-    if(isChecked){
+  async enable_manual_cache_coloring(isChecked) {
+    if (isChecked) {
       this.manual_cache_coloring_enabled = false;
       this.manual_cache_coloring_enabled = <boolean>await this.open_modal(ModalEnableManualCacheColoringComponent);
     }

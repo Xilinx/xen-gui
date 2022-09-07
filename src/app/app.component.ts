@@ -13,6 +13,7 @@ import { VcpusManagementService } from './services/vcpus-management.service';
 import { ModalWarningResetSessionComponent } from './components/mainapp/modals/modal-warning-reset-session/modal-warning-reset-session.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectFileManagementService } from './services/project-file-management.service';
+import { ImagebuilderFileManagementService } from './services/imagebuilder-file-management.service';
 
 const os = require('os');
 var path = require('path'),
@@ -60,7 +61,8 @@ export class AppComponent implements OnInit {
     private localmemory: LocalstorageService,
     private route: Router,
     private modalService: NgbModal,
-    public projectFileManager: ProjectFileManagementService
+    public projectFileManager: ProjectFileManagementService,
+    private imageBuilderFileManager: ImagebuilderFileManagementService
   ) {
     this.username = os.userInfo().username;
 
@@ -163,12 +165,16 @@ export class AppComponent implements OnInit {
     await this.projectFileManager.load();
   }
 
-  saveProject() {
-    this.projectFileManager.save(this.current_project_name);
+  async saveProject() {
+    this.current_project_name = await this.projectFileManager.save(this.current_project_name);
   }
 
   async saveProjectAs() {
     this.current_project_name = await this.projectFileManager.saveAs();
+  }
+
+  async saveImageBuilder(){
+    this.imageBuilderFileManager.saveAs();    
   }
 
   async logout() {
@@ -178,4 +184,5 @@ export class AppComponent implements OnInit {
       <any>(window).location.reload();
     }
   }
+
 }

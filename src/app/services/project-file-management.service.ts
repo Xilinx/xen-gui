@@ -15,14 +15,14 @@ export class ProjectFileManagementService {
 
   }
 
-  save(project_name: string) {
+  async save(project_name: string) {
     if (project_name == "Untitled Xen Project") {
-      this.saveAs();
-      return;
+      return await this.saveAs();
     } else {
       this.localmemory.saveData("modified", false, false);
       var dump = this.localmemory.dump();
       fs.writeFileSync(project_name, JSON.stringify(dump, null, 4), 'utf-8');
+      return project_name;
     }
   }
 

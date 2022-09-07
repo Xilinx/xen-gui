@@ -46,15 +46,15 @@
             <div class="col-sm-6">
               <p><b>Load command</b></p>
 
-              <input type="radio" id="load_command1" name="load_command" [(ngModel)]="bootConfig.load_command"
+              <input type="radio" id="load_command1" name="load_command" [(ngModel)]="bootConfig.load_command" (change)="save()"
                 value="tftpd">
               <label for="load_command1">tftpd</label>
               <br>
-              <input type="radio" id="load_command2" name="load_command" [(ngModel)]="bootConfig.load_command"
+              <input type="radio" id="load_command2" name="load_command" [(ngModel)]="bootConfig.load_command" (change)="save()"
                 value="scsi">
               <label for="load_command2">scsi</label>
               <br>
-              <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command"
+              <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command" (change)="save()"
                 value="mmc">
               <label for="load_command3">sd card</label>
               <br>
@@ -65,19 +65,19 @@
             <div class="col-sm-6">
               <p><b>Boot Configuration</b></p>
 
-              <input type="radio" id="boot_command1" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+              <input type="radio" id="boot_command1" name="boot_command" [(ngModel)]="bootConfig.boot_command" (change)="save()"
                 value="bootm">
               <label for="boot_command1">bootm</label>
               <br>
-              <input type="radio" id="boot_command2" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+              <input type="radio" id="boot_command2" name="boot_command" [(ngModel)]="bootConfig.boot_command" (change)="save()"
                 value="booti">
               <label for="boot_command2">booti</label>
               <br>
-              <input type="radio" id="boot_command3" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+              <input type="radio" id="boot_command3" name="boot_command" [(ngModel)]="bootConfig.boot_command" (change)="save()"
                 value="bootefi">
               <label for="boot_command3">bootefi</label>
               <br>
-              <input type="radio" id="boot_command4" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+              <input type="radio" id="boot_command4" name="boot_command" [(ngModel)]="bootConfig.boot_command" (change)="save()"
                 value="none">
               <label for="boot_command4">none</label>
               <br>
@@ -104,12 +104,12 @@
 
               <div class="row">
                 <div class="col-sm-3">
-                  <input type="radio" id="xen_binary1" name="xen_binary" [(ngModel)]="bootConfig.xen_binary"
+                  <input type="radio" id="xen_binary1" name="xen_binary" [(ngModel)]="bootConfig.xen_binary" (change)="save()"
                     value="xen">
                   <label for="xen_binary1">Xen</label>
                 </div>
                 <div class="col-sm-3">
-                  <input type="radio" id="xen_binary2" name="xen_binary" [(ngModel)]="bootConfig.xen_binary"
+                  <input type="radio" id="xen_binary2" name="xen_binary" [(ngModel)]="bootConfig.xen_binary" (change)="save()"
                     value="linux">
                   <label for="xen_binary2">Linux</label>
                 </div>
@@ -120,7 +120,7 @@
 
             <div class="col-sm-12">
               <p><b>Xen Boot Commands:</b></p>
-              <input type="text" class="form-control" name="xen_command" [(ngModel)]="bootConfig.xen_command"
+              <input type="text" class="form-control" name="xen_command" [(ngModel)]="bootConfig.xen_command" (change)="save()"
                 placeholder="insert full command here...">
             </div>
 
@@ -132,10 +132,11 @@
 
     <div class="row divider-20"></div>
 
+    <!-- autosave
     <div class="col-sm-12">
       <button type="button" class="btn btn-success" (click)="save()">Save <i class="fa fa-fw fa-save"></i></button>
     </div>
-
+    -->
   </div>
 
 </section>

@@ -75,7 +75,7 @@ export class DomainsComponent implements OnInit {
 
     // Notify Error to user if device tree is not loaded!
     this.deviceTreeData = this.localmemory.getData("dts_data");
-    if (this.deviceTreeData.availableDevices.length == 0) {
+    if(!this.deviceTreeData || this.deviceTreeData.availableDevices.length == 0){
       var modalRef = this.modalService.open(ModalDeviceTreeErrorComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       // workaround for avoiding modal flickering
       setTimeout(() => {
