@@ -132,7 +132,7 @@ export class DomainDetailsComponent implements OnInit {
     (<any>window).location.reload();
   }
 
-  async modifyDomain(i: number) {
+  async modifyDomain() {
 
     var old_dn = this.domain;
 
@@ -181,7 +181,7 @@ export class DomainDetailsComponent implements OnInit {
     }
   }
 
-  async deleteDomain(i: number) {
+  async deleteDomain() {
     var confirm = <Domain>(await this.open_modal(ModalDeleteDomainComponent));
 
     if (confirm) {
