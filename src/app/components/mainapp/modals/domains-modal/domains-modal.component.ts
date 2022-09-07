@@ -7,6 +7,8 @@ import { UtilsService } from '../../../../services/utils.service';
 import { DeviceTree } from '../../../../models/device-tree';
 import { LocalstorageService } from '../../../../services/localstorage.service';
 import { Colors } from '../../../../models/colors.enum';
+import { VcpusManagementService } from '../../../../services/vcpus-management.service';
+import { MemoryManagementService } from '../../../../services/memory-management.service';
 
 @Component({
   selector: 'app-domains-modal',
@@ -22,6 +24,7 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
 
   deviceTreeData: DeviceTree;
   available_vcpus: number;
+  available_memory: number;
 
   memory_options: Options = {
     floor: 0,
@@ -53,20 +56,19 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
   constructor(
     private modalService: NgbModal,
     private utils: UtilsService,
-    private localmemory: LocalstorageService
+    private localmemory: LocalstorageService,
+    private vcpusManager: VcpusManagementService,
+    private memoryManager: MemoryManagementService
   ){
     
   }
 
   ngOnInit(){
     this.deviceTreeData = this.localmemory.getData("dts_data");
-    this.available_vcpus = this.localmemory.getData("vcpus");
+    this.available_vcpus = this.vcpusManager.getAvailableVcpus();
+    this.available_memory = this.memoryManager.getAvailableMemory();
 
-    var memsize = 0;
-    for(var i = 0; i < this.deviceTreeData.memories.length; ++i){
-      memsize += this.deviceTreeData.memories[i].size;
-    }
-    this.memory_options.ceil = memsize;
+    this.memory_options.ceil = this.available_memory;
     this.vcpus_options.ceil = this.available_vcpus;
   }
 

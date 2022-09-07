@@ -7,6 +7,7 @@ import { DeviceTree } from '../../../models/device-tree';
 import { Domain } from '../../../models/domain';
 import { ColorsManagementService } from '../../../services/colors-management.service';
 import { LocalstorageService } from '../../../services/localstorage.service';
+import { MemoryManagementService } from '../../../services/memory-management.service';
 import { VcpusManagementService } from '../../../services/vcpus-management.service';
 import { DomainsModalComponent } from '../modals/domains-modal/domains-modal.component';
 import { ModalDeleteDomainComponent } from '../modals/modal-delete-domain/modal-delete-domain.component';
@@ -35,6 +36,7 @@ export class DomainDetailsComponent implements OnInit {
     private colorsManager: ColorsManagementService,
     private vcpusManager: VcpusManagementService,
     private ref: ChangeDetectorRef,
+    private memoryManager: MemoryManagementService
   ) {
 
   }
@@ -125,15 +127,6 @@ export class DomainDetailsComponent implements OnInit {
     (<any>window).location.reload();
   }
 
-  async addDomain() {
-
-    var dn: Domain = <Domain>(await this.open_modal());
-    console.log(dn);
-    if (dn) {
-      this.domain = dn;
-    }
-  }
-
   async modifyDomain(i: number) {
 
     var old_dn = this.domain;
@@ -144,15 +137,19 @@ export class DomainDetailsComponent implements OnInit {
     if (dn) {
       this.domain = dn;
 
-      //reassign vpcus
+      //reassign vpcus (remove)
       this.vcpusManager.removeCpus(old_dn.name);
+      //reassign memory (remove)
+      this.memoryManager.removeMemory(old_dn.name);
 
       var domains = this.localmemory.getData("domains");
       delete domains[old_dn.name];
       this.localmemory.saveData("domains", domains);
 
-      //reassign vpcus
+      //reassign vpcus (add)
       this.vcpusManager.assignVcpus(dn.name, dn.vcpus);
+      //reassign memory (add)
+      this.memoryManager.assignMemory(dn.name, dn.memory);
       
       //reassign colors
       this.colorsManager.autoRemoveColors(this.domain.name);
@@ -176,6 +173,8 @@ export class DomainDetailsComponent implements OnInit {
       this.colorsManager.autoRemoveColors(domain_name);
       // free vcpus
       this.vcpusManager.removeCpus(domain_name);
+      // free memory
+      this.memoryManager.removeMemory(domain_name);
 
       var domains = this.localmemory.getData("domains");
       delete domains[domain_name];

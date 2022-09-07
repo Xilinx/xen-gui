@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Colors } from '../models/colors.enum';
 import { Domain } from '../models/domain';
 import { LocalstorageService } from './localstorage.service';
+import { MemoryManagementService } from './memory-management.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { LocalstorageService } from './localstorage.service';
 export class ColorsManagementService {
 
   constructor(
-    private localmemory: LocalstorageService
+    private localmemory: LocalstorageService,
   ) { }
 
   // free all colors

@@ -10,6 +10,7 @@ import { LocalstorageService } from '../../../services/localstorage.service';
 import { Domain } from '../../../models/domain';
 import { ColorsManagementService } from '../../../services/colors-management.service';
 import { VcpusManagementService } from '../../../services/vcpus-management.service';
+import { MemoryManagementService } from '../../../services/memory-management.service';
 
 declare var $: any;
 
@@ -32,7 +33,8 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
     private xendtsutils: XenDeviceTreeUtilsService,
     private localmemory: LocalstorageService,
     private colorManager: ColorsManagementService,
-    private vcpusManager: VcpusManagementService
+    private vcpusManager: VcpusManagementService,
+    private memoryManager: MemoryManagementService
   ) { }
 
   ngAfterViewInit(): void {
@@ -54,13 +56,14 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
     console.log("reconstructing local memory...");
     this.colorManager.reset();
     this.vcpusManager.reset();
+    this.memoryManager.reset();
 
     var dom0_default_memory = 1024 * 1024 * 1024; // 1G
     var dom0: Domain = new Domain(
       "DOM0",
       "Image-linux",
       "dom0-ramdisk.cpio",
-      dom0_default_memory,
+      0,
       0,
       [],
       "",
@@ -78,6 +81,8 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
     // autoassign 1 color for Xen
     this.colorManager.autoAssignColor("Xen");
+    // autoassign memory for dom0
+    this.memoryManager.assignMemory("DOM0", dom0_default_memory);
     // autoassign colors for dom0
     this.colorManager.autoAssignColor("DOM0", dom0_default_memory);
     // assign one extra color

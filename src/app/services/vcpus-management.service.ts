@@ -13,7 +13,7 @@ export class VcpusManagementService {
     private localmemory: LocalstorageService
   ) { }
 
-  // free all colors
+  // free all cpus
   public reset() {
     var deviceTree: DeviceTree = this.localmemory.getData("dts_data");
     if (deviceTree) {
