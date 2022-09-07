@@ -12,29 +12,30 @@ import { ColorsManagementService } from './services/colors-management.service';
 import { VcpusManagementService } from './services/vcpus-management.service';
 import { ModalWarningResetSessionComponent } from './components/mainapp/modals/modal-warning-reset-session/modal-warning-reset-session.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProjectFileManagementService } from './services/project-file-management.service';
 
-const os = require ('os');
+const os = require('os');
 var path = require('path'),
-fs = require('fs');
+  fs = require('fs');
 
 function fromDir(startPath, filter) {
 
   //console.log('Starting from dir '+startPath+'/');
 
   if (!fs.existsSync(startPath)) {
-      console.log("no dir ", startPath);
-      return;
+    console.log("no dir ", startPath);
+    return;
   }
 
   var files = fs.readdirSync(startPath);
   for (var i = 0; i < files.length; i++) {
-      var filename = path.join(startPath, files[i]);
-      var stat = fs.lstatSync(filename);
-      if (stat.isDirectory()) {
-          fromDir(filename, filter); //recurse
-      } else if (filename.endsWith(filter)) {
-          console.log('-- found: ', filename);
-      };
+    var filename = path.join(startPath, files[i]);
+    var stat = fs.lstatSync(filename);
+    if (stat.isDirectory()) {
+      fromDir(filename, filter); //recurse
+    } else if (filename.endsWith(filter)) {
+      console.log('-- found: ', filename);
+    };
   };
 };
 
@@ -45,11 +46,12 @@ function fromDir(startPath, filter) {
   animations: [fadeAnimation]
 })
 export class AppComponent implements OnInit {
-  
+
   ourApp: Electron.BrowserWindow;
   appTitle: string;
   username: string;
   domains: Domain[] = [];
+  current_project_name: string = "Untitled Xen Project";
 
 
   constructor(
@@ -58,6 +60,7 @@ export class AppComponent implements OnInit {
     private localmemory: LocalstorageService,
     private route: Router,
     private modalService: NgbModal,
+    public projectFileManager: ProjectFileManagementService
   ) {
     this.username = os.userInfo().username;
 
@@ -88,7 +91,10 @@ export class AppComponent implements OnInit {
       console.log("need to reconstruct Local Storage");
       this.route.navigate(["read-device-tree"]);
     } else {
-      this.loadDomains();      
+      this.loadDomains();
+      if (this.localmemory.getData("filename")) {
+        this.current_project_name = this.localmemory.getData("filename");
+      }
     }
   }
 
@@ -115,7 +121,7 @@ export class AppComponent implements OnInit {
     this.setupResizer();
   }
 
-  updateDomainsMenu(domains: Domain[]){
+  updateDomainsMenu(domains: Domain[]) {
     this.domains = domains;
   }
 
@@ -153,10 +159,21 @@ export class AppComponent implements OnInit {
 
   }
 
+  async openProject() {
+    await this.projectFileManager.load();
+  }
+
+  saveProject() {
+    this.projectFileManager.save(this.current_project_name);
+  }
+
+  async saveProjectAs() {
+    this.current_project_name = await this.projectFileManager.saveAs();
+  }
 
   async logout() {
     var confirm = await this.open_modal();
-    if(confirm){
+    if (confirm) {
       this.localmemory.clearData();
       <any>(window).location.reload();
     }

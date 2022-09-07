@@ -434,3 +434,8 @@ th,
 td {
   overflow: hidden;
 }
+
+.header {
+  color: white !important;
+  text-transform: uppercase;
+}
