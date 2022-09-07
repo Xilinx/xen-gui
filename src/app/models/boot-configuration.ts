@@ -13,7 +13,7 @@ export class BootConfiguration {
         load_command: string = "mmc",
         boot_command: string = "booti",
         xen_binary: string = "xen",
-        xen_command: string = "console=dtuart dtuart=serial0 dom0_mem=1G dom0_max_vcpus=1 bootscrub=0 vwfi=native sched=null"
+        xen_command: string = "console=dtuart dtuart=serial0 bootscrub=0 vwfi=native sched=null"
     ){
         this.memory_high_value = memory_high_value;
         this.memory_low_value = memory_low_value;

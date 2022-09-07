@@ -3,6 +3,7 @@ import { BootConfiguration } from '../models/boot-configuration';
 import { DeviceTree } from '../models/device-tree';
 import { Domain } from '../models/domain';
 import { LocalstorageService } from './localstorage.service';
+import { UtilsService } from './utils.service';
 
 const { dialog } = require('electron').remote;
 var fs = require('fs');
@@ -13,7 +14,8 @@ var fs = require('fs');
 export class ImagebuilderFileManagementService {
 
   constructor(
-    private localmemory: LocalstorageService
+    private localmemory: LocalstorageService,
+    private utils: UtilsService
   ) { }
 
   async saveAs() {
@@ -52,8 +54,7 @@ DEVICE_TREE="${dts.filename}"
 
     var xen_config_file: string = `
 XEN="${boot.xen_binary}"
-XEN_CMD="${boot.xen_command}"
-PASSTHROUGH_DTS_REPO="git@github.com:Xilinx/xen-passthrough-device-trees.git device-trees-2021.2"    
+XEN_CMD="${boot.xen_command.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} dom0_mem=${this.utils.formatBytes(dom0.memory).replace(" ", "")} dom0_max_vcpus=${dom0.vcpus}"
     `;
 
     colors_string = "";
