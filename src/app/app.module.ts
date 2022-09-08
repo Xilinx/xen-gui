@@ -23,6 +23,7 @@ import { CoreModule } from './components/core/core.module';
 import { ModalWarningResetSessionComponent } from './components/mainapp/modals/modal-warning-reset-session/modal-warning-reset-session.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalSuccessSavingComponent } from './components/mainapp/modals/modal-success-saving/modal-success-saving.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -30,9 +31,9 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, WebviewDirective, ModalWarningResetSessionComponent],
+  declarations: [AppComponent, WebviewDirective, ModalWarningResetSessionComponent, ModalSuccessSavingComponent],
   entryComponents: [
-    ModalWarningResetSessionComponent    
+    ModalWarningResetSessionComponent, ModalSuccessSavingComponent    
   ],
   imports: [
     BrowserModule,

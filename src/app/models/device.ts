@@ -6,9 +6,10 @@ export class Device {
     selected: string
     label: string
 
+    /*
     type_peripheral_list : string[] =   ["ethernet", "spi", "usb", "serial", "cci", "can", "i2c", "gpu", "pcie", "rtc", "gpio", "ams"];
     type_internal_list : string[] =     ["dma", "timer", "watchdog", "mmc", "rtc", "zynqmp_phy", "zynqmp-display", "nand", "ahci"];
-
+    */
     constructor(
         name: string = "",
         address: number = 0,
@@ -20,6 +21,7 @@ export class Device {
         this.address = address;
         this.type = type;
         this.selected = selected;
+        /*
         if(type == ""){
             for(var i = 0; i < this.type_internal_list.length; ++i){
                 if(this.name.indexOf(this.type_internal_list[i]) >= 0){
@@ -34,6 +36,8 @@ export class Device {
                 }
             }
         }
+        */
+       this.type = type;
         if(label == ""){
             this.label = this.name;
         }

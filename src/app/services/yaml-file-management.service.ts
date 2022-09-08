@@ -1,0 +1,114 @@
+import { Injectable } from '@angular/core';
+import { LocalstorageService } from './localstorage.service';
+import * as yamljs from 'yamljs';
+import { Domain } from '../models/domain';
+import { BootConfiguration } from '../models/boot-configuration';
+import { DeviceTree } from '../models/device-tree';
+import { UtilsService } from './utils.service';
+
+const { dialog } = require('electron').remote;
+var fs = require('fs');
+
+@Injectable({
+  providedIn: 'root'
+})
+export class YamlFileManagementService {
+
+  constructor(
+    private localmemory: LocalstorageService,
+    private utils: UtilsService
+  ) { }
+
+  async saveAs() {
+    var options = {
+      title: "Save file",
+      buttonLabel: "Save",
+
+      filters: [
+        { name: 'YAML', extensions: ['yaml'] },
+        { name: 'All Files', extensions: ['*'] }
+      ]
+    };
+
+    const result = await dialog.showSaveDialog(options);
+    console.log('Save resolved:', result);
+    const filePath = result;
+    console.log('filePath -->', filePath);
+
+    /////////////////////
+    var domains: [Domain] = this.localmemory.getData("domains");
+    var boot_config: BootConfiguration = this.localmemory.getData("boot_config");
+    var dts: DeviceTree = this.localmemory.getData("dts_data");
+
+    var memory = [];
+    for (var i = 0; i < dts.memories.length; ++i) {
+      memory.push({
+        start: "0x" + dts.memories[i].startAddress.toString(16),
+        size: "0x" + dts.memories[i].size.toString(16)
+      })
+    };
+
+    delete domains["Xen"];
+    domains["dom0"] = domains["DOM0"];
+    delete domains["DOM0"];
+
+    for (var key in domains) {
+      domains[key]["kernel-path"] = domains[key].kernel;
+      delete domains[key].kernel;
+
+      domains[key]["ramdisk-path"] = domains[key].ramdisk;
+      delete domains[key].ramdisk;
+
+      // calculate colors range
+      var colors_string = "";
+      var min_color = 9999;
+      var max_color = -1;
+      for (var j = 0; j < domains[key].colors.length; ++j) {
+        if (domains[key].colors[j] < min_color) {
+          min_color = domains[key].colors[j];
+        }
+        if (domains[key].colors[j] > max_color) {
+          max_color = domains[key].colors[j];
+        }
+      }
+      colors_string = min_color + "-" + max_color;
+      delete domains[key].colors;
+      (<any>domains[key]).colors = colors_string;
+
+      var mem = domains[key].memory;
+      delete domains[key].memory;
+      (<any>domains[key]).memory = { size: this.utils.formatBytes(mem) };
+
+      (<any>domains[key]).access = [];
+      for (var j = 0; j < domains[key].devices.length; ++j) {
+        (<any>domains[key]).access.push(
+          {
+            dev: domains[key].devices[j].label
+          }
+        )
+      }
+      delete domains[key].devices;
+
+    }
+
+    var dump = {
+      domains: {
+        xen: {
+          bootargs: boot_config.bootargs,
+          memory: memory,
+          "kernel-path": "/path/to/xen",
+          domains: domains
+        }
+      }
+    };
+
+    console.log(dump);
+
+    var yaml_string = yamljs.stringify(dump, 32, 4);
+
+    fs.writeFileSync(filePath, yaml_string, 'utf-8');
+
+    return filePath;
+  }
+
+}

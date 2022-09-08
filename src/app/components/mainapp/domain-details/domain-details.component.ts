@@ -88,12 +88,14 @@ export class DomainDetailsComponent implements OnInit {
   selectAll() {
     for (var i = 0; i < this.deviceTreeData.availableDevices.length; ++i) {
       this.deviceTreeData.availableDevices[i].selected = this.domain.name;
+      this.domain.devices.push(this.deviceTreeData.availableDevices[i]);
     }
   }
 
   unselectAll() {
     for (var i = 0; i < this.deviceTreeData.availableDevices.length; ++i) {
       this.deviceTreeData.availableDevices[i].selected = "";
+      this.domain.devices.pop();
     }
   }
 
@@ -174,10 +176,10 @@ export class DomainDetailsComponent implements OnInit {
           domains_array.push(domains[key]);
         }
       }
-  
+
       this.appComponent.updateDomainsMenu(domains_array);
 
-      this.router.navigate(["domains/"+this.domain.name]);
+      this.router.navigate(["domains/" + this.domain.name]);
     }
   }
 
@@ -258,8 +260,10 @@ export class DomainDetailsComponent implements OnInit {
     this.reloadDomain();
   }
 
-  saveDomain() {
-    var domains = this.localmemory.getData("domains");
+  saveDomain(domains: [Domain] = null) {
+    if (domains == null) {
+      domains = this.localmemory.getData("domains");
+    }
     domains[this.domain.name] = this.domain;
     this.localmemory.saveData("domains", domains);
     this.localmemory.saveData("dts_data", this.deviceTreeData);
@@ -272,14 +276,29 @@ export class DomainDetailsComponent implements OnInit {
   }
 
   selectDevice(device: Device) {
+    var domains: [Domain] = this.localmemory.getData("domains");
+
     if (device.selected != this.domain.name) {
+      if (device.selected != "") {
+        var deviceIndex = domains[device.selected].devices.findIndex(object => {
+          return object.name === device.name;
+        });
+
+        domains[device.selected].devices.splice(deviceIndex, 1);
+      }
       device.selected = this.domain.name;
+      this.domain.devices.push(device);
+
     } else {
+      var deviceIndex = this.domain.devices.findIndex(object => {
+        return object.name === device.name;
+      });
       device.selected = "";
+      this.domain.devices.splice(deviceIndex, 1);
     }
 
     // autosave
-    this.saveDomain();
+    this.saveDomain(domains);
 
   }
 

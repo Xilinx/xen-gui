@@ -57,7 +57,7 @@
               </tr>
               <tr>
                 <td>START COMMAND</td>
-                <td>{{domain.start_command}}</td>
+                <td>{{domain.bootargs}}</td>
               </tr>
               <tr>
                 <td>COLORS</td>
@@ -92,6 +92,7 @@
 
             <div class="col-sm-4">
 
+              <!--
               <div class="row margin-top-45">
                 <div class="col-sm-5">
                   <button type="button" class="btn btn-block btn-primary btn-success" (click)="selectAll()">Select
@@ -103,7 +104,9 @@
                     all</button>
                 </div>
               </div>
+
               <hr class="mt-2 mb-3" />
+            -->
 
               <div class="row">
                 <div class="col-sm-4" *ngFor="let device of deviceTreeData.availableDevices">

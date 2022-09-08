@@ -14,6 +14,8 @@ import { ModalWarningResetSessionComponent } from './components/mainapp/modals/m
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectFileManagementService } from './services/project-file-management.service';
 import { ImagebuilderFileManagementService } from './services/imagebuilder-file-management.service';
+import { ModalSuccessSavingComponent } from './components/mainapp/modals/modal-success-saving/modal-success-saving.component';
+import { YamlFileManagementService } from './services/yaml-file-management.service';
 
 const os = require('os');
 var path = require('path'),
@@ -62,7 +64,8 @@ export class AppComponent implements OnInit {
     private route: Router,
     private modalService: NgbModal,
     public projectFileManager: ProjectFileManagementService,
-    private imageBuilderFileManager: ImagebuilderFileManagementService
+    private imageBuilderFileManager: ImagebuilderFileManagementService,
+    private yamlFileManager: YamlFileManagementService
   ) {
     this.username = os.userInfo().username;
 
@@ -167,15 +170,24 @@ export class AppComponent implements OnInit {
 
   async saveProject() {
     this.current_project_name = await this.projectFileManager.save(this.current_project_name);
+    await this.open_modal(ModalSuccessSavingComponent);
   }
 
   async saveProjectAs() {
     this.current_project_name = await this.projectFileManager.saveAs();
+    await this.open_modal(ModalSuccessSavingComponent);
   }
 
   async saveImageBuilder(){
-    this.imageBuilderFileManager.saveAs();    
+    this.imageBuilderFileManager.saveAs();  
+    await this.open_modal(ModalSuccessSavingComponent);
   }
+
+  async saveYAML(){
+    this.yamlFileManager.saveAs();  
+    await this.open_modal(ModalSuccessSavingComponent);
+  }
+
 
   async logout() {
     var confirm = await this.open_modal();

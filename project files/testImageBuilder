@@ -1,0 +1,33 @@
+
+MEMORY_START="0x0"
+MEMORY_END="0xfff00000"
+LOAD_CMD="mmc"
+BOOT_CMD="booti"        
+    
+DEVICE_TREE="mpsoc.dts"
+    
+XEN="xen"
+XEN_CMD="console=dtuart dtuart=serial0 bootscrub=0 vwfi=native sched=null dom0_mem=1GB dom0_max_vcpus=1"
+    
+DOM0_KERNEL="Image-linux"
+DOM0_CMD="console=console=hvc0 earlycon=xen earlyprintk=xen clk_ignore_unused root=/dev/ram0"
+DOM0_RAMDISK="dom0-ramdisk.cpio"
+DOM0_MEM=1024
+DOM0_VCPUS=1
+DOM0_COLORS="1-5"
+
+NUM_DT_OVERLAY=0
+    
+NUM_DOMUS=1
+
+DOMU_KERNEL[0]="k1"
+DOMU_PASSTHROUGH_PATHS[0]=""
+DOMU_CMD[0]="console=ttyAMA0"
+DOMU_RAMDISK[0]="r1"
+DOMU_MEM[0]=512
+DOMU_VCPUS[0]=1
+DOMU_COLORS[0]="6-7"
+      
+UBOOT_SOURCE="boot.source"
+UBOOT_SCRIPT="boot.scr"    
+    

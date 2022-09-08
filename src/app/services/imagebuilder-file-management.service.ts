@@ -56,7 +56,7 @@ DEVICE_TREE="${dts.filename}"
 
     var xen_config_file: string = `
 XEN="${boot.xen_binary}"
-XEN_CMD="${boot.xen_command.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} dom0_mem=${this.utils.formatBytes(dom0.memory).replace(" ", "")} dom0_max_vcpus=${dom0.vcpus}"
+XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} dom0_mem=${this.utils.formatBytes(dom0.memory).replace(" ", "")} dom0_max_vcpus=${dom0.vcpus}"
     `;
 
     colors_string = "";
@@ -74,7 +74,7 @@ XEN_CMD="${boot.xen_command.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpu
 
     var dom0_config_file: string = `
 DOM0_KERNEL="${dom0.kernel}"
-DOM0_CMD="console=${dom0.start_command}"
+DOM0_CMD="console=${dom0.bootargs}"
 DOM0_RAMDISK="${dom0.ramdisk}"
 DOM0_MEM=${Math.ceil(dom0.memory / 1024 / 1024)}
 DOM0_VCPUS=${dom0.vcpus}
@@ -107,7 +107,7 @@ NUM_DOMUS=${domains.length}
       domu_config_file += `
 DOMU_KERNEL[${i}]="${domains[i].kernel}"
 DOMU_PASSTHROUGH_PATHS[${i}]="${domains[i].passthrough_dtb}"
-DOMU_CMD[${i}]="${domains[i].start_command}"
+DOMU_CMD[${i}]="${domains[i].bootargs}"
 DOMU_RAMDISK[${i}]="${domains[i].ramdisk}"
 DOMU_MEM[${i}]=${Math.ceil(domains[i].memory / 1024 / 1024)}
 DOMU_VCPUS[${i}]=${domains[i].vcpus}
@@ -163,8 +163,5 @@ FIT_ENC_UB_DTB="uboot.dtb"
 
     fs.writeFileSync(filePath, config_file, 'utf-8');
 
-    //this.localmemory.saveData("filename", filePath, false);
-
-    //return filePath;
   }
 }

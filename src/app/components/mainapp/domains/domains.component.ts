@@ -96,7 +96,7 @@ export class DomainsComponent implements OnInit {
         // default values
         _domain.memory = 512 * 1024 * 1024;
         _domain.vcpus = 1;
-        _domain.start_command = "console=ttyAMA0";
+        _domain.bootargs = "console=ttyAMA0";
         modalRef.componentInstance.domain = _domain;
       }
       modalRef.result.then((result) => {
