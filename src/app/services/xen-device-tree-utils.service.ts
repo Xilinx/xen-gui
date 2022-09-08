@@ -105,24 +105,52 @@ export class XenDeviceTreeUtilsService {
     deviceTreeData.numberOfAvailableDevices = 0;
     if (deviceTreeJson["/"].hasOwnProperty("amba")) {
       for (const [key, value] of Object.entries(deviceTreeJson["/"].amba)) {
+        // check if has label (key contains ":")
+        var label = "";
+        var name = "";
+        var address = 0;
+        if(key.split(":").length > 1){
+          label = key.split(":")[0];
+          name = key.split(":")[1].split("@")[0];
+          address = parseInt(key.split(":")[1].split("@")[1], 16);
+        }
+        else {
+          label = "";
+          name = key.split("@")[0];
+          address = parseInt(key.split("@")[1], 16);
+        }
         if (deviceTreeJson["/"].amba[key].hasOwnProperty("status")) {
           if (deviceTreeJson["/"].amba[key].status != "disabled") {
             deviceTreeData.numberOfAvailableDevices++;
-            deviceTreeData.availableDevices.push(new Device(key.split("@")[0], parseInt(key.split("@")[1], 16)));
+            deviceTreeData.availableDevices.push(new Device(name, address));
           } else {
-            deviceTreeData.disabledDevices.push(new Device(key.split("@")[0], parseInt(key.split("@")[1], 16)));
+            deviceTreeData.disabledDevices.push(new Device(name, address));
           }
         }
       }
     }
     if (deviceTreeJson["/"].hasOwnProperty("axi")) {
       for (const [key, value] of Object.entries(deviceTreeJson["/"].axi)) {
+        // check if has label (key contains ":")
+        var label = "";
+        var name = "";
+        var address = 0;
+        if(key.split(":").length > 1){
+          label = key.split(":")[0];
+          name = key.split(":")[1].split("@")[0];
+          address = parseInt(key.split(":")[1].split("@")[1], 16);
+        }
+        else {
+          label = "";
+          name = key.split("@")[0];
+          address = parseInt(key.split("@")[1], 16);
+        }
         if (deviceTreeJson["/"].amba[key].hasOwnProperty("status")) {
           if (deviceTreeJson["/"].amba[key].status != "disabled") {
             deviceTreeData.numberOfAvailableDevices++;
-            deviceTreeData.availableDevices.push(new Device(key.split("@")[0], parseInt(key.split("@")[1], 16)));
+            deviceTreeData.availableDevices.push(new Device(name, address));
           } else {
-            deviceTreeData.disabledDevices.push(new Device(key.split("@")[0], parseInt(key.split("@")[1], 16)));
+            deviceTreeData.disabledDevices.push(new Device(name, address));
           }
         }
       }

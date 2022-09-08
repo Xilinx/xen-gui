@@ -111,7 +111,7 @@
                     data-placement="top"
                     title="{{device.name.toUpperCase()}} @ {{device.address.toString(16).toUpperCase()}}"
                     (click)="selectDevice(device)"
-                    [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">{{device.name.toUpperCase()}}</button>
+                    [ngClass]="isDeviceSelected(device) ? 'selected-btn' : ''">{{device.label.toUpperCase()}}</button>
                 </div>
               </div>
 

@@ -23,6 +23,8 @@ export class ImagebuilderFileManagementService {
     var dts = <DeviceTree>this.localmemory.getData("dts_data");
     var dom0 = <Domain>this.localmemory.getData("domains")["DOM0"];
     var colors_string: string = "";
+    var min_color: number = 9999;
+    var max_color: number = -1;
     var _domains = <[Domain]>this.localmemory.getData("domains");
     var domains: Domain[] = [];
     for (var key in _domains) {
@@ -58,11 +60,17 @@ XEN_CMD="${boot.xen_command.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpu
     `;
 
     colors_string = "";
+    min_color = 9999;
+    max_color = -1;
     for (var j = 0; j < dom0.colors.length; ++j) {
-      colors_string += dom0.colors[j] + "-";
+      if(dom0.colors[j] < min_color){
+        min_color = dom0.colors[j];
+      }
+      if(dom0.colors[j] > max_color){
+        max_color = dom0.colors[j];
+      }
     }
-    //remove last ""-"
-    colors_string = colors_string.slice(0, -1);
+    colors_string = min_color + "-" + max_color;
 
     var dom0_config_file: string = `
 DOM0_KERNEL="${dom0.kernel}"
@@ -84,11 +92,18 @@ NUM_DOMUS=${domains.length}
     colors_string = "";
     for (var i = 0; i < domains.length; ++i) {
       colors_string = "";
+      min_color = 9999;
+      max_color = -1;
       for (var j = 0; j < domains[i].colors.length; ++j) {
-        colors_string += domains[i].colors[j] + "-";
+        if(domains[i].colors[j] < min_color){
+          min_color = domains[i].colors[j];
+        }
+        if(domains[i].colors[j] > max_color){
+          max_color = domains[i].colors[j];
+        }
       }
-      //remove last ""-"
-      colors_string = colors_string.slice(0, -1);
+      colors_string = min_color + "-" + max_color;      
+
       domu_config_file += `
 DOMU_KERNEL[${i}]="${domains[i].kernel}"
 DOMU_PASSTHROUGH_PATHS[${i}]="${domains[i].passthrough_dtb}"
@@ -105,6 +120,7 @@ DOMU_COLORS[${i}]="${colors_string}"
 BITSTREAM=download.bit
     `;
 
+    /* optional, not used */
     var boot_aux_file_config_file: string = `
 NUM_BOOT_AUX_FILE=2
 BOOT_AUX_FILE[0]="BOOT.BIN"
@@ -125,6 +141,8 @@ FIT_ENC_KEY_DIR="dir/key"
 FIT_ENC_UB_DTB="uboot.dtb"    
     `;
 
+    var end = "\n";
+
     var config_file = "" +
       boot_config_file +
       device_tree_config_file +
@@ -132,10 +150,11 @@ FIT_ENC_UB_DTB="uboot.dtb"
       dom0_config_file +
       dt_config_overlay_file +
       domu_config_file +
-      /*bitstream_config_file +*/
-      boot_aux_file_config_file +
-      uboot_config_file
-      /*extra_config_file*/;
+      //bitstream_config_file +
+      //boot_aux_file_config_file +
+      uboot_config_file +
+      //extra_config_file +
+      end;
 
     const result = await dialog.showSaveDialog(options);
     console.log('Save resolved:', result);

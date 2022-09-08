@@ -4,6 +4,7 @@ export class Device {
     address: number
     type: string
     selected: string
+    label: string
 
     type_peripheral_list : string[] =   ["ethernet", "spi", "usb", "serial", "cci", "can", "i2c", "gpu", "pcie", "rtc", "gpio", "ams"];
     type_internal_list : string[] =     ["dma", "timer", "watchdog", "mmc", "rtc", "zynqmp_phy", "zynqmp-display", "nand", "ahci"];
@@ -12,7 +13,8 @@ export class Device {
         name: string = "",
         address: number = 0,
         type: string = "",
-        selected: string = ""
+        selected: string = "",
+        label: string = ""
     ) {
         this.name = name;
         this.address = address;
@@ -31,6 +33,12 @@ export class Device {
                     break;
                 }
             }
+        }
+        if(label == ""){
+            this.label = this.name;
+        }
+        else {
+            this.label = label;
         }
     }
 
