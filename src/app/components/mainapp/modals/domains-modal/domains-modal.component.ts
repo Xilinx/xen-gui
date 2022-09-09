@@ -29,7 +29,7 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
   memory_options: Options = {
     floor: 0,
     ceil: 4096,
-    step: 256 * 1024 * 1024,
+    step: 128 * 1024 * 1024,
     showSelectionBar: true,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
