@@ -15,6 +15,7 @@ import { ModalDeleteDomainComponent } from '../modals/modal-delete-domain/modal-
 import { ModalDeviceTreeErrorComponent } from '../modals/modal-device-tree-error/modal-device-tree-error.component';
 import { ModalEnableManualCacheColoringComponent } from '../modals/modal-enable-manual-cache-coloring/modal-enable-manual-cache-coloring.component';
 
+
 @Component({
   selector: 'app-domain-details',
   templateUrl: './domain-details.component.html',
@@ -40,7 +41,6 @@ export class DomainDetailsComponent implements OnInit {
     private memoryManager: MemoryManagementService,
     private appComponent: AppComponent
   ) {
-
   }
 
   reloadDomain() {

@@ -1,7 +1,7 @@
 {
-  "appId": "com.hoversoftsoln.adminltedesktop",
-  "productName": "AdminLTE Desktop",
-  "copyright": "Copyright © 2018 - ADLTEDesktop",
+  "appId": "com.amd.xenguiconfigurato",
+  "productName": "Xen GUI Configurator",
+  "copyright": "Copyright © 2022 - AMD - Xilinx - MakarenaLabs",
   "directories": {
     "output": "release/"
   },
@@ -23,7 +23,7 @@
   ],
   "win": {
     "icon": "dist/favicon.ico",
-    "legalTrademarks": "AdminLTE Desktop",
+    "legalTrademarks": "Xen GUI Configurator",
     "target": ["nsis"]
   },
   "nsis": {
@@ -32,8 +32,8 @@
     "installerIcon": "dist/favicon.ico",
     "createDesktopShortcut": true,
     "deleteAppDataOnUninstall": "true",
-    "menuCategory": "AdminLTE",
-    "shortcutName": "AdminLTE Desktop"
+    "menuCategory": "Xen",
+    "shortcutName": "Xen GUI Configurator"
   },
   "mac": {
     "icon": "dist",

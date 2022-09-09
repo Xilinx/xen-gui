@@ -344,7 +344,6 @@ td {
 .chip-image {
   width: 560px;
   height: 560px;
-  background-image: url('/assets/images/icons/big chip.png');
   background-repeat: no-repeat;
   text-align: center;
   position: absolute;
