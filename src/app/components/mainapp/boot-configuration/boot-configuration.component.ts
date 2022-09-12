@@ -15,6 +15,8 @@ import { BootConfiguration } from '../../../models/boot-configuration';
 export class BootConfigurationComponent implements OnInit {
 
   deviceTreeData: DeviceTree;
+
+  cache_coloring_enabled: boolean;
   
   memory_options: Options = {
     floor: 0,
@@ -65,10 +67,19 @@ export class BootConfigurationComponent implements OnInit {
       
     }
 
+    this.cache_coloring_enabled = this.localmemory.getData("cache_coloring_enabled") || false;
+
   }
+
+  async change_cache_coloring_enabled(isChecked) {
+    this.cache_coloring_enabled = isChecked;
+    this.localmemory.saveData("cache_coloring_enabled", this.cache_coloring_enabled);
+  }
+
 
   save() {
     this.localmemory.saveData("boot_config", this.bootConfig);
+    this.localmemory.saveData("cache_coloring_enabled", this.cache_coloring_enabled);
   }
 
 }

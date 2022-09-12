@@ -46,16 +46,16 @@
             <div class="col-sm-6">
               <p><b>Load command</b></p>
 
-              <input type="radio" id="load_command1" name="load_command" [(ngModel)]="bootConfig.load_command" (change)="save()"
-                value="tftpd">
+              <input type="radio" id="load_command1" name="load_command" [(ngModel)]="bootConfig.load_command"
+                (change)="save()" value="tftpd">
               <label for="load_command1">tftpd</label>
               <br>
-              <input type="radio" id="load_command2" name="load_command" [(ngModel)]="bootConfig.load_command" (change)="save()"
-                value="scsi">
+              <input type="radio" id="load_command2" name="load_command" [(ngModel)]="bootConfig.load_command"
+                (change)="save()" value="scsi">
               <label for="load_command2">scsi</label>
               <br>
-              <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command" (change)="save()"
-                value="mmc">
+              <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command"
+                (change)="save()" value="mmc">
               <label for="load_command3">sd card</label>
               <br>
 
@@ -65,31 +65,53 @@
             <div class="col-sm-6">
               <p><b>Boot Configuration</b></p>
 
-              <input type="radio" id="boot_command1" name="boot_command" [(ngModel)]="bootConfig.boot_command" (change)="save()"
-                value="bootm">
+              <input type="radio" id="boot_command1" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+                (change)="save()" value="bootm">
               <label for="boot_command1">bootm</label>
               <br>
-              <input type="radio" id="boot_command2" name="boot_command" [(ngModel)]="bootConfig.boot_command" (change)="save()"
-                value="booti">
+              <input type="radio" id="boot_command2" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+                (change)="save()" value="booti">
               <label for="boot_command2">booti</label>
               <br>
-              <input type="radio" id="boot_command3" name="boot_command" [(ngModel)]="bootConfig.boot_command" (change)="save()"
-                value="bootefi">
+              <input type="radio" id="boot_command3" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+                (change)="save()" value="bootefi">
               <label for="boot_command3">bootefi</label>
               <br>
-              <input type="radio" id="boot_command4" name="boot_command" [(ngModel)]="bootConfig.boot_command" (change)="save()"
-                value="none">
+              <input type="radio" id="boot_command4" name="boot_command" [(ngModel)]="bootConfig.boot_command"
+                (change)="save()" value="none">
               <label for="boot_command4">none</label>
               <br>
 
             </div>
-
           </div>
-
         </div>
       </div>
-
     </div>
+
+    <div class="col-md-4">
+      <div class="box box-widget">
+        <div class="box-header with-border">
+          <h2 class="box-title">Cache coloring settings</h2>
+        </div>
+        <div class="box-body">
+          <div class="form-check" style="margin:10px 0">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="cache_coloring_enabled" id="defaultCheck1" (change)="change_cache_coloring_enabled(cache_coloring_enabled)">
+            <label class="form-check-label" for="defaultCheck1">
+              Enable cache coloring
+              <br>
+              <br>
+              <i>The feature enables memory allocations with entirely dedicated cache line entries.</i>
+              <br>
+              <br>
+              <i>Selecting this feature, you can assign automatically or manually colors to the dom0 and domU</i>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- U-Boot configuration -->
+
 
     <!-- Xen Configuration -->
     <div class="col-md-8">
@@ -104,13 +126,13 @@
 
               <div class="row">
                 <div class="col-sm-3">
-                  <input type="radio" id="xen_binary1" name="xen_binary" [(ngModel)]="bootConfig.xen_binary" (change)="save()"
-                    value="xen">
+                  <input type="radio" id="xen_binary1" name="xen_binary" [(ngModel)]="bootConfig.xen_binary"
+                    (change)="save()" value="xen">
                   <label for="xen_binary1">Xen</label>
                 </div>
                 <div class="col-sm-3">
-                  <input type="radio" id="xen_binary2" name="xen_binary" [(ngModel)]="bootConfig.xen_binary" (change)="save()"
-                    value="linux">
+                  <input type="radio" id="xen_binary2" name="xen_binary" [(ngModel)]="bootConfig.xen_binary"
+                    (change)="save()" value="linux">
                   <label for="xen_binary2">Linux</label>
                 </div>
               </div>
@@ -120,8 +142,8 @@
 
             <div class="col-sm-12">
               <p><b>Xen Boot Commands:</b></p>
-              <input type="text" class="form-control" name="bootargs" [(ngModel)]="bootConfig.bootargs" (change)="save()"
-                placeholder="insert full command here...">
+              <input type="text" class="form-control" name="bootargs" [(ngModel)]="bootConfig.bootargs"
+                (change)="save()" placeholder="insert full command here...">
             </div>
 
           </div>

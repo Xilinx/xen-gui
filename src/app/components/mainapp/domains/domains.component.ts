@@ -28,6 +28,8 @@ export class DomainsComponent implements OnInit {
   current_domain_index: number = -1;
   deviceTreeData: DeviceTree;
 
+  is_cache_coloring_enabled: boolean;
+
 
   constructor(
     private modalService: NgbModal,
@@ -71,6 +73,7 @@ export class DomainsComponent implements OnInit {
     });
     */
     this.loadDomains();
+    this.is_cache_coloring_enabled = this.localmemory.getData("cache_coloring_enabled") || false;
     console.log(this.domains);
 
     // Notify Error to user if device tree is not loaded!

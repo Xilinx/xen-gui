@@ -59,7 +59,7 @@
                 <td>START COMMAND</td>
                 <td>{{domain.bootargs}}</td>
               </tr>
-              <tr>
+              <tr  *ngIf="is_cache_coloring_enabled">
                 <td>COLORS</td>
                 <td>
                   <span *ngFor="let color of domain.colors" class="label cache-coloring-label"
@@ -302,7 +302,7 @@
 
   <hr class="mt-2 mb-3" />
 
-  <div class="row">
+  <div class="row"  *ngIf="is_cache_coloring_enabled">
 
     <div class="col-sm-12">
       <div class="box box-widget domu-box">

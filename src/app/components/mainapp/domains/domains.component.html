@@ -60,7 +60,7 @@
                 <td>START COMMAND</td>
                 <td>{{domain.bootargs}}</td>
               </tr>
-              <tr>
+              <tr *ngIf="is_cache_coloring_enabled">
                 <td>COLORS</td>
                 <td>
                   <div class="row">

@@ -29,6 +29,7 @@ export class DomainDetailsComponent implements OnInit {
   deviceTreeData: DeviceTree;
   all_colors: Colors[];
   manual_cache_coloring_enabled: boolean = false;
+  is_cache_coloring_enabled: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,6 +51,8 @@ export class DomainDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.is_cache_coloring_enabled = this.localmemory.getData("cache_coloring_enabled") || false;
+
     this.deviceTreeData = this.localmemory.getData("dts_data");
     if (!this.deviceTreeData || this.deviceTreeData.availableDevices.length == 0) {
       // Notify Error to user if device tree is not loaded!

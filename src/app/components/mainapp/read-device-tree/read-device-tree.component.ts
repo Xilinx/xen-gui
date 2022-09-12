@@ -107,6 +107,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
     this.localmemory.saveData("boot_config", bootConfig);
     this.localmemory.saveData("dts_data", this.deviceTreeData);
     this.localmemory.saveData("dts_json", this.deviceTreeJson);
+    this.localmemory.saveData("cache_coloring_enabled", false);
   }
 
   private async readDtsString(s: string) {
