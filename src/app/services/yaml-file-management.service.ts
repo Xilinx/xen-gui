@@ -39,6 +39,7 @@ export class YamlFileManagementService {
     var domains: [Domain] = this.localmemory.getData("domains");
     var boot_config: BootConfiguration = this.localmemory.getData("boot_config");
     var dts: DeviceTree = this.localmemory.getData("dts_data");
+    var dts_json = this.localmemory.getData("dts_json");
 
     var memory = [];
     for (var i = 0; i < dts.memories.length; ++i) {
@@ -60,20 +61,31 @@ export class YamlFileManagementService {
       delete domains[key].ramdisk;
 
       // calculate colors range
-      var colors_string = "";
-      var min_color = 9999;
-      var max_color = -1;
-      for (var j = 0; j < domains[key].colors.length; ++j) {
-        if (domains[key].colors[j] < min_color) {
-          min_color = domains[key].colors[j];
+      if (domains[key].colors.length > 0) {
+        var colors_string = "";
+        var min_color = domains[key].colors[0];
+        var max_color = min_color;
+
+        for (var j = 1; j < domains[key].colors.length; ++j) {
+          if (domains[key].colors[j] < min_color) {
+            min_color = domains[key].colors[j];
+          }
+          if (domains[key].colors[j] > max_color) {
+            // check if the current max color is sequential
+            if (domains[key].colors[j] - 1 == max_color) {
+              max_color = domains[key].colors[j];
+            }
+            else {
+              colors_string += min_color + "-" + max_color + ",";
+              min_color = domains[key].colors[j];
+              max_color = domains[key].colors[j];
+            }
+          }
         }
-        if (domains[key].colors[j] > max_color) {
-          max_color = domains[key].colors[j];
-        }
+        colors_string += min_color + "-" + max_color;
+        delete domains[key].colors;
+        (<any>domains[key]).colors = colors_string;
       }
-      colors_string = min_color + "-" + max_color;
-      delete domains[key].colors;
-      (<any>domains[key]).colors = colors_string;
 
       var mem = domains[key].memory;
       delete domains[key].memory;
@@ -98,7 +110,8 @@ export class YamlFileManagementService {
           memory: memory,
           "kernel-path": "/path/to/xen",
           domains: domains
-        }
+        },
+        "device-tree": dts_json
       }
     };
 
