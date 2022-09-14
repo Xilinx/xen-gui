@@ -65,8 +65,8 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
 
   ngOnInit(){
     this.deviceTreeData = this.localmemory.getData("dts_data");
-    this.available_vcpus = this.vcpusManager.getAvailableVcpus();
-    this.available_memory = this.memoryManager.getAvailableMemory();
+    this.available_vcpus = this.vcpusManager.getAvailableVcpus()+this.domain.vcpus;
+    this.available_memory = this.memoryManager.getAvailableMemory()+this.domain.memory;
 
     this.memory_options.ceil = this.available_memory;
     this.vcpus_options.ceil = this.available_vcpus;

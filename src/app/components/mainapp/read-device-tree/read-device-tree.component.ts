@@ -41,7 +41,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     //this.readDtsString(this.dts);
     if ((<DeviceTree><unknown>this.localmemory.getData("dts_data"))) {
       this.deviceTreeData = this.localmemory.getData("dts_data");
@@ -50,6 +50,15 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
       this.ref.detectChanges();
     } else {
       this.deviceTreeData = new DeviceTree();
+    }
+
+    // https://github.com/ColorlibHQ/AdminLTE/issues/1822#issuecomment-404761829
+    // workaround for activating collapse boxwidget
+    // $("#box-widget").boxWidget()
+    await this.utils.waitSeconds(0.100);
+    var boxes = $("div.box[data-widget]");
+    for (var i = 0; i < boxes.length; ++i) {
+      $(boxes[i]).boxWidget();
     }
   }
 
@@ -120,9 +129,6 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
     this.ref.detectChanges();
 
-    this.localmemory.saveData("dts_data", this.deviceTreeData);
-    this.localmemory.saveData("dts_json", this.deviceTreeJson);
-
     // https://github.com/ColorlibHQ/AdminLTE/issues/1822#issuecomment-404761829
     // workaround for activating collapse boxwidget
     // $("#box-widget").boxWidget()
@@ -132,8 +138,10 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
       $(boxes[i]).boxWidget();
     }
 
-    this.populateLocalMemory();
+    this.localmemory.saveData("dts_data", this.deviceTreeData);
+    this.localmemory.saveData("dts_json", this.deviceTreeJson);
 
+    this.populateLocalMemory();
   }
 
   handleFileInput(files: FileList) {
