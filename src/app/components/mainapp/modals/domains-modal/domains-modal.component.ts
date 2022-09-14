@@ -68,6 +68,13 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
     this.available_vcpus = this.vcpusManager.getAvailableVcpus()+this.domain.vcpus;
     this.available_memory = this.memoryManager.getAvailableMemory()+this.domain.memory;
 
+    if(this.domain.vcpus == 0){
+      this.domain.vcpus = 1;
+    }
+    if(this.domain.memory == 0){
+      this.domain.memory = 256 * 1024 * 1024;
+    }
+
     this.memory_options.ceil = this.available_memory;
     this.vcpus_options.ceil = this.available_vcpus;
   }
