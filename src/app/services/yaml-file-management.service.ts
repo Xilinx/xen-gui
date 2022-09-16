@@ -40,6 +40,7 @@ export class YamlFileManagementService {
     var boot_config: BootConfiguration = this.localmemory.getData("boot_config");
     var dts: DeviceTree = this.localmemory.getData("dts_data");
     var dts_json = this.localmemory.getData("dts_json");
+    var is_cache_coloring_enabled = this.localmemory.getData("cache_coloring_enabled") || false;
 
     var memory = [];
     for (var i = 0; i < dts.memories.length; ++i) {
@@ -61,30 +62,50 @@ export class YamlFileManagementService {
       delete domains[key].ramdisk;
 
       // calculate colors range
-      if (domains[key].colors.length > 0) {
-        var colors_string = "";
-        var min_color = domains[key].colors[0];
-        var max_color = min_color;
+      if (is_cache_coloring_enabled) {
+        if (domains[key].colors.length > 0) {
+          var colors_string = "";
+          var min_color = domains[key].colors[0];
+          var max_color = min_color;
 
-        for (var j = 1; j < domains[key].colors.length; ++j) {
-          if (domains[key].colors[j] < min_color) {
-            min_color = domains[key].colors[j];
+          for (var j = 1; j < domains[key].colors.length; ++j) {
+            if (domains[key].colors[j] < min_color) {
+              min_color = domains[key].colors[j];
+            }
+            if (domains[key].colors[j] > max_color) {
+              // check if the current max color is sequential
+              if (domains[key].colors[j] - 1 == max_color) {
+                max_color = domains[key].colors[j];
+              }
+              else {
+                colors_string += min_color + "-" + max_color + ",";
+                min_color = domains[key].colors[j];
+                max_color = domains[key].colors[j];
+              }
+            }
           }
-          if (domains[key].colors[j] > max_color) {
-            // check if the current max color is sequential
-            if (domains[key].colors[j] - 1 == max_color) {
-              max_color = domains[key].colors[j];
+          colors_string += min_color + "-" + max_color;
+
+          // remove useless ranges
+          var tmp_colors = "";
+          var _colors_string = colors_string.split(",");
+          for (var j = 0; j < _colors_string.length; ++j) {
+            var __colors_string = _colors_string[j].split("-");
+            if (__colors_string[0] == __colors_string[1]) {
+              tmp_colors += __colors_string[0] + ",";
             }
             else {
-              colors_string += min_color + "-" + max_color + ",";
-              min_color = domains[key].colors[j];
-              max_color = domains[key].colors[j];
+              tmp_colors += __colors_string[0] + "-" + __colors_string[1] + ",";
             }
           }
+          colors_string = tmp_colors.substring(0, tmp_colors.length - 1);
+
+          delete domains[key].colors;
+          (<any>domains[key]).colors = colors_string;
         }
-        colors_string += min_color + "-" + max_color;
+      }
+      else {
         delete domains[key].colors;
-        (<any>domains[key]).colors = colors_string;
       }
 
       var mem = domains[key].memory;

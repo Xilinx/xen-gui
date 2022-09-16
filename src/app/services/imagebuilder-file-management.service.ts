@@ -61,7 +61,7 @@ XEN="${boot.xen_binary}"
 XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} dom0_mem=${this.utils.formatBytes(dom0.memory).replace(" ", "")} dom0_max_vcpus=${dom0.vcpus}"
     `;
 
-    colors_string = "";    
+    colors_string = "";
     min_color = dom0.colors[0];
     max_color = min_color;
 
@@ -71,7 +71,7 @@ XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.
       }
       if (dom0.colors[j] > max_color) {
         // check if the current max color is sequential
-        if(dom0.colors[j] - 1 == max_color){
+        if (dom0.colors[j] - 1 == max_color) {
           max_color = dom0.colors[j];
         }
         else {
@@ -83,19 +83,19 @@ XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.
     }
     colors_string += min_color + "-" + max_color;
 
-      // remove useless ranges
-      var tmp_colors = "";
-      var _colors_string = colors_string.split(",");
-      for(var j = 0; j < _colors_string.length; ++j){
-        var __colors_string = _colors_string[j].split("-");
-        if(__colors_string[0] == __colors_string[1]){
-          tmp_colors += __colors_string[0] + ",";
-        }
-        else {
-          tmp_colors += __colors_string[0] + "-" + __colors_string[1] + ",";
-        }
+    // remove useless ranges
+    var tmp_colors = "";
+    var _colors_string = colors_string.split(",");
+    for (var j = 0; j < _colors_string.length; ++j) {
+      var __colors_string = _colors_string[j].split("-");
+      if (__colors_string[0] == __colors_string[1]) {
+        tmp_colors += __colors_string[0] + ",";
       }
-      colors_string = tmp_colors.substring(0, tmp_colors.length - 1);
+      else {
+        tmp_colors += __colors_string[0] + "-" + __colors_string[1] + ",";
+      }
+    }
+    colors_string = tmp_colors.substring(0, tmp_colors.length - 1);
 
 
     var dom0_config_file: string = `
@@ -123,14 +123,14 @@ NUM_DOMUS=${domains.length}
       colors_string = "";
       min_color = domains[i].colors[0];
       max_color = min_color;
-  
+
       for (var j = 1; j < domains[i].colors.length; ++j) {
         if (domains[i].colors[j] < min_color) {
           min_color = domains[i].colors[j];
         }
         if (domains[i].colors[j] > max_color) {
           // check if the current max color is sequential
-          if(domains[i].colors[j] - 1 == max_color){
+          if (domains[i].colors[j] - 1 == max_color) {
             max_color = domains[i].colors[j];
           }
           else {
@@ -146,9 +146,9 @@ NUM_DOMUS=${domains.length}
       // remove useless ranges
       var tmp_colors = "";
       var _colors_string = colors_string.split(",");
-      for(var j = 0; j < _colors_string.length; ++j){
+      for (var j = 0; j < _colors_string.length; ++j) {
         var __colors_string = _colors_string[j].split("-");
-        if(__colors_string[0] == __colors_string[1]){
+        if (__colors_string[0] == __colors_string[1]) {
           tmp_colors += __colors_string[0] + ",";
         }
         else {
