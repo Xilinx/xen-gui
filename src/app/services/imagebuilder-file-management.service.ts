@@ -83,6 +83,21 @@ XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.
     }
     colors_string += min_color + "-" + max_color;
 
+      // remove useless ranges
+      var tmp_colors = "";
+      var _colors_string = colors_string.split(",");
+      for(var j = 0; j < _colors_string.length; ++j){
+        var __colors_string = _colors_string[j].split("-");
+        if(__colors_string[0] == __colors_string[1]){
+          tmp_colors += __colors_string[0] + ",";
+        }
+        else {
+          tmp_colors += __colors_string[0] + "-" + __colors_string[1] + ",";
+        }
+      }
+      colors_string = tmp_colors.substring(0, tmp_colors.length - 1);
+
+
     var dom0_config_file: string = `
 DOM0_KERNEL="${dom0.kernel}"
 DOM0_CMD="console=${dom0.bootargs}"
@@ -127,6 +142,20 @@ NUM_DOMUS=${domains.length}
         }
       }
       colors_string += min_color + "-" + max_color;
+
+      // remove useless ranges
+      var tmp_colors = "";
+      var _colors_string = colors_string.split(",");
+      for(var j = 0; j < _colors_string.length; ++j){
+        var __colors_string = _colors_string[j].split("-");
+        if(__colors_string[0] == __colors_string[1]){
+          tmp_colors += __colors_string[0] + ",";
+        }
+        else {
+          tmp_colors += __colors_string[0] + "-" + __colors_string[1] + ",";
+        }
+      }
+      colors_string = tmp_colors.substring(0, tmp_colors.length - 1);
 
       domu_config_file += `
 DOMU_KERNEL[${i}]="${domains[i].kernel}"

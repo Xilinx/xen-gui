@@ -14,7 +14,7 @@ export class XenDeviceTreeUtilsService {
 
   constructor() { }
 
-  public readDTSString(s: string): {data: DeviceTree, json: {}}{
+  public readDTSString(s: string): { data: DeviceTree, json: {} } {
     var deviceTreeJson = {};
     var deviceTreeData: DeviceTree = new DeviceTree();
 
@@ -82,6 +82,44 @@ export class XenDeviceTreeUtilsService {
 
     deviceTreeData = new DeviceTree();
 
+    // convert big number in hex format
+    var dd = deviceTreeJson["/"];
+    
+    dd = Object.keys(dd).reduce(function sanitizeBooleanStructureRecursively (collector, key) {
+      var
+        source  = collector.source,
+        target  = collector.target,
+    
+        value   = source[key],
+    
+        str
+      ;
+      if (value && (typeof value == "object")) {
+    
+        value = Object.keys(value).reduce(sanitizeBooleanStructureRecursively, {
+    
+          source: value,
+          target: {}
+    
+        }).target;
+    
+      } else if (typeof value == "number") {
+    
+        value = "0x"+value.toString(16);
+      }
+      target[key] = value;
+    
+      return collector;
+    
+    }, {
+    
+      source: dd,
+      target: {}
+    
+    }).target;
+        
+    deviceTreeJson["/"] = dd;
+
     // count the number of cpus (how many cpu entry in devicetree)
     deviceTreeData.numberOfCPUs = 0;
     for (const [key, value] of Object.entries(deviceTreeJson["/"].cpus)) {
@@ -103,24 +141,25 @@ export class XenDeviceTreeUtilsService {
 
     // count number of devices and save device name
     deviceTreeData.numberOfAvailableDevices = 0;
-    if (deviceTreeJson["/"].hasOwnProperty("amba")) {
-      for (const [key, value] of Object.entries(deviceTreeJson["/"].amba)) {
-        // check if has label (key contains ":")
-        var label = "";
-        var name = "";
-        var address = 0;
-        if(key.split(":").length > 1){
-          label = key.split(":")[0];
-          name = key.split(":")[1].split("@")[0];
-          address = parseInt(key.split(":")[1].split("@")[1], 16);
-        }
-        else {
-          label = "";
-          name = key.split("@")[0];
-          address = parseInt(key.split("@")[1], 16);
-        }
-        if (deviceTreeJson["/"].amba[key].hasOwnProperty("status")) {
-          if (deviceTreeJson["/"].amba[key].status != "disabled") {
+    if (deviceTreeJson["/"].hasOwnProperty("amba") || deviceTreeJson["/"].hasOwnProperty("axi")) {
+      var dd = deviceTreeJson["/"].amba ? deviceTreeJson["/"].amba : deviceTreeJson["/"].axi;
+      for (const [key, value] of Object.entries(dd)) {
+        if (dd[key].hasOwnProperty("status")) {
+          // check if has label (key contains ":")
+          var label = "";
+          var name = "";
+          var address = 0;
+          if (key.split(":").length > 1) {
+            label = key.split(":")[0];
+            name = key.split(":")[1].split("@")[0];
+            address = parseInt(key.split(":")[1].split("@")[1], 16);
+          }
+          else {
+            label = "";
+            name = key.split("@")[0];
+            address = parseInt(key.split("@")[1], 16);
+          }
+          if (dd[key].status != "disabled") {
             deviceTreeData.numberOfAvailableDevices++;
             deviceTreeData.availableDevices.push(new Device(name, address));
           } else {
@@ -129,40 +168,15 @@ export class XenDeviceTreeUtilsService {
         }
       }
     }
-    if (deviceTreeJson["/"].hasOwnProperty("axi")) {
-      for (const [key, value] of Object.entries(deviceTreeJson["/"].axi)) {
-        // check if has label (key contains ":")
-        var label = "";
-        var name = "";
-        var address = 0;
-        if(key.split(":").length > 1){
-          label = key.split(":")[0];
-          name = key.split(":")[1].split("@")[0];
-          address = parseInt(key.split(":")[1].split("@")[1], 16);
-        }
-        else {
-          label = "";
-          name = key.split("@")[0];
-          address = parseInt(key.split("@")[1], 16);
-        }
-        if (deviceTreeJson["/"].amba[key].hasOwnProperty("status")) {
-          if (deviceTreeJson["/"].amba[key].status != "disabled") {
-            deviceTreeData.numberOfAvailableDevices++;
-            deviceTreeData.availableDevices.push(new Device(name, address));
-          } else {
-            deviceTreeData.disabledDevices.push(new Device(name, address));
-          }
-        }
-      }
-    }
-    deviceTreeData.availableDevices.sort(function(a, b) {
+
+    deviceTreeData.availableDevices.sort(function (a, b) {
       return a.name.localeCompare(b.name);
     });
-    deviceTreeData.disabledDevices.sort(function(a, b) {
+    deviceTreeData.disabledDevices.sort(function (a, b) {
       return a.name.localeCompare(b.name);
     });
 
-    return {"data": deviceTreeData, "json": deviceTreeJson};
+    return { "data": deviceTreeData, "json": deviceTreeJson };
   }
 
 }
