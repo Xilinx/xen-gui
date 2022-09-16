@@ -82,44 +82,6 @@ export class XenDeviceTreeUtilsService {
 
     deviceTreeData = new DeviceTree();
 
-    // convert big number in hex format
-    var dd = deviceTreeJson["/"];
-    
-    dd = Object.keys(dd).reduce(function sanitizeBooleanStructureRecursively (collector, key) {
-      var
-        source  = collector.source,
-        target  = collector.target,
-    
-        value   = source[key],
-    
-        str
-      ;
-      if (value && (typeof value == "object")) {
-    
-        value = Object.keys(value).reduce(sanitizeBooleanStructureRecursively, {
-    
-          source: value,
-          target: {}
-    
-        }).target;
-    
-      } else if (typeof value == "number") {
-    
-        value = "0x"+value.toString(16);
-      }
-      target[key] = value;
-    
-      return collector;
-    
-    }, {
-    
-      source: dd,
-      target: {}
-    
-    }).target;
-        
-    deviceTreeJson["/"] = dd;
-
     // count the number of cpus (how many cpu entry in devicetree)
     deviceTreeData.numberOfCPUs = 0;
     for (const [key, value] of Object.entries(deviceTreeJson["/"].cpus)) {
@@ -175,6 +137,31 @@ export class XenDeviceTreeUtilsService {
     deviceTreeData.disabledDevices.sort(function (a, b) {
       return a.name.localeCompare(b.name);
     });
+
+    // convert big number in hex format
+    var dd = deviceTreeJson["/"];
+    dd = Object.keys(dd).reduce(function sanitizeBooleanStructureRecursively (collector, key) {
+      var
+        source  = collector.source,
+        target  = collector.target,
+        value   = source[key],
+        str
+      ;
+      if (value && (typeof value == "object")) {
+        value = Object.keys(value).reduce(sanitizeBooleanStructureRecursively, {
+          source: value,
+          target: {}
+        }).target;
+      } else if (typeof value == "number") {
+        value = "0x"+value.toString(16);
+      }
+      target[key] = value;
+      return collector;
+    }, {
+      source: dd,
+      target: {}
+    }).target;
+    deviceTreeJson["/"] = dd;    
 
     return { "data": deviceTreeData, "json": deviceTreeJson };
   }
