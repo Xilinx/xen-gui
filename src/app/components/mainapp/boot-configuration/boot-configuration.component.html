@@ -25,12 +25,20 @@
           </div>
         -->
           <div class="progress-group" style="margin:40px 0px">
-            <span class="progress-text">Quantity</span>
-            <span class="progress-number"><b>{{ utils.formatBytes(bootConfig.memory_high_value) }}</b></span>
+            <span class="progress-text">Total memory</span>
+            <span class="progress-number"><b>{{ utils.formatBytes(total_memory) }}</b></span>
             <div class="progress sm">
               <div class="progress-bar progress-bar-green" style="width: 100%;background-color:#85C440"></div>
             </div>
           </div>
+
+          <div class="progress-group" style="margin:40px 0px">
+          <span class="progress-text">First bank memory</span>
+          <span class="progress-number"><b>{{ utils.formatBytes(bootConfig.memory_high_value) }}</b></span>
+          <div class="progress sm">
+            <div class="progress-bar progress-bar-green" [ngStyle]="{'width': ceil(bootConfig.memory_high_value * 100 / total_memory) + '%', 'background-color':'#85C440'}"></div>
+          </div>
+        </div>
 
         </div>
       </div>
@@ -47,8 +55,8 @@
               <p><b>Load command</b></p>
 
               <input type="radio" id="load_command1" name="load_command" [(ngModel)]="bootConfig.load_command"
-                (change)="save()" value="tftpd">
-              <label for="load_command1">tftpd</label>
+                (change)="save()" value="tftpb">
+              <label for="load_command1">tftpb</label>
               <br>
               <input type="radio" id="load_command2" name="load_command" [(ngModel)]="bootConfig.load_command"
                 (change)="save()" value="scsi">
@@ -57,6 +65,10 @@
               <input type="radio" id="load_command3" name="load_command" [(ngModel)]="bootConfig.load_command"
                 (change)="save()" value="mmc">
               <label for="load_command3">sd card</label>
+              <br>
+              <input type="radio" id="load_command4" name="load_command" [(ngModel)]="bootConfig.load_command"
+                (change)="save()" value="usb">
+              <label for="load_command4">usb</label>
               <br>
 
             </div>
@@ -148,6 +160,46 @@
 
           </div>
 
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="box box-widget">
+        <div class="box-header with-border">
+          <h2 class="box-title">Scheduler settings</h2>
+        </div>
+        <div class="box-body">
+          <div class="form-check" style="margin:10px 0">
+            <div class="col-sm-12">
+              <input type="radio" id="scheduler1" name="scheduler" [(ngModel)]="bootConfig.scheduler"
+                (change)="save()" value="null">
+              <label for="scheduler1">
+                null
+                <br>
+                <br>
+                <i>
+                  Null assigns every vCPUs to a pCPU, guarantees low overhead, low latency, and consistent performance.                  
+                </i>
+                <br>
+                <br>
+              </label>
+            </div>
+            <div class="col-sm-12">
+              <input type="radio" id="scheduler2" name="scheduler" [(ngModel)]="bootConfig.scheduler"
+                (change)="save()" value="credit">
+              <label for="scheduler2">
+                credit
+                <br>
+                <br>
+                <i>
+                  Credit is a (weighted) proportional fair share virtual CPU scheduler.
+                </i>
+                <br>
+                <br>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -15,9 +15,8 @@ import { BootConfiguration } from '../../../models/boot-configuration';
 export class BootConfigurationComponent implements OnInit {
 
   deviceTreeData: DeviceTree;
-
   cache_coloring_enabled: boolean;
-  
+  total_memory: number;
   memory_options: Options = {
     floor: 0,
     ceil: 4000000000,
@@ -60,9 +59,10 @@ export class BootConfigurationComponent implements OnInit {
         memsize += this.deviceTreeData.memories[i].size;
       }
       this.memory_options.ceil = memsize;
+      this.total_memory = memsize;
       if(!this.bootConfig){
         this.bootConfig = new BootConfiguration();
-        this.bootConfig.memory_high_value = memsize;
+        this.total_memory = memsize;
       }
       
     }
@@ -80,6 +80,11 @@ export class BootConfigurationComponent implements OnInit {
   save() {
     this.localmemory.saveData("boot_config", this.bootConfig);
     this.localmemory.saveData("cache_coloring_enabled", this.cache_coloring_enabled);
+    this.localmemory.saveData("scheduler", this.bootConfig.scheduler);
+  }
+
+  ceil(n: number){
+    return Math.ceil(n);
   }
 
 }

@@ -19,15 +19,14 @@ export class ProjectFileManagementService {
     if (project_name == "Untitled Xen Project") {
       return await this.saveAs();
     } else {
-      this.localmemory.saveData("modified", false, false);
       var dump = this.localmemory.dump();
       fs.writeFileSync(project_name, JSON.stringify(dump, null, 4), 'utf-8');
+      this.localmemory.saveData("modified", false, false);
       return project_name;
     }
   }
 
   async saveAs() {
-    this.localmemory.saveData("modified", false, false);
     var dump = this.localmemory.dump();
     var options = {
       title: "Save file",
@@ -40,6 +39,9 @@ export class ProjectFileManagementService {
     };
 
     const result = await dialog.showSaveDialog(options);
+    if(!result){
+      return "";
+    }
     console.log('Save resolved:', result);
     const filePath = result;
     console.log('filePath -->', filePath);
@@ -47,6 +49,8 @@ export class ProjectFileManagementService {
     fs.writeFileSync(filePath, JSON.stringify(dump, null, 4), 'utf-8');
 
     this.localmemory.saveData("filename", filePath, false);
+
+    this.localmemory.saveData("modified", false, false);
 
     return filePath;
   }

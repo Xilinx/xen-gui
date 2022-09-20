@@ -58,7 +58,7 @@ DEVICE_TREE="${dts.filename}"
 
     var xen_config_file: string = `
 XEN="${boot.xen_binary}"
-XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} dom0_mem=${this.utils.formatBytes(dom0.memory).replace(" ", "")} dom0_max_vcpus=${dom0.vcpus}"
+XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} dom0_mem=${this.utils.formatBytes(dom0.memory).replace(" ", "")} dom0_max_vcpus=${dom0.vcpus}  sched=${boot.scheduler}"
     `;
 
     colors_string = "";
@@ -100,7 +100,7 @@ XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.
 
     var dom0_config_file: string = `
 DOM0_KERNEL="${dom0.kernel}"
-DOM0_CMD="console=${dom0.bootargs}"
+DOM0_CMD="${dom0.bootargs}"
 DOM0_RAMDISK="${dom0.ramdisk}"
 DOM0_MEM=${Math.ceil(dom0.memory / 1024 / 1024)}
 DOM0_VCPUS=${dom0.vcpus}`
@@ -213,11 +213,15 @@ FIT_ENC_UB_DTB="uboot.dtb"
       end;
 
     const result = await dialog.showSaveDialog(options);
+    if(!result){
+      return false;
+    }
     console.log('Save resolved:', result);
     const filePath = result;
     console.log('filePath -->', filePath);
 
     fs.writeFileSync(filePath, config_file, 'utf-8');
 
+    return true;
   }
 }

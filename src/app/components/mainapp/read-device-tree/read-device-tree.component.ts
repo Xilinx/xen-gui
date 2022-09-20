@@ -67,6 +67,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
     this.colorManager.reset();
     this.vcpusManager.reset();
     this.memoryManager.reset();
+    this.localmemory.saveData("scheduler", "null");
 
     var dom0_default_memory = 1024 * 1024 * 1024; // 1G
     var dom0: Domain = new Domain(
@@ -109,7 +110,8 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
     // save boot default config
     var bootConfig = new BootConfiguration();
-    bootConfig.memory_high_value = this.memoryManager.getTotalMemory();
+    //bootConfig.memory_high_value = this.memoryManager.getTotalMemory();
+    bootConfig.memory_high_value = this.deviceTreeData.memories[0].size;
 
     // save on localstorage
     this.localmemory.saveData("domains", domains);    

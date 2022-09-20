@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, NgForm } from '@angular/forms';
 import { Domain } from '../../../../models/domain';
-import { Options, LabelType,  } from '@angular-slider/ngx-slider';
+import { Options, LabelType, } from '@angular-slider/ngx-slider';
 import { UtilsService } from '../../../../services/utils.service';
 import { DeviceTree } from '../../../../models/device-tree';
 import { LocalstorageService } from '../../../../services/localstorage.service';
@@ -34,7 +34,7 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return  this.utils.formatBytes(value);//'0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
+          return this.utils.formatBytes(value);//'0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
         case LabelType.High:
           return this.utils.formatBytes(value); //'0x'+ ('00000000' + value.toString(16).toUpperCase()).slice(-8);
         default:
@@ -59,19 +59,24 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
     private localmemory: LocalstorageService,
     private vcpusManager: VcpusManagementService,
     private memoryManager: MemoryManagementService
-  ){
-    
+  ) {
+
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.deviceTreeData = this.localmemory.getData("dts_data");
-    this.available_vcpus = this.vcpusManager.getAvailableVcpus()+this.domain.vcpus;
-    this.available_memory = this.memoryManager.getAvailableMemory()+this.domain.memory;
+    var scheduler = this.localmemory.getData("scheduler");
+    if (scheduler == "null") {
+      this.available_vcpus = this.vcpusManager.getAvailableVcpus() + this.domain.vcpus;
+    } else {
+      this.available_vcpus = this.vcpusManager.getAvailableVcpus();
+    }
+    this.available_memory = this.memoryManager.getAvailableMemory() + this.domain.memory;
 
-    if(this.domain.vcpus == 0){
+    if (this.domain.vcpus == 0) {
       this.domain.vcpus = 1;
     }
-    if(this.domain.memory == 0){
+    if (this.domain.memory == 0) {
       this.domain.memory = 256 * 1024 * 1024;
     }
 
@@ -82,7 +87,7 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     console.log(this.domain);
     // workaround for setting patchValue in async way
-    setTimeout(()=>{
+    setTimeout(() => {
       this.domainForm.form.patchValue(this.domain);
       console.log(this.domainForm.value);
     },);
@@ -98,15 +103,15 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
     (<any>(this.vcpus_slider)).elementRef.nativeElement.querySelector("span.ngx-slider-span.ngx-slider-pointer.ngx-slider-pointer-min").innerHTML = `<div><span>${obj.value}</span></div>`;
   }
 
-  onSubmit(domainForm: NgForm){
-    if(domainForm.valid && this.domain.vcpus > 0){
+  onSubmit(domainForm: NgForm) {
+    if (domainForm.valid && this.domain.vcpus > 0) {
       this.domain = <Domain>(this.utils.patchValues(this.domain, domainForm.value));
 
       this.modalService.dismissAll(this.domain);
     }
   }
 
-  close(){
+  close() {
     this.modalService.dismissAll(null);
   }
 

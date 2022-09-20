@@ -66,7 +66,7 @@
                     [ngStyle]="colorLabel(color)">{{color}}</span>
                 </td>
               </tr>
-              <tr>
+              <tr *ngIf="domain.name != 'DOM0'">
                 <td>PASSTHROUGH_DTB</td>
                 <td>{{domain.passthrough_dtb}}</td>
               </tr>

@@ -34,10 +34,13 @@ export class VcpusManagementService {
 
   public assignVcpus(domain_name: string, vcpus: number) {
     var domains = this.localmemory.getData("domains");
-    var available_vcpus: number = this.localmemory.getData("vcpus");
+    var available_vcpus: number = this.getAvailableVcpus();
+    var scheduler = this.localmemory.getData("scheduler");
 
     domains[domain_name].vcpus = vcpus;
-    available_vcpus -= vcpus;
+    if (scheduler == "null") {
+      available_vcpus -= vcpus;
+    }
 
     this.localmemory.saveData("domains", domains);
     this.localmemory.saveData("vcpus", available_vcpus);
@@ -45,19 +48,30 @@ export class VcpusManagementService {
 
   public removeCpus(domain_name: string) {
     var domains = this.localmemory.getData("domains");
-    var available_vcpus: number = this.localmemory.getData("vcpus");
+    var available_vcpus: number = this.getAvailableVcpus();
+    var scheduler = this.localmemory.getData("scheduler");
     var vcpus = 0;
 
     vcpus = domains[domain_name].vcpus;
-    available_vcpus += vcpus;
+    if (scheduler == "null") {
+      available_vcpus += vcpus;
+    }
     domains[domain_name].vcpus = 0;
 
     this.localmemory.saveData("domains", domains);
     this.localmemory.saveData("vcpus", available_vcpus);
   }
 
-  public getAvailableVcpus(){
-    return this.localmemory.getData("vcpus");
+  public getAvailableVcpus() {
+    var deviceTree: DeviceTree = this.localmemory.getData("dts_data");
+    var scheduler = this.localmemory.getData("scheduler");
+
+    if(scheduler == "null"){
+      return this.localmemory.getData("vcpus");
+    }
+    else {
+      return deviceTree.numberOfCPUs;
+    }
   }
 
 }

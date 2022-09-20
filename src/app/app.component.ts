@@ -169,23 +169,33 @@ export class AppComponent implements OnInit {
   }
 
   async saveProject() {
-    this.current_project_name = await this.projectFileManager.save(this.current_project_name);
-    await this.open_modal(ModalSuccessSavingComponent);
+    var t = await this.projectFileManager.save(this.current_project_name);
+    if(t){
+      this.current_project_name = t;
+      await this.open_modal(ModalSuccessSavingComponent);
+    }
   }
 
   async saveProjectAs() {
-    this.current_project_name = await this.projectFileManager.saveAs();
-    await this.open_modal(ModalSuccessSavingComponent);
+    var t = await this.projectFileManager.saveAs();
+    if(t){
+      this.current_project_name = t;
+      await this.open_modal(ModalSuccessSavingComponent);
+    }
   }
 
-  async saveImageBuilder(){
-    this.imageBuilderFileManager.saveAs();  
-    await this.open_modal(ModalSuccessSavingComponent);
+  async saveImageBuilder() {
+    var t = await this.imageBuilderFileManager.saveAs();
+    if (t) {
+      await this.open_modal(ModalSuccessSavingComponent);
+    }
   }
 
-  async saveYAML(){
-    this.yamlFileManager.saveAs();  
-    await this.open_modal(ModalSuccessSavingComponent);
+  async saveYAML() {
+    var t = await this.yamlFileManager.saveAs();
+    if (t) {
+      await this.open_modal(ModalSuccessSavingComponent);
+    }
   }
 
 

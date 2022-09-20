@@ -31,6 +31,10 @@ export class YamlFileManagementService {
     };
 
     const result = await dialog.showSaveDialog(options);
+    if(!result){
+      return "";
+    }
+
     console.log('Save resolved:', result);
     const filePath = result;
     console.log('filePath -->', filePath);
@@ -42,6 +46,7 @@ export class YamlFileManagementService {
     var dts_json = this.localmemory.getData("dts_json");
     var is_cache_coloring_enabled = this.localmemory.getData("cache_coloring_enabled") || false;
 
+    boot_config.bootargs += " sched=" + boot_config.scheduler;
     var memory = [];
     for (var i = 0; i < dts.memories.length; ++i) {
       memory.push({
