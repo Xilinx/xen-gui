@@ -29,20 +29,47 @@
         <tbody>
           <tr>
             <td>KERNEL</td>
-            <td><input type="text" class="form-control" name="kernel" ngModel required #kernel="ngModel"
-                placeholder="insert kernel name"></td>
+            <td>
+              <div class="row">
+                <div class="col-sm-4">
+                  <a class='btn btn-xen' href='#'>
+                    Search file
+                    <input type="file" class="without-label" name="file_source" size="40"
+                      (change)="domainForm.form.patchValue({kernel: $event.target.files.item(0).name})">
+                  </a>
+                </div>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="kernel" ngModel required #kernel="ngModel"
+                    placeholder="insert kernel name">
+                </div>
+              </div>
+            </td>
           </tr>
           <tr>
             <td>RAMDISK</td>
-            <td><input type="text" class="form-control" name="ramdisk" ngModel required #ramdisk="ngModel"
-                placeholder="insert ramdisk name"></td>
+            <td>
+              <div class="row">
+                <div class="col-sm-4">
+                  <a class='btn btn-xen' href='#'>
+                    Search file
+                    <input type="file" class="without-label" name="file_source" size="40"
+                      (change)="domainForm.form.patchValue({ramdisk: $event.target.files.item(0).name})">
+                  </a>
+                </div>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="ramdisk" ngModel required #ramdisk="ngModel"
+                    placeholder="insert ramdisk name">
+                </div>
+              </div>
+            </td>
           </tr>
           <tr>
             <td>
               MEM
-              <span class="invalid-feedback" [ngStyle]="{'display':domain.memory > 0 ? 'none' : 'block' }" style="max-width:200px">
+              <span class="invalid-feedback" [ngStyle]="{'display':domain.memory > 0 ? 'none' : 'block' }"
+                style="max-width:200px">
                 Please assign more than 1 Byte.
-              </span>  
+              </span>
             </td>
             <td>
               <div class="row">
@@ -63,9 +90,10 @@
           <tr>
             <td>
               <p>VCPUS
-                <span class="invalid-feedback" [ngStyle]="{'display':domain.vcpus > 0 ? 'none' : 'block' }" style="max-width:200px">
+                <span class="invalid-feedback" [ngStyle]="{'display':domain.vcpus > 0 ? 'none' : 'block' }"
+                  style="max-width:200px">
                   Please assign at least 1 vcpu.
-                </span>  
+                </span>
               </p>
             </td>
             <td>
@@ -75,7 +103,7 @@
                 <div class="col-sm-10">
                   <div class="custom-slider-dom-vcpu">
                     <ngx-slider #vcpus_slider [(value)]="domain.vcpus" [options]="vcpus_options"
-                    (userChange)="onChangeSliderVcpus($event)">
+                      (userChange)="onChangeSliderVcpus($event)">
                     </ngx-slider>
                   </div>
                 </div>
@@ -86,13 +114,13 @@
           </tr>
           <tr>
             <td>START COMMAND</td>
-            <td><input type="text" class="form-control" name="bootargs" ngModel required
-                #bootargs="ngModel" placeholder="insert full start command"></td>
+            <td><input type="text" class="form-control" name="bootargs" ngModel required #bootargs="ngModel"
+                placeholder="insert full start command"></td>
           </tr>
           <tr>
             <td>PASSTHROUGH_DTB</td>
-            <td><input type="text" class="form-control" name="passthrough_dtb" ngModel
-                #passthrough_dtb="ngModel" placeholder="insert passthrough dtb or leave empty"></td>
+            <td><input type="text" class="form-control" name="passthrough_dtb" ngModel #passthrough_dtb="ngModel"
+                placeholder="insert passthrough dtb or leave empty"></td>
           </tr>
         </tbody>
       </table>
