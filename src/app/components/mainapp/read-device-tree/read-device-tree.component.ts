@@ -62,7 +62,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private populateLocalMemory(){
+  private populateLocalMemory() {
     console.log("reconstructing local memory...");
     this.colorManager.reset();
     this.vcpusManager.reset();
@@ -114,7 +114,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
     bootConfig.memory_high_value = this.deviceTreeData.memories[0].size;
 
     // save on localstorage
-    this.localmemory.saveData("domains", domains);    
+    this.localmemory.saveData("domains", domains);
     this.localmemory.saveData("boot_config", bootConfig);
     this.localmemory.saveData("dts_data", this.deviceTreeData);
     this.localmemory.saveData("dts_json", this.deviceTreeJson);
@@ -123,37 +123,46 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
   private async readDtsString(s: string) {
 
-    var _tmp_ = this.xendtsutils.readDTSString(s);
-    this.deviceTreeData = _tmp_.data;
-    this.deviceTreeData.filename = this.dtsFile.name;
-    this.deviceTreeJson = _tmp_.json;
-    $('#json-viewer').jsonViewer(this.deviceTreeJson, { collapsed: true });
+    try {
+      var _tmp_ = this.xendtsutils.readDTSString(s);
+      this.deviceTreeData = _tmp_.data;
+      this.deviceTreeData.filename = this.dtsFile.name;
+      this.deviceTreeJson = _tmp_.json;
+      $('#json-viewer').jsonViewer(this.deviceTreeJson, { collapsed: true });
 
-    this.ref.detectChanges();
+      this.ref.detectChanges();
 
-    // https://github.com/ColorlibHQ/AdminLTE/issues/1822#issuecomment-404761829
-    // workaround for activating collapse boxwidget
-    // $("#box-widget").boxWidget()
-    await this.utils.waitSeconds(0.100);
-    var boxes = $("div.box[data-widget]");
-    for (var i = 0; i < boxes.length; ++i) {
-      $(boxes[i]).boxWidget();
+      // https://github.com/ColorlibHQ/AdminLTE/issues/1822#issuecomment-404761829
+      // workaround for activating collapse boxwidget
+      // $("#box-widget").boxWidget()
+      await this.utils.waitSeconds(0.100);
+      var boxes = $("div.box[data-widget]");
+      for (var i = 0; i < boxes.length; ++i) {
+        $(boxes[i]).boxWidget();
+      }
+
+      this.localmemory.saveData("dts_data", this.deviceTreeData);
+      this.localmemory.saveData("dts_json", this.deviceTreeJson);
+
+      this.populateLocalMemory();
+    }
+    catch (e) {
+      console.error(e);
+      this.error = true;
+      this.ref.detectChanges();
+
     }
 
-    this.localmemory.saveData("dts_data", this.deviceTreeData);
-    this.localmemory.saveData("dts_json", this.deviceTreeJson);
-
-    this.populateLocalMemory();
   }
 
   handleFileInput(files: FileList) {
     this.dtsFile = files.item(0);
     this.deviceTreeData.filename = this.dtsFile.name;
     let fileReader = new FileReader();
+    this.error = false;
     fileReader.onload = (e) => {
       try {
         this.readDtsString(<string>fileReader.result);
-        this.error = false;
       } catch (e) {
         console.error(e);
         this.error = true;

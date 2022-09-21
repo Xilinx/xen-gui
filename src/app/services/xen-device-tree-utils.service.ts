@@ -17,16 +17,18 @@ export class XenDeviceTreeUtilsService {
   public readDTSString(s: string): { data: DeviceTree, json: {} } {
     var deviceTreeJson = {};
     var deviceTreeData: DeviceTree = new DeviceTree();
-
     var tmp = s;
     tmp = tmp.replace(/\/dts.*\/;/g, "");
     tmp = tmp.replace(/\/include.*/g, "");
+    // multiline style-C comments
+    tmp = tmp.replace(/\/\*(?:(?!\*\/).)*\*\/\n?/sg, "\n");
+    // multiline fields
+    tmp = tmp.replace(/,[\r\n]+[\t]*[ ]*/gm, ", ");
     tmp = tmp.replace(/};/g, "");
-    tmp = tmp.replace(/{/g, ":");
+    tmp = tmp.replace(/[ ]*{[ ]*[\r\n]+/gm, ":\n");
     tmp = tmp.replace(/=/g, ":");
-    tmp = tmp.replace(/</g, "[");
-    tmp = tmp.replace(/>/g, "]");
-    tmp = tmp.replace(/\/\*(.*)\*\//gs, "");
+    //tmp = tmp.replace(/</g, "[");
+    //tmp = tmp.replace(/>/g, "]");
     tmp = tmp.replace(/\t/g, "    ");
     tmp = tmp.replace(/\r/g, '\n');
 
@@ -37,6 +39,17 @@ export class XenDeviceTreeUtilsService {
       // if is a comment
       if (check[i].indexOf("//") >= 0 || check[i].indexOf("#") >= 0) {
         check[i] = "";
+      }
+
+      // if there is an angular array
+      if(check[i].indexOf("<") >= 0 || check[i].indexOf(">") >= 0){     
+        debugger;   
+        var check_left = check[i].split("<")[0];
+        var check_right = check[i].split("<")[1];
+        check_right = check_right.replace(/[ ]+/g, ",");
+        check[i] = check_left + "<" + check_right;
+        check[i] = check[i].replace("<", "[");
+        check[i] = check[i].replace(">", "]");
       }
 
       // if there is a terminator character
