@@ -134,7 +134,7 @@ export class YamlFileManagementService {
         xen: {
           bootargs: boot_config.bootargs,
           memory: memory,
-          "kernel-path": "/path/to/xen",
+          "kernel-path": "./xen",
           domains: domains
         },
         "device-tree": dts_json

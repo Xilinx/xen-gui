@@ -99,6 +99,26 @@
         </div>
       </div>
     </div>
+    <!-- U-Boot configuration -->
+
+    <div class="col-md-4">
+      <div class="box box-widget">
+        <div class="box-header with-border">
+          <h2 class="box-title">U-Boot Files</h2>
+        </div>
+        <div class="box-body">
+          <div class="" style="margin:10px 0">
+            <b>u-boot source </b>
+            <input type="text" class="form-control" name="uboot_src" [(ngModel)]="bootConfig.uboot_src"
+                placeholder="u-boot source file">
+            <br>
+            <b>u-boot script</b> <input type="text" class="form-control" name="uboot_script" [(ngModel)]="bootConfig.uboot_script"
+            placeholder="u-boot script file">
+
+              </div>
+        </div>
+      </div>
+    </div>
 
     <div class="col-md-4">
       <div class="box box-widget">
@@ -122,8 +142,45 @@
       </div>
     </div>
 
-    <!-- U-Boot configuration -->
-
+    <div class="col-md-4">
+      <div class="box box-widget">
+        <div class="box-header with-border">
+          <h2 class="box-title">Scheduler settings</h2>
+        </div>
+        <div class="box-body">
+          <div class="form-check" style="margin:10px 0">
+            <div class="col-sm-12">
+              <input type="radio" id="scheduler1" name="scheduler" [(ngModel)]="bootConfig.scheduler"
+                (change)="save()" value="null">
+              <label for="scheduler1">
+                null
+                <br>
+                <br>
+                <i>
+                  Null assigns every vCPUs to a pCPU, guarantees low overhead, low latency, and consistent performance.                  
+                </i>
+                <br>
+                <br>
+              </label>
+            </div>
+            <div class="col-sm-12">
+              <input type="radio" id="scheduler2" name="scheduler" [(ngModel)]="bootConfig.scheduler"
+                (change)="save()" value="credit2">
+              <label for="scheduler2">
+                credit2
+                <br>
+                <br>
+                <i>
+                  Credit is a (weighted) proportional fair share virtual CPU scheduler.
+                </i>
+                <br>
+                <br>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Xen Configuration -->
     <div class="col-md-8">
@@ -162,48 +219,7 @@
 
         </div>
       </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="box box-widget">
-        <div class="box-header with-border">
-          <h2 class="box-title">Scheduler settings</h2>
-        </div>
-        <div class="box-body">
-          <div class="form-check" style="margin:10px 0">
-            <div class="col-sm-12">
-              <input type="radio" id="scheduler1" name="scheduler" [(ngModel)]="bootConfig.scheduler"
-                (change)="save()" value="null">
-              <label for="scheduler1">
-                null
-                <br>
-                <br>
-                <i>
-                  Null assigns every vCPUs to a pCPU, guarantees low overhead, low latency, and consistent performance.                  
-                </i>
-                <br>
-                <br>
-              </label>
-            </div>
-            <div class="col-sm-12">
-              <input type="radio" id="scheduler2" name="scheduler" [(ngModel)]="bootConfig.scheduler"
-                (change)="save()" value="credit">
-              <label for="scheduler2">
-                credit
-                <br>
-                <br>
-                <i>
-                  Credit is a (weighted) proportional fair share virtual CPU scheduler.
-                </i>
-                <br>
-                <br>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    </div>    
     <div class="row divider-20"></div>
 
     <!-- autosave

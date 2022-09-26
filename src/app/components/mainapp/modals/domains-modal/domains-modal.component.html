@@ -117,7 +117,7 @@
             <td><input type="text" class="form-control" name="bootargs" ngModel required #bootargs="ngModel"
                 placeholder="insert full start command"></td>
           </tr>
-          <tr>
+          <tr *ngIf="domain.name != 'DOM0'">
             <td>PASSTHROUGH_DTB</td>
             <td><input type="text" class="form-control" name="passthrough_dtb" ngModel #passthrough_dtb="ngModel"
                 placeholder="insert passthrough dtb or leave empty"></td>

@@ -110,6 +110,7 @@ DOM0_COLORS="${colors_string}"
     `;
     }
 
+    /* optional, not used */
     var dt_config_overlay_file: string = `
 NUM_DT_OVERLAY=0
     `;
@@ -184,8 +185,8 @@ BOOT_AUX_FILE[1]="uboot.cfg"
     `;
 
     var uboot_config_file: string = `
-UBOOT_SOURCE="boot.source"
-UBOOT_SCRIPT="boot.scr"    
+UBOOT_SOURCE="${boot.uboot_src}"
+UBOOT_SCRIPT="${boot.uboot_script}"    
     `;
 
     // optional, not used
@@ -204,7 +205,7 @@ FIT_ENC_UB_DTB="uboot.dtb"
       device_tree_config_file +
       xen_config_file +
       dom0_config_file +
-      dt_config_overlay_file +
+      //dt_config_overlay_file +
       domu_config_file +
       //bitstream_config_file +
       //boot_aux_file_config_file +
