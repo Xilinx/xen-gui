@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
@@ -65,7 +65,8 @@ export class AppComponent implements OnInit {
     private modalService: NgbModal,
     public projectFileManager: ProjectFileManagementService,
     private imageBuilderFileManager: ImagebuilderFileManagementService,
-    private yamlFileManager: YamlFileManagementService
+    private yamlFileManager: YamlFileManagementService,
+    private ref: ChangeDetectorRef,    
   ) {
     this.username = os.userInfo().username;
 
@@ -128,6 +129,7 @@ export class AppComponent implements OnInit {
 
   updateDomainsMenu(domains: Domain[]) {
     this.domains = domains;
+    this.ref.detectChanges();
   }
 
   setupResizer() {

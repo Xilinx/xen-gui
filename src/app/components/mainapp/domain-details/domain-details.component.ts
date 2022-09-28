@@ -140,7 +140,6 @@ export class DomainDetailsComponent implements OnInit {
   async modifyDomain() {
 
     var old_dn = this.domain;
-
     var dn: Domain = <Domain>(await this.open_modal());
     console.log(dn);
 
@@ -181,8 +180,9 @@ export class DomainDetailsComponent implements OnInit {
       }
 
       this.appComponent.updateDomainsMenu(domains_array);
+      this.ref.detectChanges();
 
-      this.router.navigate(["domains/" + this.domain.name]);
+      //this.router.navigate(["domains/" + this.domain.name]);
     }
   }
 

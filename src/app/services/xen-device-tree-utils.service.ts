@@ -111,7 +111,6 @@ export class XenDeviceTreeUtilsService {
     if (deviceTreeJson["/"].hasOwnProperty("memory")) {
       var reg = deviceTreeJson["/"].memory.reg;
       var i = 0;
-      debugger;
       while (i < reg.length) {
         var _size: bigint = BigInt(0);
         var _address: bigint = BigInt(0);

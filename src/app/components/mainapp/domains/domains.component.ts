@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Colors } from '../../../models/colors.enum';
 import { Domain } from '../../../models/domain';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -38,7 +38,8 @@ export class DomainsComponent implements OnInit {
     private colorsManager: ColorsManagementService,
     private vcpusManager: VcpusManagementService,
     private appComponent: AppComponent,
-    private memoryManager: MemoryManagementService
+    private memoryManager: MemoryManagementService,
+    private ref: ChangeDetectorRef,
   ) { }
 
 
@@ -147,6 +148,9 @@ export class DomainsComponent implements OnInit {
       this.loadDomains();
 
       this.appComponent.updateDomainsMenu(this.domains);
+
+      this.ref.detectChanges();
+
     }
   }
 
@@ -185,6 +189,8 @@ export class DomainsComponent implements OnInit {
 
       this.appComponent.updateDomainsMenu(this.domains);
       
+      this.ref.detectChanges();
+
     }
   }
 
@@ -207,6 +213,8 @@ export class DomainsComponent implements OnInit {
       this.localmemory.saveData("domains", this.localmemory_domains);
 
       this.appComponent.updateDomainsMenu(this.domains);
+
+      this.ref.detectChanges();
 
     }
   }
