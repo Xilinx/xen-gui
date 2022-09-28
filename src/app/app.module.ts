@@ -25,6 +25,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalSuccessSavingComponent } from './components/mainapp/modals/modal-success-saving/modal-success-saving.component';
 
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -43,6 +44,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxSliderModule,
     NgbModule,
     HttpClientModule,
+    
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -50,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     })
+
   ],
   providers: [ElectronService],
   bootstrap: [AppComponent],

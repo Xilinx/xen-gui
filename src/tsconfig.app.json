@@ -6,6 +6,9 @@
     "baseUrl": "",
     "types": []
   },
+  "files": [
+    "../src/app/app.module.ts"
+  ],
   "exclude": [
     "**/*.spec.ts"
   ]

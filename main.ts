@@ -24,7 +24,8 @@ function createWindow() {
     webPreferences: {
       // Disable auxclick event
       // See https://developers.google.com/web/updates/2016/10/auxclick
-      disableBlinkFeatures: 'Auxclick'
+      disableBlinkFeatures: 'Auxclick',
+      nodeIntegration: true,
     },
     acceptFirstMouse: true,
     icon: path.join(__dirname, 'favicon.png')

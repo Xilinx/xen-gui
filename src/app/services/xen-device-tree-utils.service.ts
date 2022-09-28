@@ -32,18 +32,19 @@ export class XenDeviceTreeUtilsService {
     tmp = tmp.replace(/\t/g, "    ");
     tmp = tmp.replace(/\r/g, '\n');
 
+    tmp = tmp.replace(/#/g, '_');
+
     var check = tmp.split(/\n/);
 
     for (var i = 0; i < check.length; i++) {
 
       // if is a comment
-      if (check[i].indexOf("//") >= 0 || check[i].indexOf("#") >= 0) {
+      if (check[i].indexOf("//") >= 0) {
         check[i] = "";
       }
 
       // if there is an angular array
-      if(check[i].indexOf("<") >= 0 || check[i].indexOf(">") >= 0){     
-        debugger;   
+      if (check[i].indexOf("<") >= 0 || check[i].indexOf(">") >= 0) {
         var check_left = check[i].split("<")[0];
         var check_right = check[i].split("<")[1];
         check_right = check_right.replace(/[ ]+/g, ",");
@@ -105,13 +106,33 @@ export class XenDeviceTreeUtilsService {
 
     // extract memory data
     const chunkSize = 4;
+    const address_cells = parseInt(deviceTreeJson["/"]["_address-cells"][0]);
+    const size_cells = parseInt(deviceTreeJson["/"]["_size-cells"][0]);
     if (deviceTreeJson["/"].hasOwnProperty("memory")) {
-      var _memory = deviceTreeJson["/"].memory.reg;
-      for (let i = 0; i < _memory.length; i += chunkSize) {
-        var chunk = _memory.slice(i, i + chunkSize);
+      var reg = deviceTreeJson["/"].memory.reg;
+      var i = 0;
+      debugger;
+      while (i < reg.length) {
+        var size: bigint = BigInt(0);
+        var address: bigint = BigInt(0);
+        if (address_cells == 2)
+          address = (BigInt(reg[i]) << BigInt(32)) | BigInt(reg[i + 1]);
+        else
+          address = BigInt(reg[i]);
+
+        i += address_cells;
+
+        if (size_cells == 2)
+          size = BigInt(((BigInt(reg[i])) << BigInt(32)) | BigInt(reg[i + 1]));
+        else
+          size = BigInt(reg[i]);
+
+        i += size_cells;
+
         deviceTreeData.numberOfMemories++;
-        deviceTreeData.memories.push(new Memory(chunk[0], chunk[0] + chunk[3], chunk[3]));
+        deviceTreeData.memories.push(new Memory(Number(address), Number(address + size), Number(size)));
       }
+
     }
 
     // count number of devices and save device name
@@ -153,20 +174,20 @@ export class XenDeviceTreeUtilsService {
 
     // convert big number in hex format
     var dd = deviceTreeJson["/"];
-    dd = Object.keys(dd).reduce(function sanitizeBooleanStructureRecursively (collector, key) {
+    dd = Object.keys(dd).reduce(function sanitizeBooleanStructureRecursively(collector, key) {
       var
-        source  = collector.source,
-        target  = collector.target,
-        value   = source[key],
+        source = collector.source,
+        target = collector.target,
+        value = source[key],
         str
-      ;
+        ;
       if (value && (typeof value == "object")) {
         value = Object.keys(value).reduce(sanitizeBooleanStructureRecursively, {
           source: value,
           target: {}
         }).target;
       } else if (typeof value == "number") {
-        value = "0x"+value.toString(16);
+        value = "0x" + value.toString(16);
       }
       target[key] = value;
       return collector;
@@ -174,7 +195,7 @@ export class XenDeviceTreeUtilsService {
       source: dd,
       target: {}
     }).target;
-    deviceTreeJson["/"] = dd;    
+    deviceTreeJson["/"] = dd;
 
     return { "data": deviceTreeData, "json": deviceTreeJson };
   }

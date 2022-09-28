@@ -53,7 +53,7 @@
             </div>
             <div class="box-body">
               <ul *ngFor="let memory of deviceTreeData.memories">
-                <li>Memory start address: {{memory.startAddress}}</li>
+                <li>Memory start address: 0x{{memory.startAddress.toString(16)}}</li>
                 <li>Memory size: {{memory.size | numberToBytes}}</li>
               </ul>
             </div>
