@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { diPublic } from '@angular/core/src/render3/di';
 import { DeviceTree } from '../models/device-tree';
 import { Domain } from '../models/domain';
 import { LocalstorageService } from './localstorage.service';

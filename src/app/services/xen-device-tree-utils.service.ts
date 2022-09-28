@@ -113,24 +113,24 @@ export class XenDeviceTreeUtilsService {
       var i = 0;
       debugger;
       while (i < reg.length) {
-        var size: bigint = BigInt(0);
-        var address: bigint = BigInt(0);
+        var _size: bigint = BigInt(0);
+        var _address: bigint = BigInt(0);
         if (address_cells == 2)
-          address = (BigInt(reg[i]) << BigInt(32)) | BigInt(reg[i + 1]);
+          _address = (BigInt(reg[i]) << BigInt(32)) | BigInt(reg[i + 1]);
         else
-          address = BigInt(reg[i]);
+          _address = BigInt(reg[i]);
 
         i += address_cells;
 
         if (size_cells == 2)
-          size = BigInt(((BigInt(reg[i])) << BigInt(32)) | BigInt(reg[i + 1]));
+          _size = BigInt(((BigInt(reg[i])) << BigInt(32)) | BigInt(reg[i + 1]));
         else
-          size = BigInt(reg[i]);
+          _size = BigInt(reg[i]);
 
         i += size_cells;
 
         deviceTreeData.numberOfMemories++;
-        deviceTreeData.memories.push(new Memory(Number(address), Number(address + size), Number(size)));
+        deviceTreeData.memories.push(new Memory(Number(_address), Number(_address + _size), Number(_size)));
       }
 
     }

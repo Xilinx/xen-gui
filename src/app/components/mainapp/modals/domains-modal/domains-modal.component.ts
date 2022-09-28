@@ -18,9 +18,9 @@ import { MemoryManagementService } from '../../../../services/memory-management.
 export class DomainsModalComponent implements OnInit, AfterViewInit {
 
   @Input() public domain: Domain;
-  @ViewChild("domainForm") domainForm: NgForm;
-  @ViewChild("mem_slider") mem_slider: ElementRef;
-  @ViewChild("vcpus_slider") vcpus_slider: ElementRef;
+  @ViewChild("domainForm", {static: false}) domainForm: NgForm;
+  @ViewChild("mem_slider", {static: false}) mem_slider: ElementRef;
+  @ViewChild("vcpus_slider", {static: false}) vcpus_slider: ElementRef;
 
   deviceTreeData: DeviceTree;
   available_vcpus: number;
