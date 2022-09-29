@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '../../../app.component';
@@ -40,7 +40,8 @@ export class DomainDetailsComponent implements OnInit {
     private vcpusManager: VcpusManagementService,
     private ref: ChangeDetectorRef,
     private memoryManager: MemoryManagementService,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private zone: NgZone
   ) {
   }
 
@@ -49,6 +50,19 @@ export class DomainDetailsComponent implements OnInit {
     var domains = this.localmemory.getData("domains");
     this.domain = <Domain>domains[name];
   }
+
+  private loadDomains(): Domain[] {
+    var localmemory_domains = this.localmemory.getData("domains");
+    var domains: Domain[] = [];
+    // transform object of objects into array of object
+    for (var key in localmemory_domains) {
+      if (key != "DOM0" && key != "Xen") {
+        domains.push(localmemory_domains[key]);
+      }
+    }
+    return domains;
+  }
+
 
   ngOnInit() {
     this.is_cache_coloring_enabled = this.localmemory.getData("cache_coloring_enabled") || false;
@@ -204,9 +218,13 @@ export class DomainDetailsComponent implements OnInit {
 
       this.localmemory.saveData("domains", domains);
 
-      // return to domains
-      this.router.navigate(["domains"]);
+      this.appComponent.updateDomainsMenu(this.loadDomains());
+      this.ref.detectChanges();
 
+      // return to domains
+      this.zone.run(() => {
+        this.router.navigate(["domains"]);
+      });
     }
 
   }

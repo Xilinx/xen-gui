@@ -61,8 +61,8 @@
         </a>
       </li>
 
-          <li *ngFor="let domain of domains" [routerLink]="['/mainapp/domain/'+domain.name]" class="xen-submenu" [ngClass]="isActive(['domain', domain.name]) ? 'active' : '' ">
-            <a [routerLink]="['/mainapp/domain/'+domain.name]">
+          <li *ngFor="let domain of domains" class="xen-submenu" [ngClass]="isActive(['domain', domain.name]) ? 'active' : '' ">
+            <a (click)="goToDomainDetails(domain.name)">
               <i class="fa fa-building"></i><i class="fa fa-user"></i> {{domain.name}}
             </a>
           </li>
