@@ -74,7 +74,9 @@ export class DomainDetailsComponent implements OnInit {
       this.deviceTreeData = new DeviceTree();
       var modalRef = this.modalService.open(ModalDeviceTreeErrorComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       // workaround for avoiding modal flickering
+      this.ref.detectChanges();
       setTimeout(() => {
+        this.ref.detectChanges();
         <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
       },);
     } else {

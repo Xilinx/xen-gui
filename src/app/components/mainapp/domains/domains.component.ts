@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Colors } from '../../../models/colors.enum';
 import { Domain } from '../../../models/domain';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -40,6 +40,7 @@ export class DomainsComponent implements OnInit {
     private appComponent: AppComponent,
     private memoryManager: MemoryManagementService,
     private ref: ChangeDetectorRef,
+    private zone: NgZone
   ) { }
 
 
@@ -82,7 +83,9 @@ export class DomainsComponent implements OnInit {
     if(!this.deviceTreeData || this.deviceTreeData.availableDevices.length == 0){
       var modalRef = this.modalService.open(ModalDeviceTreeErrorComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       // workaround for avoiding modal flickering
+      this.ref.detectChanges();
       setTimeout(() => {
+        this.ref.detectChanges();
         <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
       },);
     }
@@ -112,7 +115,21 @@ export class DomainsComponent implements OnInit {
       });
       // workaround for avoiding modal flickering
       setTimeout(() => {
-        <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
+        this.zone.run(()=>{
+          try{
+            <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
+          } catch(e){
+            setTimeout(() => {
+              this.zone.run(()=>{
+                try{
+                  <any>(document).getElementsByClassName("modal fade show")[0].classList.add("blink");
+                } catch(e){
+                  console.log("too many errors")
+                }
+              })
+            },);      
+          }
+        })
       },);
 
     });
@@ -231,7 +248,9 @@ export class DomainsComponent implements OnInit {
   }
 
   gotoDetails(i: number) {
-    this.route.navigate(["domain/" + this.domains[i].name]);
+    this.zone.run(()=>{
+      this.route.navigate(["domain/" + this.domains[i].name]);
+    })
   }
 
 
