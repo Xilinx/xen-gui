@@ -18,6 +18,7 @@ import { NumberToBytesPipe } from '../../filters/number-to-bytes.pipe';
 import { ModalDeviceTreeErrorComponent } from './modals/modal-device-tree-error/modal-device-tree-error.component';
 import { ModalDeleteDomainComponent } from './modals/modal-delete-domain/modal-delete-domain.component';
 import { ModalEnableManualCacheColoringComponent } from './modals/modal-enable-manual-cache-coloring/modal-enable-manual-cache-coloring.component';
+import { ImagebuilderPreviewComponent } from './imagebuilder-preview/imagebuilder-preview.component';
 
 const route: Routes = [
   {
@@ -41,6 +42,10 @@ const route: Routes = [
         path: 'domains',
         component: DomainsComponent
       },
+      {
+        path: 'imagebuilder-preview',
+        component: ImagebuilderPreviewComponent
+      },
     ]
   }
 ];
@@ -60,6 +65,7 @@ const route: Routes = [
     ModalDeviceTreeErrorComponent,
     ModalDeleteDomainComponent,
     ModalEnableManualCacheColoringComponent,
+    ImagebuilderPreviewComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(route), WidgetsModule, NgxSliderModule, FormsModule, NgbModule],
   exports: [RouterModule, WidgetsModule],

@@ -11,8 +11,9 @@
         <p>Howdy, {{username}}</p>
       </div>
       <div class="" style="margin-top:75px;margin-left:10px; color:white">
-        <p>Current project: <br> <b>{{current_project_name.split("/").slice(-1)[0].split("\\").slice(-1)[0].split(".")[0]}}</b></p>
-</div>
+        <p>Current project: <br>
+          <b>{{current_project_name.split("/").slice(-1)[0].split("\\").slice(-1)[0].split(".")[0]}}</b></p>
+      </div>
     </div>
 
     <!--
@@ -40,7 +41,7 @@
       </li>
 
       <li title="Boot Configuration" [ngClass]="isActive(['boot', 'configuration']) ? 'active' : '' "
-        [routerLink]="['/mainapp/boot-configuration']" >
+        [routerLink]="['/mainapp/boot-configuration']">
         <a [routerLink]="['/mainapp/boot-configuration']">
           <i class="fa fa-dashboard"></i> <span> Boot configuration</span>
         </a>
@@ -61,51 +62,61 @@
         </a>
       </li>
 
-          <li *ngFor="let domain of domains" class="xen-submenu" [ngClass]="isActive(['domain', domain.name]) ? 'active' : '' ">
-            <a (click)="goToDomainDetails(domain.name)">
-              <i class="fa fa-building"></i><i class="fa fa-user"></i> {{domain.name}}
-            </a>
-          </li>
+      <li *ngFor="let domain of domains" class="xen-submenu"
+        [ngClass]="isActive(['domain', domain.name]) ? 'active' : '' ">
+        <a (click)="goToDomainDetails(domain.name)">
+          <i class="fa fa-building"></i><i class="fa fa-user"></i> {{domain.name}}
+        </a>
+      </li>
 
-          <li class="header">Xen Export</li>
+      <li class="header">Xen Export</li>
 
-          <li title="Export ImageBuilder file" (click)="saveImageBuilder()">
-            <a>
-              <i class="fa fa-file-code-o" aria-hidden="true"></i>
-              <span> Export ImageBuilder file</span>
-            </a>
-          </li>
+      <li title="ImageBuilder Preview" [ngClass]="isActive(['imagebuilder', 'preview']) ? 'active' : '' "
+        [routerLink]="['/mainapp/imagebuilder-preview']">
+        <a [routerLink]="['/mainapp/imagebuilder-preview']">
+          <i class="fa fa-file-code-o"></i> <span> ImageBuilder Preview</span>
+        </a>
+      </li>
 
-          <li title="Export YAML file" (click)="saveYAML()">
-            <a>
-              <i class="fa fa-file-code-o" aria-hidden="true"></i>
-              <span> Export YAML file</span>
-            </a>
-          </li>
+      <li title="Export ImageBuilder file" (click)="saveImageBuilder()">
+        <a>
+          <i class="fa fa-file-code-o" aria-hidden="true"></i>
+          <span> Export ImageBuilder file</span>
+        </a>
+      </li>
+
+      <li title="Export YAML file" (click)="saveYAML()">
+        <a>
+          <i class="fa fa-file-code-o" aria-hidden="true"></i>
+          <span> Export YAML file</span>
+        </a>
+      </li>
 
 
-          <li class="header">Project Settings</li>
+      <li class="header">Project Settings</li>
 
-          <li title="Open project" (click)="openProject()">
-            <a>
-              <i class="fa  fa-folder-open-o" aria-hidden="true"></i>
-              <span> Open project</span>
-            </a>
-          </li>
+      <li title="Open project" (click)="openProject()">
+        <a>
+          <i class="fa  fa-folder-open-o" aria-hidden="true"></i>
+          <span> Open project</span>
+        </a>
+      </li>
 
-          <li title="Save project" (click)="saveProject()" [ngClass]="projectFileManager.hasToSave() ? 'save-remember-animation' : ''">
-            <a>
-              <i class="fa fa-save" aria-hidden="true"></i>
-              <span> Save project</span>
-            </a>
-          </li>
-          <li title="Save project as" (click)="saveProjectAs()" [ngClass]="projectFileManager.hasToSave() ? 'save-remember-animation' : ''">
-            <a>
-              <i class="fa fa-save" aria-hidden="true"></i>
-              <span> Save project as...</span>
-            </a>
-          </li>
-    
+      <li title="Save project" (click)="saveProject()"
+        [ngClass]="projectFileManager.hasToSave() ? 'save-remember-animation' : ''">
+        <a>
+          <i class="fa fa-save" aria-hidden="true"></i>
+          <span> Save project</span>
+        </a>
+      </li>
+      <li title="Save project as" (click)="saveProjectAs()"
+        [ngClass]="projectFileManager.hasToSave() ? 'save-remember-animation' : ''">
+        <a>
+          <i class="fa fa-save" aria-hidden="true"></i>
+          <span> Save project as...</span>
+        </a>
+      </li>
+
 
       <li title="Start new session" (click)="logout()">
         <a>

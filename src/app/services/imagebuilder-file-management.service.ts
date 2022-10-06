@@ -18,7 +18,8 @@ export class ImagebuilderFileManagementService {
     private utils: UtilsService
   ) { }
 
-  async saveAs() {
+
+  constructFileString(){
     var boot = <BootConfiguration>this.localmemory.getData("boot_config");
     var dts = <DeviceTree>this.localmemory.getData("dts_data");
     var dom0 = <Domain>this.localmemory.getData("domains")["DOM0"];
@@ -34,16 +35,6 @@ export class ImagebuilderFileManagementService {
         domains.push(_domains[key]);
       }
     }
-
-
-    var options = {
-      title: "Save file",
-      buttonLabel: "Save",
-
-      filters: [
-        { name: 'All Files', extensions: ['*'] }
-      ]
-    };
 
     var boot_config_file: string = `
 MEMORY_START="0x${boot.memory_low_value.toString(16)}"
@@ -213,6 +204,20 @@ FIT_ENC_UB_DTB="uboot.dtb"
       //extra_config_file +
       end;
 
+      return config_file;
+  }
+  async saveAs() {
+
+    var options = {
+      title: "Save file",
+      buttonLabel: "Save",
+
+      filters: [
+        { name: 'All Files', extensions: ['*'] }
+      ]
+    };
+
+    var config_file = this.constructFileString();
     const result = await dialog.showSaveDialog(options);
     if(!result){
       return false;
