@@ -44,7 +44,7 @@ BOOT_CMD="${boot.boot_command}"
     `;
 
     var device_tree_config_file: string = `
-DEVICE_TREE="${dts.filename}"
+DEVICE_TREE="${dts.filename.replace('.dts', '.dtb')}"
     `;
 
     var xen_config_file: string = `
