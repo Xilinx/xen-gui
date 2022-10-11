@@ -49,7 +49,7 @@ DEVICE_TREE="${dts.filename}"
 
     var xen_config_file: string = `
 XEN="${boot.xen_binary}"
-XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} dom0_mem=${this.utils.formatBytes(dom0.memory).replace(" ", "")} dom0_max_vcpus=${dom0.vcpus}  sched=${boot.scheduler}"
+XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} sched=${boot.scheduler}"
     `;
 
     colors_string = "";

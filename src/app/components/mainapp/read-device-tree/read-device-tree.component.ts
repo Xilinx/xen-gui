@@ -39,6 +39,10 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
+    // enable tooltips everywhere
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    });
   }
 
   async ngOnInit() {

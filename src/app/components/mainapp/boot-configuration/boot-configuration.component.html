@@ -94,6 +94,11 @@
               <label for="boot_command4">none</label>
               <br>
 
+              <p>
+                ATTENTION!
+                the boot selection is dependent on DOM0 image
+              </p>
+
             </div>
           </div>
         </div>
@@ -203,6 +208,17 @@
                   <input type="radio" id="xen_binary2" name="xen_binary" [(ngModel)]="bootConfig.xen_binary"
                     (change)="save()" value="linux">
                   <label for="xen_binary2">Linux</label>
+                </div>
+                <div class="col-sm-3">
+                  <a class='btn btn-xen' href='#'>
+                    Search file
+                    <input type="file" class="without-label" name="xen_binary" size="40"
+                      (change)="bootConfig.xen_binary = $event.target.files.item(0).name; save()">
+                  </a>
+                  <p *ngIf="bootConfig.xen_binary != 'xen' && bootConfig.xen_binary != 'linux'" style="float:right">
+                    {{bootConfig.xen_binary}}
+                  </p>
+
                 </div>
               </div>
             </div>
