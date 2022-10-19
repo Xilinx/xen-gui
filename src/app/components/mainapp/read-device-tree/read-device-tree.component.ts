@@ -14,6 +14,7 @@ import { MemoryManagementService } from '../../../services/memory-management.ser
 import { BootConfiguration } from '../../../models/boot-configuration';
 
 declare var $: any;
+let spawn = require("child_process").spawn;
 
 @Component({
   selector: 'app-read-device-tree',
@@ -27,6 +28,7 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
   deviceTreeData: DeviceTree;
   dtsFile: File | null = null;
   error: boolean = false;
+  dtc_command: string = "dtc -I dtb -O dts -o - "; // concat dtb file on this command
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -161,7 +163,50 @@ export class ReadDeviceTreeComponent implements OnInit, AfterViewInit {
 
   handleFileInput(files: FileList) {
     this.dtsFile = files.item(0);
+    console.log(this.dtsFile);
     this.deviceTreeData.filename = this.dtsFile.name;
+    if (this.dtsFile.name.indexOf(".dtb") != -1) {
+      console.log("this is a dtb file");
+      try {
+        let bat = spawn(this.dtc_command + this.dtsFile.path, [], { shell: true });
+        var output = "";
+        var err_output = "";
+        bat.stdout.on("data", (data) => {
+          //console.log(`stdout: ${data}`);
+          output += `${data}`;
+        });
+
+        bat.stderr.on("data", (err) => {
+          //console.error(`stderr: ${err}`);
+          err_output += `${err}`;
+        });
+
+        bat.on("close", (code) => {
+          // Handle exit
+          if (output.length != 0) {
+            console.log(`stdout: ${output}`);
+          }
+          if (err_output.length != 0) {
+            console.log(`stderr: ${err_output}`);
+          }
+          console.log(`child process exited with code ${code}`);
+          
+          if(code == 0){
+            console.log("code 0, command ok");
+            this.readDtsString(<string>output);
+          } else {
+            this.error = true;
+            this.ref.detectChanges();
+          }
+        });
+      } catch (e) {
+        console.error(e);
+        this.error = true;
+      }
+      return;
+    }
+
+    // it's a dts file, so go ahead without problems
     let fileReader = new FileReader();
     this.error = false;
     fileReader.onload = (e) => {

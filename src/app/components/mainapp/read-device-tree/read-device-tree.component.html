@@ -14,7 +14,7 @@
             <div class="custom-file">
               <input type="file" class="custom-file-input" id="inputGroupFile01"
                 aria-describedby="inputGroupFileAddon01" (change)="handleFileInput($event.target.files)"
-                accept=".dts, .DTS">
+                accept=".dts, .DTS, .dtb, .DTB">
               <label class="custom-file-label" for="inputGroupFile01">{{dtsFile ? dtsFile.name :
                 (deviceTreeData.filename != "" ? deviceTreeData.filename : "no dts selected") }}</label>
             </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="col-sm-1">
           <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="right"
-            title="Attention: The application recognizes and can only read dts format files. If you have a dtb file, you should firstly convert it to dts and then upload it." style="border-radius: 50px; width: 40px;">
+            title="Attention: The application recognizes and can only read dts format files. If you have only a dtb file, please install dtc software for convert it (this software can exec it)." style="border-radius: 50px; width: 40px;">
             ?
           </button>
         </div>
