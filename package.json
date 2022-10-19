@@ -1,6 +1,6 @@
 {
   "name": "xen-gui-configurator",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Xen GUI for ImageBuilder file generation",
   "homepage": "https://xenproject.org/",
   "author": {
