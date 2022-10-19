@@ -49,7 +49,7 @@ DEVICE_TREE="${dts.filename.replace('.dts', '.dtb')}"
 
     var xen_config_file: string = `
 XEN="${boot.xen_binary}"
-XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} sched=${boot.scheduler}"
+XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.* /gi, "")} sched=${boot.scheduler} dom0_mem=${this.utils.formatBytesReduced(dom0.memory)} dom0_max_vcpus=${dom0.vcpus}"
     `;
 
     colors_string = "";
@@ -93,8 +93,7 @@ XEN_CMD="${boot.bootargs.replace(/dom0_mem=.* /gi, "").replace(/dom0_max_vcpus=.
 DOM0_KERNEL="${dom0.kernel}"
 DOM0_CMD="${dom0.bootargs}"
 DOM0_RAMDISK="${dom0.ramdisk}"
-DOM0_MEM=${Math.ceil(dom0.memory / 1024 / 1024)}
-DOM0_VCPUS=${dom0.vcpus}`
+`
     if (is_cache_coloring_enabled) {
       dom0_config_file += `
 DOM0_COLORS="${colors_string}"

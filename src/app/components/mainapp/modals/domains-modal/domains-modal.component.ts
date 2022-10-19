@@ -117,6 +117,4 @@ export class DomainsModalComponent implements OnInit, AfterViewInit {
     this.modalService.dismissAll(null);
   }
 
-  ngOnView
-
 }
