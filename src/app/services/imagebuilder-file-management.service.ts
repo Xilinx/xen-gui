@@ -148,9 +148,15 @@ NUM_DOMUS=${domains.length}
       }
       colors_string = tmp_colors.substring(0, tmp_colors.length - 1);
 
+      var devices_string_passthrough = "";
+      for (var j = 0; j < domains[i].devices.length; ++j) {        
+          devices_string_passthrough += domains[i].devices[j].path + " ";
+      }
+      devices_string_passthrough = devices_string_passthrough.substring(0, devices_string_passthrough.length-1);
+
       domu_config_file += `
 DOMU_KERNEL[${i}]="${domains[i].kernel}"
-DOMU_PASSTHROUGH_PATHS[${i}]="${domains[i].passthrough_dtb}"
+DOMU_PASSTHROUGH_PATHS[${i}]="${domains[i].passthrough_dtb}${domains[i].passthrough_dtb.length != 0 ? " " : ""}${devices_string_passthrough}"
 DOMU_CMD[${i}]="${domains[i].bootargs}"
 DOMU_RAMDISK[${i}]="${domains[i].ramdisk}"
 DOMU_MEM[${i}]=${Math.ceil(domains[i].memory / 1024 / 1024)}

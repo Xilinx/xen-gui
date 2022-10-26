@@ -156,9 +156,9 @@ export class XenDeviceTreeUtilsService {
           }
           if (dd[key].status != "disabled") {
             deviceTreeData.numberOfAvailableDevices++;
-            deviceTreeData.availableDevices.push(new Device(name, address));
+            deviceTreeData.availableDevices.push(new Device(name, address, (deviceTreeJson["/"].amba ? "/amba/" : "/axi/")+name+"@"+address.toString(16)));
           } else {
-            deviceTreeData.disabledDevices.push(new Device(name, address));
+            deviceTreeData.disabledDevices.push(new Device(name, address, (deviceTreeJson["/"].amba ? "/amba/" : "/axi/")+name+"@"+address.toString(16)));
           }
         }
       }
